@@ -1,0 +1,1848 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RT.PostBuild</name>
+    </assembly>
+    <members>
+        <member name="T:RT.PostBuild.IPostBuildReporter">
+            <summary>Provides the ability to output post-build messages (with filename and line number) to Console.Error. This interface is used by <see cref="M:RT.PostBuild.PostBuildChecker.RunPostBuildChecks(System.String,System.Reflection.Assembly[])"/>.</summary>
+        </member>
+        <member name="M:RT.PostBuild.IPostBuildReporter.Error(System.String,System.String[])">
+            <summary>When implemented in a class, searches the source directory for the first occurrence of the first token in <paramref name="tokens"/>,
+            and then starts searching there to find the first occurrence of each of the subsequent <paramref name="tokens"/> within the same file. When found,
+            outputs the error <paramref name="message"/> including the filename and line number where the last token was found.</summary>
+        </member>
+        <member name="M:RT.PostBuild.IPostBuildReporter.Error(System.String,System.String,System.Int32,System.Nullable{System.Int32})">
+            <summary>When implemented in a class, outputs the error <paramref name="message"/> including the specified <paramref name="filename"/>, <paramref name="lineNumber"/> and optional <paramref name="columnNumber"/>.</summary>
+        </member>
+        <member name="M:RT.PostBuild.IPostBuildReporter.Warning(System.String,System.String[])">
+            <summary>When implemented in a class, searches the source directory for the first occurrence of the first token in <paramref name="tokens"/>,
+            and then starts searching there to find the first occurrence of each of the subsequent <paramref name="tokens"/> within the same file. When found,
+            outputs the warning <paramref name="message"/> including the filename and line number where the last token was found.</summary>
+        </member>
+        <member name="M:RT.PostBuild.IPostBuildReporter.Warning(System.String,System.String,System.Int32,System.Nullable{System.Int32})">
+            <summary>When implemented in a class, outputs the warning <paramref name="message"/> including the specified <paramref name="filename"/>, <paramref name="lineNumber"/> and optional <paramref name="columnNumber"/>.</summary>
+        </member>
+        <member name="T:RT.PostBuild.PostBuildChecker">
+            <summary>Exposes methods to run post-build checks and fail the build if the checks fail.</summary>
+        </member>
+        <member name="M:RT.PostBuild.PostBuildChecker.RunPostBuildChecks(System.String,System.Reflection.Assembly[])">
+            <summary>
+                Runs all post-build checks defined in the specified assemblies. This is intended to be run as a post-build
+                event. See remarks for details.</summary>
+            <remarks>
+                <para>
+                    In non-DEBUG mode, does nothing and returns 0.</para>
+                <para>
+                    Intended use is as follows:</para>
+                <list type="bullet">
+                    <item><description>
+                        <para>
+                            Add the following line to your project's post-build event:</para>
+                        <code>
+                            "$(TargetPath)" --post-build-check "$(SolutionDir)."</code></description></item>
+                    <item><description>
+                        <para>
+                            Add the following code at the beginning of your project's Main() method:</para>
+                        <code>
+                            if (args.Length == 2 &amp;&amp; args[0] == "--post-build-check")
+                                return PostBuildChecker.RunPostBuildChecks(args[1], Assembly.GetExecutingAssembly());</code>
+                        <para>
+                            If your project entails several assemblies, you can specify additional assemblies in the call to
+                            <see cref="M:RT.PostBuild.PostBuildChecker.RunPostBuildChecks(System.String,System.Reflection.Assembly[])"/>. For example, you could specify
+                            <c>typeof(SomeTypeInMyLibrary).Assembly</c>.</para></description></item>
+                    <item><description>
+                        <para>
+                            Add post-build check methods to any type where they may be relevant. For example, you might use
+                            code similar to the following:</para>
+                        <code>
+                            #if DEBUG
+                                private static void PostBuildCheck(IPostBuildReporter rep)
+                                {
+                                    if (somethingWrong())
+                                        rep.Error("Error XYZ occurred.", "class", "Gizmo");
+                                }
+                            #endif</code>
+                        <para>
+                            The method is expected to have one parameter of type <see cref="T:RT.PostBuild.IPostBuildReporter"/>, a return
+                            type of void, and it is expected to be static and non-public. Errors and warnings can be reported
+                            by calling methods on said <see cref="T:RT.PostBuild.IPostBuildReporter"/> object. (In the above example,
+                            PostBuildChecker will attempt to find a class called Gizmo to link the error message to a location
+                            in the source.) Throwing an exception will also report an error.</para></description></item></list></remarks>
+            <param name="sourcePath">
+                Specifies the path to the folder containing the C# source files.</param>
+            <param name="assemblies">
+                Specifies the compiled assemblies from which to run post-build checks.</param>
+            <returns>
+                1 if any errors occurred, otherwise 0.</returns>
+        </member>
+        <member name="T:RT.Util.ExtensionMethods.CustomComparerExtensions">
+            <summary>Extension methods related to custom comparer.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CustomComparerExtensions.OrderBy``1(System.Collections.Generic.IEnumerable{``0},System.Comparison{``0})">
+            <summary>Sorts the elements of a sequence in ascending order by using a specified comparison delegate.</summary>
+        </member>
+        <member name="T:RT.Util.ExtensionMethods.CollectionExtensions">
+            <summary>
+                Provides extension methods on various collection types or interfaces in the System.Collections.Generic namespace
+                such as <see cref="T:System.Collections.Generic.Dictionary`2"/> and on arrays.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Contains``2(System.Collections.Generic.IDictionary{``0,System.Collections.Generic.HashSet{``1}},``0,``1)">
+            <summary>Determines whether the current HashSet-in-a-Dictionary contains the specified key and value.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.ContainsKeys``3(System.Collections.Generic.IDictionary{``0,System.Collections.Generic.Dictionary{``1,``2}},``0,``1)">
+            <summary>
+                Determines whether the current two-level dictionary contains the specified combination of keys.</summary>
+            <typeparam name="TKey1">
+                Type of the first-level key.</typeparam>
+            <typeparam name="TKey2">
+                Type of the second-level key.</typeparam>
+            <typeparam name="TValue">
+                Type of values in the dictionary.</typeparam>
+            <param name="source">
+                Source dictionary to examine.</param>
+            <param name="key1">
+                The first key to check for.</param>
+            <param name="key2">
+                The second key to check for.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.TryGetValue``3(System.Collections.Generic.IDictionary{``0,System.Collections.Generic.Dictionary{``1,``2}},``0,``1,``2@)">
+            <summary>
+                Gets the value associated with the specified combination of keys.</summary>
+            <typeparam name="TKey1">
+                Type of the first-level key.</typeparam>
+            <typeparam name="TKey2">
+                Type of the second-level key.</typeparam>
+            <typeparam name="TValue">
+                Type of values in the dictionary.</typeparam>
+            <param name="source">
+                Source dictionary to examine.</param>
+            <param name="key1">
+                The first key to check for.</param>
+            <param name="key2">
+                The second key to check for.</param>
+            <param name="value">
+                When this method returns, the value associated with the specified keys, if the keys are found; otherwise, the
+                default value for the type of the <paramref name="value"/> parameter. This parameter is passed uninitialized.</param>
+            <returns>
+                <c>true</c> if the two-level dictionary contains an element with the specified combination of keys; otherwise,
+                <c>false</c>.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.DictionaryEqual``2(System.Collections.Generic.IDictionary{``0,``1},System.Collections.Generic.IDictionary{``0,``1})">
+            <summary>
+                Compares two dictionaries for equality, member-wise. Two dictionaries are equal if they contain all the same
+                key-value pairs.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.BinarySearch``2(System.Collections.Generic.SortedList{``0,``1},``0,System.Int32@,System.Int32@)">
+            <summary>
+                Performs a binary search for the specified key on a <see cref="T:System.Collections.Generic.SortedList`2"/>. When no match
+                exists, returns the nearest indices for interpolation/extrapolation purposes.</summary>
+            <remarks>
+                If an exact match exists, index1 == index2 == the index of the match. If an exact match is not found, index1
+                &lt; index2. If the key is less than every key in the list, index1 is int.MinValue and index2 is 0. If it's
+                greater than every key, index1 = last item index and index2 = int.MaxValue. Otherwise index1 and index2 are
+                the indices of the items that would surround the key were it present in the list.</remarks>
+            <param name="list">
+                List to operate on.</param>
+            <param name="key">
+                The key to look for.</param>
+            <param name="index1">
+                Receives the value of the first index (see remarks).</param>
+            <param name="index2">
+                Receives the value of the second index (see remarks).</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Get``2(System.Collections.Generic.IDictionary{``0,``1},``0,``1)">
+            <summary>
+                Gets a value from a dictionary by key. If the key does not exist in the dictionary, the default value is
+                returned instead.</summary>
+            <param name="dict">
+                Dictionary to operate on.</param>
+            <param name="key">
+                Key to look up.</param>
+            <param name="defaultVal">
+                Value to return if <paramref name="key"/> is not contained in the dictionary.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Get``2(System.Collections.Generic.IDictionary{``0,``1},``0,System.Nullable{``1})">
+            <summary>
+                Gets a value from a dictionary by key. If the key does not exist in the dictionary, the default value is
+                returned instead.</summary>
+            <param name="dict">
+                Dictionary to operate on.</param>
+            <param name="key">
+                Key to look up.</param>
+            <param name="defaultVal">
+                Value to return if <paramref name="key"/> is not contained in the dictionary.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Get``3(System.Collections.Generic.IDictionary{``0,System.Collections.Generic.Dictionary{``1,``2}},``0,``1,``2)">
+            <summary>
+                Gets a value from a two-level dictionary by key. If the keys don’t exist in the dictionary, the default value
+                is returned instead.</summary>
+            <param name="dict">
+                Dictionary to operate on.</param>
+            <param name="key1">
+                Key to look up in the first level.</param>
+            <param name="key2">
+                Key to look up in the second level.</param>
+            <param name="defaultVal">
+                Value to return if key1 or key2 is not contained in the relevant dictionary.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.ToDictionary``2(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{``0,``1}},System.Collections.Generic.IEqualityComparer{``0},System.Boolean)">
+            <summary>
+                Converts an <c>IEnumerable&lt;KeyValuePair&lt;TKey, TValue&gt;&gt;</c> into a <c>Dictionary&lt;TKey,
+                TValue&gt;</c>.</summary>
+            <param name="source">
+                Source collection to convert to a dictionary.</param>
+            <param name="comparer">
+                An optional equality comparer to compare keys.</param>
+            <param name="ignoreDuplicateKeys">
+                If <c>true</c>, duplicate keys are ignored and only their first occurrence added to the dictionary. Otherwise,
+                a duplicate key causes an exception.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Subarray``1(``0[],System.Int32)">
+            <summary>
+                Similar to <see cref="M:System.String.Substring(System.Int32)"/>, but for arrays. Returns a new array containing all items from
+                the specified <paramref name="startIndex"/> onwards.</summary>
+            <remarks>
+                Returns a new copy of the array even if <paramref name="startIndex"/> is 0.</remarks>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Subarray``1(``0[],System.Int32,System.Int32)">
+            <summary>
+                Similar to <see cref="M:System.String.Substring(System.Int32,System.Int32)"/>, but for arrays. Returns a new array containing <paramref
+                name="length"/> items from the specified <paramref name="startIndex"/> onwards.</summary>
+            <remarks>
+                Returns a new copy of the array even if <paramref name="startIndex"/> is 0 and <paramref name="length"/> is
+                the length of the input array.</remarks>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Remove``1(``0[],System.Int32)">
+            <summary>
+                Similar to <see cref="M:System.String.Remove(System.Int32)"/>, but for arrays. Returns a new array containing only the items
+                before the specified <paramref name="startIndex"/>.</summary>
+            <remarks>
+                Returns a new copy of the array even if <paramref name="startIndex"/> is the length of the array.</remarks>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Remove``1(``0[],System.Int32,System.Int32)">
+            <summary>
+                Similar to <see cref="M:System.String.Remove(System.Int32,System.Int32)"/>, but for arrays. Returns a new array containing everything
+                except the <paramref name="length"/> items starting from the specified <paramref name="startIndex"/>.</summary>
+            <remarks>
+                Returns a new copy of the array even if <paramref name="length"/> is 0.</remarks>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Insert``1(``0[],System.Int32,``0[])">
+            <summary>
+                Similar to <see cref="M:System.String.Insert(System.Int32,System.String)"/>, but for arrays. Returns a new array with the <paramref
+                name="values"/> inserted starting from the specified <paramref name="startIndex"/>.</summary>
+            <remarks>
+                Returns a new copy of the array even if <paramref name="values"/> is empty.</remarks>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Insert``1(``0[],System.Int32,``0)">
+            <summary>
+                Similar to <see cref="M:System.String.Insert(System.Int32,System.String)"/>, but for arrays and for a single value. Returns a new
+                array with the <paramref name="value"/> inserted at the specified <paramref name="startIndex"/>.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Replace``1(``0[],System.Int32,``0)">
+            <summary>
+                Returns a new array in which a single element has been replaced.</summary>
+            <param name="array">
+                The array from which to create a new array with one element replaced.</param>
+            <param name="index">
+                The index at which to replace one element.</param>
+            <param name="element">
+                The new element to replace the old element with.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.SubarrayEquals``1(``0[],System.Int32,``0[],System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+                Determines whether a subarray within the current array is equal to the specified other array.</summary>
+            <param name="sourceArray">
+                First array to examine.</param>
+            <param name="sourceStartIndex">
+                Start index of the subarray within the first array to compare.</param>
+            <param name="otherArray">
+                Array to compare the subarray against.</param>
+            <param name="comparer">
+                Optional equality comparer.</param>
+            <returns>
+                True if the current array contains the specified subarray at the specified index; false otherwise.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.SubarrayEquals``1(``0[],System.Int32,``0[],System.Int32,System.Int32,System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+                Determines whether the two arrays contain the same content in the specified location.</summary>
+            <param name="sourceArray">
+                First array to examine.</param>
+            <param name="sourceStartIndex">
+                Start index of the subarray within the first array to compare.</param>
+            <param name="otherArray">
+                Second array to examine.</param>
+            <param name="otherStartIndex">
+                Start index of the subarray within the second array to compare.</param>
+            <param name="length">
+                Length of the subarrays to compare.</param>
+            <param name="comparer">
+                Optional equality comparer.</param>
+            <returns>
+                True if the two arrays contain the same subarrays at the specified indexes; false otherwise.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.IndexOfSubarray``1(``0[],``0[],System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+                Searches the current array for a specified subarray and returns the index of the first occurrence, or -1 if
+                not found.</summary>
+            <param name="sourceArray">
+                Array in which to search for the subarray.</param>
+            <param name="findWhat">
+                Subarray to search for.</param>
+            <param name="comparer">
+                Optional equality comparer.</param>
+            <returns>
+                The index of the first match, or -1 if no match is found.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.IndexOfSubarray``1(``0[],``0[],System.Int32,System.Nullable{System.Int32},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+                Searches the current array for a specified subarray and returns the index of the first occurrence, or -1 if
+                not found.</summary>
+            <param name="sourceArray">
+                Array in which to search for the subarray.</param>
+            <param name="findWhat">
+                Subarray to search for.</param>
+            <param name="startIndex">
+                Index in <paramref name="sourceArray"/> at which to start searching.</param>
+            <param name="sourceLength">
+                Maximum length of the source array to search starting from <paramref name="startIndex"/>. The greatest index
+                that can be returned is this minus the length of <paramref name="findWhat"/> plus <paramref
+                name="startIndex"/>.</param>
+            <param name="comparer">
+                Optional equality comparer.</param>
+            <returns>
+                The index of the first match, or -1 if no match is found.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.CopyMerge``2(System.Collections.Generic.IDictionary{``0,``1},System.Collections.Generic.IDictionary{``0,``1})">
+            <summary>
+                Creates a new dictionary containing the union of the key/value pairs contained in the specified dictionaries.
+                Keys in <paramref name="second"/> overwrite keys in <paramref name="first"/>.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.RemoveAll``2(System.Collections.Generic.IDictionary{``0,``1},System.Func{System.Collections.Generic.KeyValuePair{``0,``1},System.Boolean})">
+            <summary>
+                Removes all entries from a dictionary that satisfy a specified predicate.</summary>
+            <typeparam name="TKey">
+                Type of the keys in the dictionary.</typeparam>
+            <typeparam name="TVal">
+                Type of the values in the dictionary.</typeparam>
+            <param name="dict">
+                Dictionary to operate on.</param>
+            <param name="predicate">
+                Specifies a predicate that determines which entries should be removed from the dictionary.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.RemoveAllByKey``2(System.Collections.Generic.IDictionary{``0,``1},System.Func{``0,System.Boolean})">
+            <summary>
+                Removes all entries from a dictionary whose keys satisfy a specified predicate.</summary>
+            <typeparam name="TKey">
+                Type of the keys in the dictionary.</typeparam>
+            <typeparam name="TVal">
+                Type of the values in the dictionary.</typeparam>
+            <param name="dict">
+                Dictionary to operate on.</param>
+            <param name="predicate">
+                Specifies a predicate that determines which entries should be removed from the dictionary.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.RemoveAllByValue``2(System.Collections.Generic.IDictionary{``0,``1},System.Func{``1,System.Boolean})">
+            <summary>
+                Removes all entries from a dictionary whose values satisfy a specified predicate.</summary>
+            <typeparam name="TKey">
+                Type of the keys in the dictionary.</typeparam>
+            <typeparam name="TVal">
+                Type of the values in the dictionary.</typeparam>
+            <param name="dict">
+                Dictionary to operate on.</param>
+            <param name="predicate">
+                Specifies a predicate that determines which entries should be removed from the dictionary.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.EnqueueRange``1(System.Collections.Generic.Queue{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+                Enqueues several values into a <see cref="T:System.Collections.Generic.Queue`1"/>.</summary>
+            <typeparam name="T">
+                Type of the elements in the queue.</typeparam>
+            <param name="queue">
+                Queue to insert items into.</param>
+            <param name="values">
+                Values to enqueue.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.AddRange``1(System.Collections.Generic.HashSet{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+                Adds several values into a <see cref="T:System.Collections.Generic.HashSet`1"/>.</summary>
+            <typeparam name="T">
+                Type of the elements in the hash set.</typeparam>
+            <param name="set">
+                The set to add the items to.</param>
+            <param name="values">
+                Values to add.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.RemoveRange``1(System.Collections.Generic.List{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+                Removes several values from a <see cref="T:System.Collections.Generic.List`1"/>.</summary>
+            <typeparam name="T">
+                Type of the elements in the list.</typeparam>
+            <param name="list">
+                The list to remove the items from.</param>
+            <param name="values">
+                Values to remove.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Select``2(System.Collections.Generic.IList{``0},System.Func{``0,``1})">
+            <summary>
+                Projects each element of a sequence into a new form.</summary>
+            <typeparam name="TInput">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <typeparam name="TResult">
+                The type of the value returned by <paramref name="selector"/>.</typeparam>
+            <param name="source">
+                A list of values to invoke the transform function on.</param>
+            <param name="selector">
+                A transform function to apply to each element.</param>
+            <returns>
+                A collection whose elements are the result of invoking the transform function on each element of <paramref
+                name="source"/>.</returns>
+            <remarks>
+                This method replaces <see cref="M:System.Linq.Enumerable.Select``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})"/> for the case where the input is an <see cref="T:System.Collections.Generic.IList`1"/> with an implementation that makes a
+                subsequent <c>ToArray()</c> or <c>ToList()</c> run 15% faster.</remarks>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Reverse``1(System.Collections.Generic.IList{``0})">
+            <summary>
+                Inverts the order of the elements in a sequence.</summary>
+            <typeparam name="TInput">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <param name="source">
+                A list of values to reverse.</param>
+            <returns>
+                A list whose elements correspond to those of the input sequence in reverse order.</returns>
+            <remarks>
+                This method replaces <see cref="M:System.Linq.Enumerable.Reverse``1(System.Collections.Generic.IEnumerable{``0})"/> for the case where the
+                input is an <see cref="T:System.Collections.Generic.IList`1"/> with an implementation that makes a subsequent <c>ToArray()</c> or
+                <c>ToList()</c> run 15% faster.</remarks>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.ReverseInplace``1(``0[])">
+            <summary>Reverses an array in-place and returns the same array.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.CollectionExtensions.Pop``1(System.Collections.Generic.Stack{``0},System.Int32)">
+            <summary>
+                Pops the specified number of elements from the stack. There must be at least that many items on the stack,
+                otherwise an exception is thrown.</summary>
+        </member>
+        <member name="T:RT.Util.ExtensionMethods.ListSelectIterator`2">
+            <summary>
+                Provides the implementation for <see cref="M:RT.Util.ExtensionMethods.CollectionExtensions.Select``2(System.Collections.Generic.IList{``0},System.Func{``0,``1})"/>.</summary>
+            <typeparam name="TInput">
+                The type of the elements of the original collection.</typeparam>
+            <typeparam name="TResult">
+                The type of the value returned by the selector function.</typeparam>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.ListSelectIterator`2.#ctor(System.Collections.Generic.IList{`0},System.Func{`0,`1},System.Boolean)">
+            <summary>
+                Constructor.</summary>
+            <param name="source">
+                A list of values to invoke the transform function on.</param>
+            <param name="selector">
+                A transform function to apply to each element.</param>
+            <param name="reversed">
+                Specifies whether or not to reverse the order of elements.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.ListSelectIterator`2.GetEnumerator">
+            <summary>Returns an enumerator to iterate over the collection.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.ListSelectIterator`2.ToArray">
+            <summary>
+                Creates an array from a projected list.</summary>
+            <remarks>
+                This implementation fulfills the same function as <c>Enumerable.ToArray()</c>, but is 15% faster.</remarks>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.ListSelectIterator`2.ToList">
+            <summary>
+                Creates a new list from a projected list.</summary>
+            <remarks>
+                This implementation fulfills the same function as <c>Enumerable.ToList()</c>, but is 15% faster.</remarks>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.ListSelectIterator`2.Select``1(System.Func{`1,``0})">
+            <summary>
+                Projects each element of a sequence into a new form.</summary>
+            <typeparam name="TNewResult">
+                The type of the value returned by <paramref name="selector"/>.</typeparam>
+            <param name="selector">
+                A transform function to apply to each element.</param>
+            <returns>
+                A collection whose elements are the result of invoking the transform function on each element of the current
+                projected list.</returns>
+            <remarks>
+                This method replaces <c>IEnumerable{T}.Select{TSource,
+                TResult}(IEnumerable{TSource},Func{TSource,int,TResult})</c> for the case where the input is a
+                <c>ListSelectIterator&lt;TInput, TResult&gt;</c> with an implementation that makes a subsequent
+                <c>ToArray()</c> or <c>ToList()</c> run 15% faster.</remarks>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.ListSelectIterator`2.Reverse">
+            <summary>
+                Inverts the order of the elements in a sequence.</summary>
+            <returns>
+                A list whose elements correspond to those of the input sequence in reverse order.</returns>
+            <remarks>
+                This method replaces <see cref="M:System.Linq.Enumerable.Reverse``1(System.Collections.Generic.IEnumerable{``0})"/> for the case where the
+                input is an <see cref="T:System.Collections.Generic.IList`1"/> with an implementation that makes a subsequent <c>ToArray()</c> or
+                <c>ToList()</c> run 15% faster.</remarks>
+        </member>
+        <member name="T:RT.Util.ExtensionMethods.IEnumerableExtensions">
+            <summary>Provides extension methods on the <see cref="T:System.Collections.Generic.IEnumerable`1"/> type.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.AllPairs``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+                Returns an enumeration of tuples containing all pairs of elements from the source collection. For example, the
+                input sequence 1, 2 yields the pairs [1,1], [1,2], [2,1], and [2,2].</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.AllPairs``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``0,``1})">
+            <summary>Returns an enumeration of objects computed from all pairs of elements from the source collection.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.UniquePairs``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+                Returns an enumeration of tuples containing all unique pairs of distinct elements from the source collection.
+                For example, the input sequence 1, 2, 3 yields the pairs [1,2], [1,3] and [2,3] only.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.ConsecutivePairs``1(System.Collections.Generic.IEnumerable{``0},System.Boolean)">
+            <summary>
+                Returns an enumeration of tuples containing all consecutive pairs of the elements.</summary>
+            <param name="source">
+                The input enumerable.</param>
+            <param name="closed">
+                If true, an additional pair containing the last and first element is included. For example, if the source
+                collection contains { 1, 2, 3, 4 } then the enumeration contains { (1, 2), (2, 3), (3, 4) } if <paramref
+                name="closed"/> is false, and { (1, 2), (2, 3), (3, 4), (4, 1) } if <paramref name="closed"/> is true.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.SelectConsecutivePairs``2(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,``0,``1})">
+            <summary>
+                Enumerates all consecutive pairs of the elements.</summary>
+            <param name="source">
+                The input enumerable.</param>
+            <param name="closed">
+                If true, an additional pair containing the last and first element is included. For example, if the source
+                collection contains { 1, 2, 3, 4 } then the enumeration contains { (1, 2), (2, 3), (3, 4) } if <paramref
+                name="closed"/> is <c>false</c>, and { (1, 2), (2, 3), (3, 4), (4, 1) } if <paramref name="closed"/> is
+                <c>true</c>.</param>
+            <param name="selector">
+                The selector function to run each consecutive pair through.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.Order``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sorts the elements of a sequence in ascending order.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.Order``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IComparer{``0})">
+            <summary>Sorts the elements of a sequence in ascending order by using a specified comparer.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.Split``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+                Splits the specified IEnumerable at every element that satisfies a specified predicate and returns a
+                collection containing each sequence of elements in between each pair of such elements. The elements satisfying
+                the predicate are not included.</summary>
+            <param name="splitWhat">
+                The collection to be split.</param>
+            <param name="splitWhere">
+                A predicate that determines which elements constitute the separators.</param>
+            <returns>
+                A collection containing the individual pieces taken from the original collection.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.Concat``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+                Adds a single element to the end of an <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</summary>
+            <typeparam name="T">
+                Type of enumerable to return.</typeparam>
+            <returns>
+                IEnumerable containing all the input elements, followed by the specified additional element.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.Concat``1(``0,System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+                Adds a single element to the start of an <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</summary>
+            <typeparam name="T">
+                Type of enumerable to return.</typeparam>
+            <returns>
+                IEnumerable containing the specified additional element, followed by all the input elements.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.OrderLazy``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+                This does the same as <see cref="M:RT.Util.ExtensionMethods.IEnumerableExtensions.Order``1(System.Collections.Generic.IEnumerable{``0})"/>, but it is much faster if you intend to extract
+                only the first few items using <see cref="M:System.Linq.Enumerable.Take``1(System.Collections.Generic.IEnumerable{``0},System.Int32)"/>.</summary>
+            <param name="source">
+                The sequence to be sorted.</param>
+            <returns>
+                The given <see cref="T:System.Collections.Generic.IEnumerable`1"/> with its elements sorted progressively.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.OrderLazy``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IComparer{``0})">
+            <summary>
+                This does the same as <see cref="M:RT.Util.ExtensionMethods.IEnumerableExtensions.Order``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IComparer{``0})"/>, but it is much faster if you intend
+                to extract only the first few items using <see cref="M:System.Linq.Enumerable.Take``1(System.Collections.Generic.IEnumerable{``0},System.Int32)"/>.</summary>
+            <param name="source">
+                The sequence to be sorted.</param>
+            <param name="comparer">
+                An instance of <see cref="T:System.Collections.Generic.IComparer`1"/> specifying the comparison to use on the items.</param>
+            <returns>
+                The given IEnumerable&lt;T&gt; with its elements sorted progressively.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.Permutations``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+                Returns all permutations of the input <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</summary>
+            <param name="source">
+                The list of items to permute.</param>
+            <returns>
+                A collection containing all permutations of the input <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.Subsequences``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Nullable{System.Int32})">
+            <summary>
+                Returns all subsequences of the specified lengths of the input <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</summary>
+            <param name="source">
+                The sequence of items to generate subsequences of.</param>
+            <param name="minLength">
+                The minimum length of a subsequence to return. Must be between 0 and the length of the input collection.</param>
+            <param name="maxLength">
+                The maximum length of a subsequence to return. Must be between 0 and the length of the input collection. If
+                <c>null</c> is specified, the size of the input collection is used.</param>
+            <returns>
+                A collection containing all matching subsequences of the input <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.FirstOrNull``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+                Returns the first element of a sequence, or <c>null</c> if the sequence contains no elements.</summary>
+            <typeparam name="T">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <param name="source">
+                The <see cref="T:System.Collections.Generic.IEnumerable`1"/> to return the first element of.</param>
+            <returns>
+                <c>null</c> if <paramref name="source"/> is empty; otherwise, the first element in <paramref name="source"/>.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.FirstOrNull``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+                Returns the first element of a sequence that satisfies a given predicate, or <c>null</c> if the sequence
+                contains no elements.</summary>
+            <typeparam name="T">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <param name="source">
+                The <see cref="T:System.Collections.Generic.IEnumerable`1"/> to return the first element of.</param>
+            <param name="predicate">
+                Only consider elements that satisfy this predicate.</param>
+            <returns>
+                <c>null</c> if <paramref name="source"/> is empty; otherwise, the first element in <paramref name="source"/>.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.FirstOrDefault``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+                Returns the first element of a sequence, or a default value if the sequence contains no elements.</summary>
+            <typeparam name="T">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <param name="source">
+                The <see cref="T:System.Collections.Generic.IEnumerable`1"/> to return the first element of.</param>
+            <param name="default">
+                The default value to return if the sequence contains no elements.</param>
+            <returns>
+                <paramref name="default"/> if <paramref name="source"/> is empty; otherwise, the first element in <paramref
+                name="source"/>.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.FirstOrDefault``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},``0)">
+            <summary>
+                Returns the first element of a sequence, or a default value if the sequence contains no elements.</summary>
+            <typeparam name="T">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <param name="source">
+                The <see cref="T:System.Collections.Generic.IEnumerable`1"/> to return the first element of.</param>
+            <param name="predicate">
+                A function to test each element for a condition.</param>
+            <param name="default">
+                The default value to return if the sequence contains no elements.</param>
+            <returns>
+                <paramref name="default"/> if <paramref name="source"/> is empty or if no element passes the test specified by
+                <paramref name="predicate"/>; otherwise, the first element in <paramref name="source"/> that passes the test
+                specified by <paramref name="predicate"/>.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.FirstOrDefault``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,``1},``1)">
+            <summary>
+                Returns the first element of a sequence, or a default value if the sequence contains no elements.</summary>
+            <typeparam name="TSource">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <typeparam name="TResult">
+                The type of the resulting value.</typeparam>
+            <param name="source">
+                The <see cref="T:System.Collections.Generic.IEnumerable`1"/> to return the first element of.</param>
+            <param name="predicate">
+                A function to test each element for a condition.</param>
+            <param name="resultSelector">
+                A function to transform the first element into the result value. Will only be called if the sequence contains
+                an element that passes the test specified by <paramref name="predicate"/>.</param>
+            <param name="default">
+                The default value to return if the sequence contains no elements.</param>
+            <returns>
+                <paramref name="default"/> if <paramref name="source"/> is empty or if no element passes the test specified by
+                <paramref name="predicate"/>; otherwise, the transformed first element in <paramref name="source"/> that
+                passes the test specified by <paramref name="predicate"/>.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.IndexOf``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+                Returns the index of the first element in this <paramref name="source"/> satisfying the specified <paramref
+                name="predicate"/>. If no such elements are found, returns <c>-1</c>.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.IndexOf``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Int32)">
+            <summary>
+                Returns the index of the first element in this <paramref name="source"/> satisfying the specified <paramref
+                name="predicate"/>, starting at the specified <paramref name="startIndex"/>. If no such elements are found,
+                returns <c>-1</c>.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.LastIndexOf``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+                Returns the index of the last element in this <paramref name="source"/> satisfying the specified <paramref
+                name="predicate"/>. If no such elements are found, returns <c>-1</c>.</summary>
+            <remarks>
+                This method is optimised for the case in which the input sequence is a list or array. In all other cases, the
+                collection is evaluated completely before this method returns.</remarks>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.IndexOf``1(System.Collections.Generic.IEnumerable{``0},``0,System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+                Returns the index of the first element in this <paramref name="source"/> that is equal to the specified
+                <paramref name="element"/> as determined by the specified <paramref name="comparer"/>. If no such elements are
+                found, returns <c>-1</c>.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MinOrDefault``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+                Returns the minimum resulting value in a sequence, or a default value if the sequence is empty.</summary>
+            <typeparam name="TSource">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <param name="source">
+                A sequence of values to determine the minimum value of.</param>
+            <param name="default">
+                A default value to return in case the sequence is empty.</param>
+            <returns>
+                The minimum value in the sequence, or the specified default value if the sequence is empty.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MinOrDefault``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},``1)">
+            <summary>
+                Invokes a selector on each element of a collection and returns the minimum resulting value, or a default value
+                if the sequence is empty.</summary>
+            <typeparam name="TSource">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <typeparam name="TResult">
+                The type of the value returned by <paramref name="selector"/>.</typeparam>
+            <param name="source">
+                A sequence of values to determine the minimum value of.</param>
+            <param name="selector">
+                A transform function to apply to each element.</param>
+            <param name="default">
+                A default value to return in case the sequence is empty.</param>
+            <returns>
+                The minimum value in the sequence, or the specified default value if the sequence is empty.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MaxOrDefault``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+                Returns the maximum resulting value in a sequence, or a default value if the sequence is empty.</summary>
+            <typeparam name="TSource">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <param name="source">
+                A sequence of values to determine the maximum value of.</param>
+            <param name="default">
+                A default value to return in case the sequence is empty.</param>
+            <returns>
+                The maximum value in the sequence, or the specified default value if the sequence is empty.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MaxOrDefault``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},``1)">
+            <summary>
+                Invokes a selector on each element of a collection and returns the maximum resulting value, or a default value
+                if the sequence is empty.</summary>
+            <typeparam name="TSource">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <typeparam name="TResult">
+                The type of the value returned by <paramref name="selector"/>.</typeparam>
+            <param name="source">
+                A sequence of values to determine the maximum value of.</param>
+            <param name="selector">
+                A transform function to apply to each element.</param>
+            <param name="default">
+                A default value to return in case the sequence is empty.</param>
+            <returns>
+                The maximum value in the sequence, or the specified default value if the sequence is empty.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MinOrNull``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+                Returns the minimum resulting value in a sequence, or <c>null</c> if the sequence is empty.</summary>
+            <typeparam name="TSource">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <param name="source">
+                A sequence of values to determine the minimum value of.</param>
+            <returns>
+                The minimum value in the sequence, or <c>null</c> if the sequence is empty.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MinOrNull``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+                Invokes a selector on each element of a collection and returns the minimum resulting value, or <c>null</c> if
+                the sequence is empty.</summary>
+            <typeparam name="TSource">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <typeparam name="TResult">
+                The type of the value returned by <paramref name="selector"/>.</typeparam>
+            <param name="source">
+                A sequence of values to determine the minimum value of.</param>
+            <param name="selector">
+                A transform function to apply to each element.</param>
+            <returns>
+                The minimum value in the sequence, or <c>null</c> if the sequence is empty.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MaxOrNull``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+                Returns the maximum resulting value in a sequence, or <c>null</c> if the sequence is empty.</summary>
+            <typeparam name="TSource">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <param name="source">
+                A sequence of values to determine the maximum value of.</param>
+            <returns>
+                The maximum value in the sequence, or <c>null</c> if the sequence is empty.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MaxOrNull``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+                Invokes a selector on each element of a collection and returns the maximum resulting value, or <c>null</c> if
+                the sequence is empty.</summary>
+            <typeparam name="TSource">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <typeparam name="TResult">
+                The type of the value returned by <paramref name="selector"/>.</typeparam>
+            <param name="source">
+                A sequence of values to determine the maximum value of.</param>
+            <param name="selector">
+                A transform function to apply to each element.</param>
+            <returns>
+                The maximum value in the sequence, or <c>null</c> if the sequence is empty.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MinElement``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+                Returns the first element from the input sequence for which the value selector returns the smallest value.</summary>
+            <exception cref="T:System.InvalidOperationException">
+                The input collection is empty.</exception>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MinElementOrDefault``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},``0)">
+            <summary>
+                Returns the first element from the input sequence for which the value selector returns the smallest value, or
+                a default value if the collection is empty.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MaxElement``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+                Returns the first element from the input sequence for which the value selector returns the largest value.</summary>
+            <exception cref="T:System.InvalidOperationException">
+                The input collection is empty.</exception>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MaxElementOrDefault``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},``0)">
+            <summary>
+                Returns the first element from the input sequence for which the value selector returns the largest value, or a
+                default value if the collection is empty.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MinIndex``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+                Returns the index of the first element from the input sequence for which the value selector returns the
+                smallest value.</summary>
+            <exception cref="T:System.InvalidOperationException">
+                The input collection is empty.</exception>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MinIndexOrNull``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+                Returns the index of the first element from the input sequence for which the value selector returns the
+                smallest value, or <c>null</c> if the collection is empty.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MaxIndex``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+                Returns the index of the first element from the input sequence for which the value selector returns the
+                largest value.</summary>
+            <exception cref="T:System.InvalidOperationException">
+                The input collection is empty.</exception>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MaxIndexOrNull``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+                Returns the index of the first element from the input sequence for which the value selector returns the
+                largest value, or a default value if the collection is empty.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.SkipLast``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Boolean)">
+            <summary>
+                Enumerates the items of this collection, skipping the last <paramref name="count"/> items. Note that the
+                memory usage of this method is proportional to <paramref name="count"/>, but the source collection is only
+                enumerated once, and in a lazy fashion. Also, enumerating the first item will take longer than enumerating
+                subsequent items.</summary>
+            <param name="source">
+                Source collection.</param>
+            <param name="count">
+                Number of items to skip from the end of the collection.</param>
+            <param name="throwIfNotEnough">
+                If <c>true</c>, the enumerator throws at the end of the enumeration if the source collection contained fewer
+                than <paramref name="count"/> elements.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.TakeLast``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+                Returns a collection containing only the last <paramref name="count"/> items of the input collection. This
+                method enumerates the entire collection to the end once before returning. Note also that the memory usage of
+                this method is proportional to <paramref name="count"/>.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.StartsWith``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>Returns true if and only if the input collection begins with the specified collection.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.StartsWith``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>Returns true if and only if the input collection begins with the specified collection.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.ToQueue``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>Creates a <see cref="T:System.Collections.Generic.Queue`1"/> from an enumerable collection.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.ToStack``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>Creates a <see cref="T:System.Collections.Generic.Stack`1"/> from an enumerable collection.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.ToHashSet``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>Creates a <see cref="T:System.Collections.Generic.HashSet`1"/> from an enumerable collection.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.ToDictionary2``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2},System.Collections.Generic.IEqualityComparer{``1},System.Collections.Generic.IEqualityComparer{``2})">
+            <summary>
+                Creates a two-level dictionary from an enumerable collection according to two specified key selector functions
+                and optional key comparers.</summary>
+            <typeparam name="TSource">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <typeparam name="TKey1">
+                The type of the keys returned by <paramref name="key1Selector"/>.</typeparam>
+            <typeparam name="TKey2">
+                The type of the keys returned by <paramref name="key2Selector"/>.</typeparam>
+            <param name="source">
+                Source collection to create a dictionary from.</param>
+            <param name="key1Selector">
+                A function to extract the first-level key from each element.</param>
+            <param name="key2Selector">
+                A function to extract the second-level key from each element.</param>
+            <param name="comparer1">
+                An equality comparer to compare the first-level keys.</param>
+            <param name="comparer2">
+                An equality comparer to compare the second-level keys.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.ToDictionary2``4(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2},System.Func{``0,``3},System.Collections.Generic.IEqualityComparer{``1},System.Collections.Generic.IEqualityComparer{``2})">
+            <summary>
+                Creates a two-level dictionary from an enumerable collection according to two specified key selector functions
+                and optional key comparers.</summary>
+            <typeparam name="TSource">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <typeparam name="TKey1">
+                The type of the keys returned by <paramref name="key1Selector"/>.</typeparam>
+            <typeparam name="TKey2">
+                The type of the keys returned by <paramref name="key2Selector"/>.</typeparam>
+            <typeparam name="TValue">
+                The type of the value returned by <paramref name="elementSelector"/>.</typeparam>
+            <param name="source">
+                Source collection to create a dictionary from.</param>
+            <param name="key1Selector">
+                A function to extract the first-level key from each element.</param>
+            <param name="key2Selector">
+                A function to extract the second-level key from each element.</param>
+            <param name="elementSelector">
+                A transform function to produce a result element value from each element.</param>
+            <param name="comparer1">
+                An equality comparer to compare the first-level keys.</param>
+            <param name="comparer2">
+                An equality comparer to compare the second-level keys.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.AddSafe``2(System.Collections.Generic.IDictionary{``0,System.Collections.Generic.List{``1}},``0,``1)">
+            <summary>
+                Adds an element to a List&lt;V&gt; stored in the current IDictionary&lt;K, List&lt;V&gt;&gt;. If the specified
+                key does not exist in the current IDictionary, a new List is created.</summary>
+            <typeparam name="K">
+                Type of the key of the IDictionary.</typeparam>
+            <typeparam name="V">
+                Type of the values in the Lists.</typeparam>
+            <param name="dic">
+                IDictionary to operate on.</param>
+            <param name="key">
+                Key at which the list is located in the IDictionary.</param>
+            <param name="value">
+                Value to add to the List located at the specified Key.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.AddSafe``2(System.Collections.Generic.IDictionary{``0,System.Collections.Generic.HashSet{``1}},``0,``1)">
+            <summary>
+                Adds an element to a HashSet&lt;V&gt; stored in the current IDictionary&lt;K, HashSet&lt;V&gt;&gt;. If the
+                specified key does not exist in the current IDictionary, a new HashSet is created.</summary>
+            <typeparam name="K">
+                Type of the key of the IDictionary.</typeparam>
+            <typeparam name="V">
+                Type of the values in the HashSets.</typeparam>
+            <param name="dic">
+                IDictionary to operate on.</param>
+            <param name="key">
+                Key at which the HashSet is located in the IDictionary.</param>
+            <param name="value">
+                Value to add to the HashSet located at the specified Key.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.AddSafe``3(System.Collections.Generic.IDictionary{``0,System.Collections.Generic.Dictionary{``1,``2}},``0,``1,``2,System.Collections.Generic.IEqualityComparer{``1})">
+            <summary>
+                Adds an element to a two-level Dictionary&lt;,&gt;. If the specified key does not exist in the outer
+                Dictionary, a new Dictionary is created.</summary>
+            <typeparam name="K1">
+                Type of the key of the outer Dictionary.</typeparam>
+            <typeparam name="K2">
+                Type of the key of the inner Dictionary.</typeparam>
+            <typeparam name="V">
+                Type of the values in the inner Dictionary.</typeparam>
+            <param name="dic">
+                Dictionary to operate on.</param>
+            <param name="key1">
+                Key at which the inner Dictionary is located in the outer Dictionary.</param>
+            <param name="key2">
+                Key at which the value is located in the inner Dictionary.</param>
+            <param name="value">
+                Value to add to the inner Dictionary.</param>
+            <param name="comparer">
+                Optional equality comparer to pass into the inner dictionary if a new one is created.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.RemoveSafe``3(System.Collections.Generic.IDictionary{``0,System.Collections.Generic.Dictionary{``1,``2}},``0,``1)">
+            <summary>
+                Removes an element from a two-level Dictionary&lt;,&gt;. If this leaves the inner dictionary empty, the key is
+                removed from the outer Dictionary.</summary>
+            <typeparam name="K1">
+                Type of the key of the outer Dictionary.</typeparam>
+            <typeparam name="K2">
+                Type of the key of the inner Dictionary.</typeparam>
+            <typeparam name="V">
+                Type of the values in the inner Dictionary.</typeparam>
+            <param name="dic">
+                Dictionary to operate on.</param>
+            <param name="key1">
+                Key at which the inner Dictionary is located in the outer Dictionary.</param>
+            <param name="key2">
+                Key at which the value is located in the inner Dictionary.</param>
+            <returns>
+                A value indicating whether a value was removed or not.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.AddSafe``3(System.Collections.Generic.IDictionary{``0,System.Collections.Generic.Dictionary{``1,System.Collections.Generic.List{``2}}},``0,``1,``2)">
+            <summary>
+                Adds an element to a List&lt;V&gt; stored in a two-level Dictionary&lt;,&gt;. If the specified key does not
+                exist in the current Dictionary, a new List is created.</summary>
+            <typeparam name="K1">
+                Type of the key of the first-level Dictionary.</typeparam>
+            <typeparam name="K2">
+                Type of the key of the second-level Dictionary.</typeparam>
+            <typeparam name="V">
+                Type of the values in the Lists.</typeparam>
+            <param name="dic">
+                Dictionary to operate on.</param>
+            <param name="key1">
+                Key at which the second-level Dictionary is located in the first-level Dictionary.</param>
+            <param name="key2">
+                Key at which the list is located in the second-level Dictionary.</param>
+            <param name="value">
+                Value to add to the List located at the specified Keys.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.IncSafe``1(System.Collections.Generic.IDictionary{``0,System.Int32},``0,System.Int32)">
+            <summary>
+                Increments an integer in an <see cref="T:System.Collections.Generic.IDictionary`2"/> by the specified amount. If the specified
+                key does not exist in the current dictionary, the value <paramref name="amount"/> is inserted.</summary>
+            <typeparam name="K">
+                Type of the key of the dictionary.</typeparam>
+            <param name="dic">
+                Dictionary to operate on.</param>
+            <param name="key">
+                Key at which the list is located in the dictionary.</param>
+            <param name="amount">
+                The amount by which to increment the integer.</param>
+            <returns>
+                The new value at the specified key.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.RemoveSafe``2(System.Collections.Generic.IDictionary{``0,System.Collections.Generic.List{``1}},``0,``1)">
+            <summary>
+                Removes the first occurrence of an element from a List&lt;V&gt; stored in the current IDictionary&lt;K,
+                List&lt;V&gt;&gt;. If this leaves the list stored at the specified key empty, the key is removed from the
+                IDictionary. If the key is not in the dictionary to begin with, nothing happens.</summary>
+            <typeparam name="K">
+                Type of the key of the IDictionary.</typeparam>
+            <typeparam name="V">
+                Type of the values in the Lists.</typeparam>
+            <param name="dic">
+                IDictionary to operate on.</param>
+            <param name="key">
+                Key at which the list is located in the IDictionary.</param>
+            <param name="value">
+                Value to add to the List located at the specified Key.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.SelectIndexWhere``1(System.Collections.Generic.IEnumerable{``0},System.Predicate{``0})">
+            <summary>
+                Returns a collection of integers containing the indexes at which the elements of the source collection match
+                the given predicate.</summary>
+            <typeparam name="T">
+                The type of elements in the collection.</typeparam>
+            <param name="source">
+                The source collection whose elements are tested using <paramref name="predicate"/>.</param>
+            <param name="predicate">
+                The predicate against which the elements of <paramref name="source"/> are tested.</param>
+            <returns>
+                A collection containing the zero-based indexes of all the matching elements, in increasing order.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.SelectTwo``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``1})">
+            <summary>
+                Transforms every element of an input collection using two selector functions and returns a collection
+                containing all the results.</summary>
+            <typeparam name="TSource">
+                Type of the elements in the source collection.</typeparam>
+            <typeparam name="TResult">
+                Type of the results of the selector functions.</typeparam>
+            <param name="source">
+                Input collection to transform.</param>
+            <param name="selector1">
+                First selector function.</param>
+            <param name="selector2">
+                Second selector function.</param>
+            <returns>
+                A collection containing the transformed elements from both selectors, thus containing twice as many elements
+                as the original collection.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.SelectNullable``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>Returns the original collection but with every value cast to their nullable equivalent.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.JoinString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String,System.String,System.String)">
+            <summary>
+                Turns all elements in the enumerable to strings and joins them using the specified <paramref
+                name="separator"/> and the specified <paramref name="prefix"/> and <paramref name="suffix"/> for each string.</summary>
+            <param name="values">
+                The sequence of elements to join into a string.</param>
+            <param name="separator">
+                Optionally, a separator to insert between each element and the next.</param>
+            <param name="prefix">
+                Optionally, a string to insert in front of each element.</param>
+            <param name="suffix">
+                Optionally, a string to insert after each element.</param>
+            <param name="lastSeparator">
+                Optionally, a separator to use between the second-to-last and the last element.</param>
+            <example>
+                <code>
+                    // Returns "[Paris], [London], [Tokyo]"
+                    (new[] { "Paris", "London", "Tokyo" }).JoinString(", ", "[", "]")
+                    
+                    // Returns "[Paris], [London] and [Tokyo]"
+                    (new[] { "Paris", "London", "Tokyo" }).JoinString(", ", "[", "]", " and ");</code></example>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.InsertBetween``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+                Inserts the specified item in between each element in the input collection.</summary>
+            <param name="source">
+                The input collection.</param>
+            <param name="extraElement">
+                The element to insert between each consecutive pair of elements in the input collection.</param>
+            <returns>
+                A collection containing the original collection with the extra element inserted. For example, new[] { 1, 2, 3
+                }.InsertBetween(0) returns { 1, 0, 2, 0, 3 }.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.InsertBetweenWithAnd``1(System.Collections.Generic.IEnumerable{``0},``0,``0)">
+            <summary>
+                Inserts the <paramref name="comma"/> item in between each element in the input collection except between the
+                second-last and last, where it inserts <paramref name="and"/> instead.</summary>
+            <param name="source">
+                The input collection.</param>
+            <param name="comma">
+                The element to insert between each consecutive pair of elements in the input collection except between the
+                second-last and last.</param>
+            <param name="and">
+                The element to insert between the second-last and last element of the input collection.</param>
+            <returns>
+                A collection containing the original collection with the extra element inserted. For example, new[] { "a",
+                "b", "c" }.InsertBetweenWithAnd(", ", " and ") returns { "a", ", ", "b", " and ", "c" }.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.SequenceEqual``1(System.Collections.Generic.IEnumerable{``0},``0[])">
+            <summary>Determines whether this sequence comprises the values provided in the specified order.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.AllSequencesEqual``1(System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{``0}})">
+            <summary>Determines whether all the input sequences are equal according to SequenceEquals.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.Split``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+                Splits a collection into chunks of equal size. The last chunk may be smaller than <paramref
+                name="chunkSize"/>, but all chunks, if any, will contain at least one item.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.GroupConsecutive``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``0,System.Boolean})">
+            <summary>
+                Accumulates consecutive equal elements.</summary>
+            <typeparam name="TItem">
+                The type of items in the input sequence.</typeparam>
+            <param name="source">
+                The input sequence from which to accumulate groups of consecutive elements.</param>
+            <param name="itemEquality">
+                An optional function to determine equality of items.</param>
+            <returns>
+                A collection containing each sequence of consecutive equal elements.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.GroupConsecutive``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+                Accumulates consecutive equal elements.</summary>
+            <typeparam name="TItem">
+                The type of items in the input sequence.</typeparam>
+            <param name="source">
+                The input sequence from which to accumulate groups of consecutive elements.</param>
+            <param name="itemComparer">
+                An optional equality comparer to determine item equality by.</param>
+            <returns>
+                A collection containing each sequence of consecutive equal elements.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.GroupConsecutiveBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IEqualityComparer{``1})">
+            <summary>
+                Accumulates consecutive elements that are equal when processed by a selector.</summary>
+            <typeparam name="TItem">
+                The type of items in the input sequence.</typeparam>
+            <typeparam name="TKey">
+                The return type of the <paramref name="selector"/> function.</typeparam>
+            <param name="source">
+                The input sequence from which to accumulate groups of consecutive elements.</param>
+            <param name="selector">
+                A function to transform each item into a key which is compared for equality.</param>
+            <param name="keyComparer">
+                An optional equality comparer for the keys returned by <paramref name="selector"/>.</param>
+            <returns>
+                A collection containing each sequence of consecutive equal elements.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.SelectChain``1(``0,System.Func{``0,``0})">
+            <summary>
+                Enumerates a chain of objects where each object refers to the next one. The chain starts with the specified
+                object and ends when null is encountered.</summary>
+            <typeparam name="T">
+                Type of object to enumerate.</typeparam>
+            <param name="obj">
+                Initial object.</param>
+            <param name="next">
+                A function that returns the next object given the current one. If null is returned, enumeration will end.</param>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MaxCountElement``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+                Determines which element occurs the most often in the specified input sequence.</summary>
+            <typeparam name="T">
+                Type of elements in the input sequence.</typeparam>
+            <param name="source">
+                Sequence to find most common element in.</param>
+            <param name="comparer">
+                Optional equality comparer to compare elements by.</param>
+            <returns>
+                Of all elements that occur the most number of times, the one whose last instance occurs soonest in the
+                sequence.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.MaxCountElement``1(System.Collections.Generic.IEnumerable{``0},System.Int32@,System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+                Determines which element occurs the most often in the specified input sequence, and how often.</summary>
+            <typeparam name="T">
+                Type of elements in the input sequence.</typeparam>
+            <param name="source">
+                Sequence to find most common element in.</param>
+            <param name="count">
+                Receives the number of times the element occurred.</param>
+            <param name="comparer">
+                Optional equality comparer to compare elements by.</param>
+            <returns>
+                Of all elements that occur the most number of times, the one whose last instance occurs soonest in the
+                sequence.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.SumUnchecked(System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>Returns the sum of the values in the specified collection, truncated to a 32-bit integer.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.SumUnchecked``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int32})">
+            <summary>
+                Returns the sum of the values in the specified collection projected by the specified selector function,
+                truncated to a 32-bit integer.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.WhereNotNull``1(System.Collections.Generic.IEnumerable{System.Nullable{``0}})">
+            <summary>
+                Returns only the non-<c>null</c> elements from the specified collection of nullable values as non-nullable
+                values.</summary>
+            <typeparam name="T">
+                The inner value type.</typeparam>
+            <param name="src">
+                A collection of nullable values.</param>
+            <returns>
+                A collection containing only those values that aren’t <c>null</c>.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.All``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int32,System.Boolean})">
+            <summary>
+                Determines whether all elements of a sequence satisfy a condition by incorporating the element's index.</summary>
+            <typeparam name="T">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <param name="source">
+                An <see cref="T:System.Collections.Generic.IEnumerable`1"/> that contains the elements to apply the predicate to.</param>
+            <param name="predicate">
+                A function to test each element for a condition; the second parameter of the function represents the index of
+                the source element.</param>
+            <returns>
+                <c>true</c> if every element of the source sequence passes the test in the specified <paramref
+                name="predicate"/>, or if the sequence is empty; otherwise, false.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.IEnumerableExtensions.Any``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Int32,System.Boolean})">
+            <summary>
+                Determines whether any element of a sequence satisfies a condition by incorporating the element's index.</summary>
+            <typeparam name="T">
+                The type of the elements of <paramref name="source"/>.</typeparam>
+            <param name="source">
+                An <see cref="T:System.Collections.Generic.IEnumerable`1"/> that contains the elements to apply the predicate to.</param>
+            <param name="predicate">
+                A function to test each element for a condition; the second parameter of the function represents the index of
+                the source element.</param>
+            <returns>
+                <c>true</c> if any elements in the source sequence pass the test in the specified <paramref
+                name="predicate"/>; otherwise, false.</returns>
+        </member>
+        <member name="T:RT.Util.ExtensionMethods.ConsecutiveGroup`2">
+            <summary>
+                Encapsulates information about a group generated by <see
+                cref="M:RT.Util.ExtensionMethods.IEnumerableExtensions.GroupConsecutive``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})"/> and its
+                overloads.</summary>
+            <typeparam name="TItem">
+                Type of the elements in the sequence.</typeparam>
+            <typeparam name="TKey">
+                Type of the key by which elements were compared.</typeparam>
+        </member>
+        <member name="P:RT.Util.ExtensionMethods.ConsecutiveGroup`2.Index">
+            <summary>Index in the original sequence where the group started.</summary>
+        </member>
+        <member name="P:RT.Util.ExtensionMethods.ConsecutiveGroup`2.Count">
+            <summary>Size of the group.</summary>
+        </member>
+        <member name="P:RT.Util.ExtensionMethods.ConsecutiveGroup`2.Key">
+            <summary>The key by which the items in this group are deemed equal.</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.ConsecutiveGroup`2.GetEnumerator">
+            <summary>
+                Returns an enumerator that iterates through the collection.</summary>
+            <returns>
+                An <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.ConsecutiveGroup`2.ToString">
+            <summary>Returns a string that represents this group’s key and its count.</summary>
+        </member>
+        <member name="T:RT.Util.CustomComparer`1">
+            <summary>
+                Encapsulates an IComparer&lt;T&gt; that uses a comparison function provided as a delegate.</summary>
+            <typeparam name="T">
+                The type of elements to be compared.</typeparam>
+        </member>
+        <member name="M:RT.Util.CustomComparer`1.Compare(`0,`0)">
+            <summary>
+                Compares two elements.</summary>
+            <remarks>
+                This method implements <see cref="M:System.Collections.Generic.IComparer`1.Compare(`0,`0)"/>.</remarks>
+        </member>
+        <member name="M:RT.Util.CustomComparer`1.#ctor(System.Comparison{`0})">
+            <summary>
+                Constructor.</summary>
+            <param name="comparison">
+                Provides the comparison function for this comparer.</param>
+        </member>
+        <member name="M:RT.Util.CustomComparer`1.By``1(System.Func{`0,``0},System.Collections.Generic.IComparer{``0})">
+            <summary>
+                Creates and returns a CustomComparer which compares items by comparing the results of a selector function.</summary>
+            <param name="selector">
+                Function selecting the actual value to be compared.</param>
+            <param name="comparer">
+                Comparer to use for comparing the results of the selector function. If null, the default comparer is used;
+                this comparer will use the IComparable interface if implemented.</param>
+        </member>
+        <member name="M:RT.Util.CustomComparer`1.By``1(System.Func{`0,``0},System.Comparison{``0})">
+            <summary>
+                Creates and returns a CustomComparer which compares items by comparing the results of a selector function.</summary>
+            <param name="selector">
+                Function selecting the actual value to be compared.</param>
+            <param name="comparison">
+                Comparison to use for comparing the results of the selector function.</param>
+        </member>
+        <member name="M:RT.Util.CustomComparer`1.By(System.Func{`0,System.String},System.Boolean)">
+            <summary>
+                Creates and returns a CustomComparer which compares items by comparing the results of a selector function.</summary>
+            <param name="selector">
+                Function selecting the string value to be compared.</param>
+            <param name="ignoreCase">
+                If false, an invariant culture string comparison is used. Otherwise, an ordinal no-case comparison (suitable
+                for filenames etc).</param>
+        </member>
+        <member name="M:RT.Util.CustomComparer`1.ThenBy``1(System.Func{`0,``0},System.Collections.Generic.IComparer{``0})">
+            <summary>
+                Creates and returns a CustomComparer which uses the current comparer first, and if the current comparer says
+                the items are equal, further compares items by comparing the results of a selector function.</summary>
+            <param name="selector">
+                Function selecting the actual value to be compared.</param>
+            <param name="comparer">
+                Comparer to use for comparing the results of the selector function. If null, the default comparer is used;
+                this comparer will use the IComparable interface if implemented.</param>
+        </member>
+        <member name="M:RT.Util.CustomComparer`1.ThenBy``1(System.Func{`0,``0},System.Comparison{``0})">
+            <summary>
+                Creates and returns a CustomComparer which uses the current comparer first, and if the current comparer says
+                the items are equal, further compares items by comparing the results of a selector function.</summary>
+            <param name="selector">
+                Function selecting the actual value to be compared.</param>
+            <param name="comparison">
+                Comparison to use for comparing the results of the selector function.</param>
+        </member>
+        <member name="M:RT.Util.CustomComparer`1.ThenBy(System.Func{`0,System.String},System.Boolean)">
+            <summary>
+                Creates and returns a CustomComparer which uses the current comparer first, and if the current comparer says
+                the items are equal, further compares items by comparing the results of a string selector function.</summary>
+            <param name="selector">
+                Function selecting the actual value to be compared.</param>
+            <param name="ignoreCase">
+                If false, an invariant culture string comparison is used. Otherwise, an ordinal no-case comparison (suitable
+                for filenames etc).</param>
+        </member>
+        <member name="T:RT.Util.CustomEqualityComparer`1">
+            <summary>
+                Encapsulates an IEqualityComparer&lt;T&gt; that uses an equality comparison function provided as a delegate.</summary>
+            <typeparam name="T">
+                The type of elements to be compared for equality.</typeparam>
+        </member>
+        <member name="M:RT.Util.CustomEqualityComparer`1.Equals(`0,`0)">
+            <summary>
+                Compares two elements for equality.</summary>
+            <remarks>
+                This method implements <see cref="M:System.Collections.Generic.IEqualityComparer`1.Equals(`0,`0)"/>.</remarks>
+        </member>
+        <member name="M:RT.Util.CustomEqualityComparer`1.GetHashCode(`0)">
+            <summary>
+                Returns a hash code for an element.</summary>
+            <remarks>
+                This method implements <see cref="M:System.Collections.Generic.IEqualityComparer`1.GetHashCode(`0)"/>.</remarks>
+        </member>
+        <member name="M:RT.Util.CustomEqualityComparer`1.#ctor(System.Func{`0,`0,System.Boolean},System.Func{`0,System.Int32})">
+            <summary>
+                Constructor.</summary>
+            <param name="comparison">
+                Provides the comparison function for this equality comparer.</param>
+            <param name="getHashCode">
+                Provides the hash function for this equality comparer.</param>
+        </member>
+        <member name="M:RT.Util.CustomEqualityComparer`1.#ctor(System.Func{`0,`0,System.Boolean})">
+            <summary>
+                Constructor which re-uses the default hash function. Use this overload only if using the objects’ original
+                hash function is appropriate for this equality comparison.</summary>
+            <param name="comparison">
+                Provides the comparison function for this equality comparer.</param>
+        </member>
+        <member name="M:RT.Util.CustomEqualityComparer`1.By``1(System.Func{`0,``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+                Creates and returns an equality comparer that compares the equality of objects by comparing the equality of
+                the result of a selector function.</summary>
+            <param name="selector">
+                Function selecting the actual value to be compared.</param>
+            <param name="comparer">
+                Comparer to use for comparing the results of the selector function.</param>
+        </member>
+        <member name="M:RT.Util.CustomEqualityComparer`1.By``1(System.Func{`0,``0},System.Func{``0,``0,System.Boolean},System.Func{``0,System.Int32})">
+            <summary>
+                Creates and returns an equality comparer that compares the equality of objects by comparing the equality of
+                the result of a selector function.</summary>
+            <param name="selector">
+                Function selecting the actual value to be compared.</param>
+            <param name="comparison">
+                Function used to compare values for equality. If null, will use IEquatable if implemented, or the object's
+                Equals override.</param>
+            <param name="getHashCode">
+                Function used to compute hash codes. If null, will use IEquatable if implemented, or the object's GetHashCode
+                override.</param>
+        </member>
+        <member name="M:RT.Util.CustomEqualityComparer`1.By(System.Func{`0,System.String},System.Boolean)">
+            <summary>
+                Creates and returns an equality comparer that compares the equality of objects by comparing the equality of
+                the result of a string selector function.</summary>
+            <param name="selector">
+                Function selecting the actual string value to be compared.</param>
+            <param name="ignoreCase">
+                If false, an invariant culture string comparison is used. Otherwise, an ordinal no-case comparison (suitable
+                for filenames etc).</param>
+        </member>
+        <member name="T:RT.Util.Ut">
+            <summary>This class offers some generic static functions which are hard to categorize under any more specific classes.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.SizeToString(System.Int64)">
+            <summary>
+                Converts file size in bytes to a string that uses KB, MB, GB or TB.</summary>
+            <param name="size">
+                The file size in bytes.</param>
+            <returns>
+                The converted string.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.Min``1(``0,``0)">
+            <summary>Returns the smaller of the two IComparable values. If the values are equal, returns the first one.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Min``1(``0,``0,``0)">
+            <summary>Returns the smaller of the three IComparable values. If two values are equal, returns the earlier one.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Min``1(``0[])">
+            <summary>Returns the smallest of all arguments passed in. Uses the Linq .Min extension method to do the work.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Max``1(``0,``0)">
+            <summary>Returns the larger of the two IComparable values. If the values are equal, returns the first one.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Max``1(``0,``0,``0)">
+            <summary>Returns the larger of the three IComparable values. If two values are equal, returns the earlier one.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Max``1(``0[])">
+            <summary>Returns the largest of all arguments passed in. Uses the Linq .Max extension method to do the work.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Sha1(System.String)">
+            <summary>
+                Reads the specified file and computes the SHA1 hash function from its contents.</summary>
+            <param name="path">
+                Path to the file to compute SHA1 hash function from.</param>
+            <returns>
+                Result of the SHA1 hash function as a string of hexadecimal digits.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.Md5(System.String)">
+            <summary>
+                Reads the specified file and computes the MD5 hash function from its contents.</summary>
+            <param name="path">
+                Path to the file to compute MD5 hash function from.</param>
+            <returns>
+                Result of the MD5 hash function as a string of hexadecimal digits.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.VersionOfExe">
+            <summary>Returns the version of the entry assembly (the .exe file) in a standard format.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Assert(System.Boolean,System.String)">
+            <summary>
+                Checks the specified condition and causes the debugger to break if it is false. Throws an <see
+                cref="T:System.Exception"/> afterwards.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.AssertAll``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.String)">
+            <summary>
+                Checks the specified condition and causes the debugger to break if it is false. Throws an <see
+                cref="T:System.Exception"/> afterwards.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Lambda(System.Action)">
+            <summary>
+                Allows the use of C#’s powerful type inference when declaring local lambdas whose delegate type doesn't make
+                any difference.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Lambda``1(System.Action{``0})">
+            <summary>
+                Allows the use of C#’s powerful type inference when declaring local lambdas whose delegate type doesn't make
+                any difference.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Lambda``2(System.Action{``0,``1})">
+            <summary>
+                Allows the use of C#’s powerful type inference when declaring local lambdas whose delegate type doesn't make
+                any difference.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Lambda``3(System.Action{``0,``1,``2})">
+            <summary>
+                Allows the use of C#’s powerful type inference when declaring local lambdas whose delegate type doesn't make
+                any difference.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Lambda``4(System.Action{``0,``1,``2,``3})">
+            <summary>
+                Allows the use of C#’s powerful type inference when declaring local lambdas whose delegate type doesn't make
+                any difference.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Lambda``5(System.Action{``0,``1,``2,``3,``4})">
+            <summary>
+                Allows the use of C#’s powerful type inference when declaring local lambdas whose delegate type doesn't make
+                any difference.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Lambda``1(System.Func{``0})">
+            <summary>
+                Allows the use of C#’s powerful type inference when declaring local lambdas whose delegate type doesn't make
+                any difference.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Lambda``2(System.Func{``0,``1})">
+            <summary>
+                Allows the use of C#’s powerful type inference when declaring local lambdas whose delegate type doesn't make
+                any difference.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Lambda``3(System.Func{``0,``1,``2})">
+            <summary>
+                Allows the use of C#’s powerful type inference when declaring local lambdas whose delegate type doesn't make
+                any difference.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Lambda``4(System.Func{``0,``1,``2,``3})">
+            <summary>
+                Allows the use of C#’s powerful type inference when declaring local lambdas whose delegate type doesn't make
+                any difference.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Lambda``5(System.Func{``0,``1,``2,``3,``4})">
+            <summary>
+                Allows the use of C#’s powerful type inference when declaring local lambdas whose delegate type doesn't make
+                any difference.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Lambda``6(System.Func{``0,``1,``2,``3,``4,``5})">
+            <summary>
+                Allows the use of C#’s powerful type inference when declaring local lambdas whose delegate type doesn't make
+                any difference.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.KeyValuePair``2(``0,``1)">
+            <summary>Allows the use of type inference when creating .NET’s KeyValuePair&lt;TK,TV&gt;.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.NewArray``1(``0[])">
+            <summary>
+                Returns the parameters as a new array.</summary>
+            <remarks>
+                Useful to circumvent Visual Studio’s bug where multi-line literal arrays are not auto-formatted.</remarks>
+        </member>
+        <member name="M:RT.Util.Ut.NewArray``1(System.Int32,System.Func{System.Int32,``0})">
+            <summary>
+                Instantiates a fully-initialized array with the specified dimensions.</summary>
+            <param name="size">
+                Size of the first dimension.</param>
+            <param name="initialiser">
+                Function to initialise the value of every element.</param>
+            <typeparam name="T">
+                Type of the array element.</typeparam>
+        </member>
+        <member name="M:RT.Util.Ut.NewArray``1(System.Int32,System.Int32,System.Func{System.Int32,System.Int32,``0})">
+            <summary>
+                Instantiates a fully-initialized rectangular jagged array with the specified dimensions.</summary>
+            <param name="size1">
+                Size of the first dimension.</param>
+            <param name="size2">
+                Size of the second dimension.</param>
+            <param name="initialiser">
+                Optional function to initialise the value of every element.</param>
+            <typeparam name="T">
+                Type of the array element.</typeparam>
+        </member>
+        <member name="M:RT.Util.Ut.NewArray``1(System.Int32,System.Int32,System.Int32,System.Func{System.Int32,System.Int32,System.Int32,``0})">
+            <summary>
+                Instantiates a fully-initialized "rectangular" jagged array with the specified dimensions.</summary>
+            <param name="size1">
+                Size of the first dimension.</param>
+            <param name="size2">
+                Size of the second dimension.</param>
+            <param name="size3">
+                Size of the third dimension.</param>
+            <param name="initialiser">
+                Optional function to initialise the value of every element.</param>
+            <typeparam name="T">
+                Type of the array element.</typeparam>
+        </member>
+        <member name="M:RT.Util.Ut.ParseInt32(System.String)">
+            <summary>
+                Returns the integer represented by the specified string, or null if the string does not represent a valid
+                32-bit integer.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.ParseInt64(System.String)">
+            <summary>
+                Returns the integer represented by the specified string, or null if the string does not represent a valid
+                64-bit integer.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.ParseDouble(System.String)">
+            <summary>
+                Returns the floating-point number represented by the specified string, or null if the string does not
+                represent a valid double-precision floating-point number.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.ParseDateTime(System.String)">
+            <summary>
+                Returns the date/time stamp represented by the specified string, or null if the string does not represent a
+                valid date/time stamp.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.ParseEnum``1(System.String,System.Boolean)">
+            <summary>
+                Returns the enum value represented by the specified string, or null if the string does not represent a valid
+                enum value.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Apply``2(``0,System.Func{``0,``1})">
+            <summary>
+                Executes the specified function with the specified argument.</summary>
+            <typeparam name="TSource">
+                Type of the argument to the function.</typeparam>
+            <typeparam name="TResult">
+                Type of the result of the function.</typeparam>
+            <param name="source">
+                The argument to the function.</param>
+            <param name="func">
+                The function to execute.</param>
+            <returns>
+                The result of the function.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.Apply``1(``0,System.Action{``0})">
+            <summary>
+                Executes the specified action with the specified argument.</summary>
+            <typeparam name="TSource">
+                Type of the argument to the action.</typeparam>
+            <param name="source">
+                The argument to the action.</param>
+            <param name="action">
+                The action to execute.</param>
+            <returns>
+                The result of the function.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.WaitSharingVio(System.Action,System.Nullable{System.TimeSpan},System.Action)">
+            <summary>
+                Executes the specified action. If the action results in a file sharing violation exception, the action will be
+                repeatedly retried after a short delay (which increases after every failed attempt).</summary>
+            <param name="action">
+                The action to be attempted and possibly retried.</param>
+            <param name="maximum">
+                Maximum amount of time to keep retrying for. When expired, any sharing violation exception will propagate to
+                the caller of this method. Use null to retry indefinitely.</param>
+            <param name="onSharingVio">
+                Action to execute when a sharing violation does occur (is called before the waiting).</param>
+        </member>
+        <member name="M:RT.Util.Ut.WaitSharingVio``1(System.Func{``0},System.Nullable{System.TimeSpan},System.Action)">
+            <summary>
+                Executes the specified function. If the function results in a file sharing violation exception, the function
+                will be repeatedly retried after a short delay (which increases after every failed attempt).</summary>
+            <param name="func">
+                The function to be attempted and possibly retried.</param>
+            <param name="maximum">
+                Maximum amount of time to keep retrying for. When expired, any sharing violation exception will propagate to
+                the caller of this method. Use null to retry indefinitely.</param>
+            <param name="onSharingVio">
+                Action to execute when a sharing violation does occur (is called before the waiting).</param>
+        </member>
+        <member name="M:RT.Util.Ut.ThreadPool(System.Action)">
+            <summary>
+                Queues the specified action to be executed on the thread pool. This is just a shortcut for
+                <c>ThreadPool.QueueUserWorkItem</c>, and also does not require the method to accept a parameter (which has
+                been useless ever since C# gained support for lambdas).</summary>
+        </member>
+        <member name="M:RT.Util.Ut.Swap``1(``0@,``0@)">
+            <summary>Swaps the values of the specified two variables.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.GetLongestCommonSubstring(System.String[])">
+            <summary>
+                Finds the longest substring that all of the specified input strings contain.</summary>
+            <param name="strings">
+                Strings to examine.</param>
+            <returns>
+                The longest shared substring. This may be the empty string, but not will not be <c>null</c>.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.BytesToUShort(System.Byte[],System.Int32,System.Boolean)">
+            <summary>
+                Converts the bytes at the specified <paramref name="index"/> within the specified <paramref name="buffer"/> to
+                a 16-bit unsigned integer.</summary>
+            <param name="buffer">
+                Array to take values from.</param>
+            <param name="index">
+                Index within the array at which to start taking values.</param>
+            <param name="bigEndian">
+                <c>true</c> to interpret the data as big-endian byte order; <c>false</c> for little-endian byte order.</param>
+            <returns>
+                The converted 16-bit unsigned integer.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.BytesToShort(System.Byte[],System.Int32,System.Boolean)">
+            <summary>
+                Converts the bytes at the specified <paramref name="index"/> within the specified <paramref name="buffer"/> to
+                a 16-bit signed integer.</summary>
+            <param name="buffer">
+                Array to take values from.</param>
+            <param name="index">
+                Index within the array at which to start taking values.</param>
+            <param name="bigEndian">
+                <c>true</c> to interpret the data as big-endian byte order; <c>false</c> for little-endian byte order.</param>
+            <returns>
+                The converted 16-bit signed integer.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.BytesToUInt(System.Byte[],System.Int32,System.Boolean)">
+            <summary>
+                Converts the bytes at the specified <paramref name="index"/> within the specified <paramref name="buffer"/> to
+                a 32-bit unsigned integer.</summary>
+            <param name="buffer">
+                Array to take values from.</param>
+            <param name="index">
+                Index within the array at which to start taking values.</param>
+            <param name="bigEndian">
+                <c>true</c> to interpret the data as big-endian byte order; <c>false</c> for little-endian byte order.</param>
+            <returns>
+                The converted 32-bit unsigned integer.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.BytesToInt(System.Byte[],System.Int32,System.Boolean)">
+            <summary>
+                Converts the bytes at the specified <paramref name="index"/> within the specified <paramref name="buffer"/> to
+                a 32-bit signed integer.</summary>
+            <param name="buffer">
+                Array to take values from.</param>
+            <param name="index">
+                Index within the array at which to start taking values.</param>
+            <param name="bigEndian">
+                <c>true</c> to interpret the data as big-endian byte order; <c>false</c> for little-endian byte order.</param>
+            <returns>
+                The converted 32-bit signed integer.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.BytesToULong(System.Byte[],System.Int32,System.Boolean)">
+            <summary>
+                Converts the bytes at the specified <paramref name="index"/> within the specified <paramref name="buffer"/> to
+                a 64-bit unsigned integer.</summary>
+            <param name="buffer">
+                Array to take values from.</param>
+            <param name="index">
+                Index within the array at which to start taking values.</param>
+            <param name="bigEndian">
+                <c>true</c> to interpret the data as big-endian byte order; <c>false</c> for little-endian byte order.</param>
+            <returns>
+                The converted 64-bit unsigned integer.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.BytesToLong(System.Byte[],System.Int32,System.Boolean)">
+            <summary>
+                Converts the bytes at the specified <paramref name="index"/> within the specified <paramref name="buffer"/> to
+                a 64-bit signed integer.</summary>
+            <param name="buffer">
+                Array to take values from.</param>
+            <param name="index">
+                Index within the array at which to start taking values.</param>
+            <param name="bigEndian">
+                <c>true</c> to interpret the data as big-endian byte order; <c>false</c> for little-endian byte order.</param>
+            <returns>
+                The converted 64-bit signed integer.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.ArrayHash(System.Object[])">
+            <summary>
+                Computes a hash value from an array of elements.</summary>
+            <param name="input">
+                The array of elements to hash.</param>
+            <returns>
+                The computed hash value.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.ArrayHash(System.Array)">
+            <summary>
+                Computes a hash value from an array of elements.</summary>
+            <param name="input">
+                The array of elements to hash.</param>
+            <returns>
+                The computed hash value.</returns>
+        </member>
+        <member name="M:RT.Util.Ut.Range(System.Double,System.Double,System.Double)">
+            <summary>
+                Generates a sequence of floating-point numbers within a specified range.</summary>
+            <param name="start">
+                The first value to produce.</param>
+            <param name="end">
+                The last value to produce.</param>
+            <param name="step">
+                The difference between the values to generate, except that the difference between the last and second-last may
+                be smaller if the interval between <paramref name="start"/> and <paramref name="end"/> isn’t exactly divisible
+                by <paramref name="step"/>.</param>
+        </member>
+        <member name="M:RT.Util.Ut.ToHex(System.Collections.Generic.IEnumerable{System.Byte},System.Int32)">
+            <summary>Generates a representation of the specified byte sequence as hexadecimal numbers (“hexdump”).</summary>
+        </member>
+        <member name="M:RT.Util.Ut.ToHex(System.Byte[])">
+            <summary>Generates a representation of the specified byte array as hexadecimal numbers (“hexdump”).</summary>
+        </member>
+        <member name="M:RT.Util.Ut.ToHex(System.UInt32[])">
+            <summary>Generates a representation of the specified uint array as hexadecimal numbers (“hexdump”).</summary>
+        </member>
+        <member name="M:RT.Util.Ut.ToTuple``2(System.Collections.Generic.KeyValuePair{``0,``1})">
+            <summary>Converts the current <see cref="M:RT.Util.Ut.KeyValuePair``2(``0,``1)"/> to a value tuple.</summary>
+        </member>
+        <member name="M:RT.Util.Ut.ToTuples``2(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{``0,``1}})">
+            <summary>
+                Converts the current sequence of <see cref="M:RT.Util.Ut.KeyValuePair``2(``0,``1)"/>s to a sequence of
+                value tuples.</summary>
+        </member>
+        <member name="T:RT.Util.IL.ILReader">
+            <summary>Decodes the IL inside a specified method.</summary>
+        </member>
+        <member name="M:RT.Util.IL.ILReader.ReadIL(System.Reflection.MethodBase,System.Type)">
+            <summary>Decodes the IL inside the specified method.</summary>
+            <param name="method">The method whose IL to decode. This may be a constructor, too.</param>
+            <param name="genericContext">The type in which the method is declared, to provide context to resolve members that involve generics.</param>
+            <returns>The sequence of <see cref="T:RT.Util.IL.Instruction"/> instances describing the instructions in the method.</returns>
+        </member>
+        <member name="T:RT.Util.IL.Instruction">
+            <summary>Describes an IL instruction in a method.</summary>
+        </member>
+        <member name="P:RT.Util.IL.Instruction.StartOffset">
+            <summary>The byte offset at which this instruction starts.</summary>
+        </member>
+        <member name="P:RT.Util.IL.Instruction.OpCode">
+            <summary>The opcode of the instruction.</summary>
+        </member>
+        <member name="P:RT.Util.IL.Instruction.Operand">
+            <summary>The operand. Depending on the <see cref="P:RT.Util.IL.Instruction.OpCode"/>, this may be a <see cref="T:System.Reflection.FieldInfo"/>, <see cref="T:System.Reflection.MethodBase"/>, <see cref="T:System.Type"/>, byte, short, int, long, string, float, double, or null.
+            In the case of the switch instruction, it is an int[].</summary>
+        </member>
+        <member name="M:RT.Util.IL.Instruction.#ctor(System.Int32,System.Reflection.Emit.OpCode,System.Object)">
+            <summary>Constructs an instance representing an IL instruction.</summary>
+            <param name="startOffset">The byte offset at which this instruction starts.</param>
+            <param name="opCode">The opcode of the instruction.</param>
+            <param name="operand">The operand.</param>
+        </member>
+        <member name="M:RT.Util.IL.Instruction.ToString">
+            <summary>Returns a string representation of this object.</summary>
+        </member>
+    </members>
+</doc>

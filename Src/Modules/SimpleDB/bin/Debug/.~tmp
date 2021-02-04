@@ -1,0 +1,35 @@
+﻿{
+  "HttpAccessLogFile": null,
+  "HttpAccessLogToConsole": false,
+  "HttpAccessLogVerbosity": "1d0",
+  "LogFile": null,
+  "LogVerbosity": "1d0",
+  "Modules": [ {
+    "Hooks": [ {
+      "Domain": "localhost",
+      "Protocols": "All"
+    } ],
+    "ModuleDll": null,
+    "ModuleName": "SimpleDB",
+    "Settings": { ":value": {} }
+  } ],
+  "ServerOptions": {
+    "Certificate": null,
+    "Certificates": null,
+    "DefaultContentType": "text/html; charset=utf-8",
+    "endpoints": { "HTTP": {
+      "BindAddress": "127.0.0.1",
+      "Port": 8990,
+      "Secure": false
+    } },
+    "GzipAutodetectThreshold": 1048576,
+    "GzipInMemoryUpToSize": 1048576,
+    "IdleTimeout": 10000,
+    "MaxSizeHeaders": 262144,
+    "MaxSizePostContent": 1073741824,
+    "OutputExceptionInformation": false,
+    "StoreFileUploadInFileAtSize": 1048576,
+    "TempDir": "C:\\Users\\benja\\AppData\\Local\\Temp\\"
+  },
+  "TempFolder": null
+}

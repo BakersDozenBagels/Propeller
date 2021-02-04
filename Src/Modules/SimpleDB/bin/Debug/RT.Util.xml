@@ -1,0 +1,2355 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RT.Util</name>
+    </assembly>
+    <members>
+        <member name="T:RT.Util.Controls.DoubleBufferedPanel">
+            <summary>
+            Provides a double-buffered drawing surface with an off-screen buffer.
+            All painting is done into the buffer, which is then blitted onto the
+            screen as required. Repainting of the off-screen buffer is only done
+            on size changes or explicit calls to <see cref="M:RT.Util.Controls.DoubleBufferedPanel.Refresh"/>.
+            </summary>
+        </member>
+        <member name="E:RT.Util.Controls.DoubleBufferedPanel.PaintBuffer">
+            <summary>
+            Occurs when the off-screen buffer needs to be painted.
+            </summary>
+        </member>
+        <member name="E:RT.Util.Controls.DoubleBufferedPanel._previousPaintBuffer">
+            <summary>
+            Is used for detecting that the paint buffer must be repainted due to the
+            paint event handler changing.
+            </summary>
+        </member>
+        <member name="F:RT.Util.Controls.DoubleBufferedPanel.Buffer">
+            <summary>
+            Holds the off-screen image. Initialised only when the first refresh occurs.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Controls.DoubleBufferedPanel.RefreshOnResize">
+            <summary>
+            Gets or sets a value indicating whether the panel should automatically refresh
+            its contents (i.e. call the PaintBuffer event) every time it is resized.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Controls.DoubleBufferedPanel.TabStop">
+            <summary>Gets or sets a value indicating whether the user can give the focus to this control using the TAB key.
+            This property’s value automatically changes every time Text changes; it is set to true if there is a link in the text, false otherwise.
+            To achieve deviant behaviour, set TabStop immediately after setting Text.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.DoubleBufferedPanel.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.DoubleBufferedPanel.Refresh">
+            <summary>
+            Forces an update of the off-screen buffer, by invoking the
+            <see cref="E:RT.Util.Controls.DoubleBufferedPanel.PaintBuffer"/> event. Then forces a normal refresh
+            of the underlying panel, which causes the off-screen buffer to
+            be repainted over the whole panel.
+            </summary>
+        </member>
+        <member name="T:RT.Util.Controls.HotkeyEdit">
+            <summary>
+            This control enables the user to specify a hotkey combination by pressing it on
+            the keyboard. For exmaple, if the user presses Ctrl + Alt + A while this control
+            is focussed, the control would display "Ctrl+Alt+A". The combination can be read
+            out by the program in a convenient format.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Controls.HotkeyEdit.#ctor">
+            <summary>
+            Constructs a new instance.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Controls.HotkeyEdit.OneKeyOnly">
+            <summary>
+            If true, the control does not accept key combinations, such as "Ctrl + A",
+            however it does accept special keys such as "Ctrl".
+            </summary>
+        </member>
+        <member name="P:RT.Util.Controls.HotkeyEdit.ShortcutNone">
+            <summary>
+            Returns true if the control does not hold a shortcut combination
+            (for example, because the user didn't press anything).
+            </summary>
+        </member>
+        <member name="P:RT.Util.Controls.HotkeyEdit.ShortcutCtrl">
+            <summary>
+            Returns true if the shortcut combination includes Ctrl.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Controls.HotkeyEdit.ShortcutAlt">
+            <summary>
+            Returns true if the shortcut combination includes Alt.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Controls.HotkeyEdit.ShortcutShift">
+            <summary>
+            Returns true if the shortcut combination includes Shift.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Controls.HotkeyEdit.ShortcutKey">
+            <summary>
+            Returns the main shortcut key.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Controls.HotkeyEdit.OnKeyDown(System.Windows.Forms.KeyEventArgs)">
+            <summary>Captures key presses and updates the control's state accordingly.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.HotkeyEdit.OnKeyUp(System.Windows.Forms.KeyEventArgs)">
+            <summary>Captures key presses and updates the control's state accordingly.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.HotkeyEdit.OnKeyPress(System.Windows.Forms.KeyPressEventArgs)">
+            <summary>Captures key presses and updates the control's state accordingly.</summary>
+        </member>
+        <member name="T:RT.Util.Controls.LabelEx">
+            <summary>
+            Implements a label control that supports basic formatting of the displayed text.
+            Text alignment and right-to-left text are not supported.
+            </summary>
+        </member>
+        <member name="T:RT.Util.Controls.LabelEx.IndentUnit">
+            <summary>Contains values that specify the unit in which the value of the <see cref="P:RT.Util.Controls.LabelEx.HangingIndent"/> property is measured.</summary>
+        </member>
+        <member name="F:RT.Util.Controls.LabelEx.IndentUnit.Spaces">
+            <summary>The indent is a multiple of the size of a space character.</summary>
+        </member>
+        <member name="F:RT.Util.Controls.LabelEx.IndentUnit.Pixels">
+            <summary>The indent is measured in pixels.</summary>
+        </member>
+        <member name="E:RT.Util.Controls.LabelEx.LinkActivated">
+            <summary>Occurs when a link within the label is activated (via mouse click, Space or Enter).</summary>
+        </member>
+        <member name="E:RT.Util.Controls.LabelEx.LinkGotFocus">
+            <summary>Occurs when a link within the label gets focussed by the keyboard.</summary>
+        </member>
+        <member name="E:RT.Util.Controls.LabelEx.LinkLostFocus">
+            <summary>Occurs when a link within the label loses the keyboard focus.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.LabelEx.Text">
+            <summary>Text displayed in the label. See remarks for EggsML supported. Setting this property also changes
+            the value of the <see cref="P:RT.Util.Controls.LabelEx.TabStop"/> property depending on whether the text contains any links.
+            To achieve deviant behaviour, set TabStop immediately after setting Text.</summary>
+            <remarks>
+            <list type="bullet">
+                <item><description><c>*</c> = bold.</description></item>
+                <item><description><c>/</c> = italics.</description></item>
+                <item><description><c>_</c> = underline.</description></item>
+                <item><description><c>+</c> = marks a section of text as nowrap.</description></item>
+                <item><description><c>&lt;XYZ&gt;{ ... }</c> = make the text enclosed in curlies a link. XYZ can be any string and will be passed in for the <see cref="E:RT.Util.Controls.LabelEx.LinkActivated"/> event.</description></item>
+                <item><description><c>&lt;XYZ&gt;= ... =</c> = colour the text enclosed in equals sign in the colour designated by XYZ (e.g. “Red”).</description></item>
+                <item><description><c>[ ... ]</c> = adds a bullet point to the beginning of a paragraph. (Enclose the entire paragraph without its trailing newline, otherwise behaviour is weird.)</description></item>
+            </list>
+            </remarks>
+        </member>
+        <member name="P:RT.Util.Controls.LabelEx.AutoSize">
+            <summary>Set to true to make the label size itself to fit all the text.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.LabelEx.WordWrap">
+            <summary>Enable/disable wrapping long lines on word boundaries.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.LabelEx.ParagraphSpacing">
+            <summary>Specifies the line spacing between paragraph as a multiple of the line height.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.LabelEx.HangingIndent">
+            <summary>Specifies an amount by which all but the first line of each paragraph are indented.</summary>
+            <seealso cref="P:RT.Util.Controls.LabelEx.HangingIndentUnit"/>
+        </member>
+        <member name="P:RT.Util.Controls.LabelEx.HangingIndentUnit">
+            <summary>Specifies the units in which <see cref="P:RT.Util.Controls.LabelEx.HangingIndent"/> is measured.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.LabelEx.LinkColor">
+            <summary>Color of text in a link (can be overridden using a <c>{ ... }</c> tag).</summary>
+        </member>
+        <member name="P:RT.Util.Controls.LabelEx.LinkActiveColor">
+            <summary>Color of text when a link is in the “active” state, i.e. when the mouse button or Space is held down.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.LabelEx.TabStop">
+            <summary>Gets or sets a value indicating whether the user can give the focus to this control using the TAB key.
+            This property’s value automatically changes every time Text changes; it is set to true if there is a link in the text, false otherwise.
+            To achieve deviant behaviour, set TabStop immediately after setting Text.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.LabelEx.TextAlign">
+            <summary>Gets or sets the alignment of text in the label. The default is TopLeft.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.LabelEx.ParseError">
+            <summary>Contains information about a parse error that describes in what way the current value of
+            <see cref="P:RT.Util.Controls.LabelEx.Text"/> is invalid EggsML, or null if it is valid.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.LabelEx.Bullet">
+            <summary>Gets or sets a string to use as the bullet point for bulleted lists ([...] in the mark-up).</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnFontChanged(System.EventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnEnabledChanged(System.EventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnSizeChanged(System.EventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnTextChanged(System.EventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.GetPreferredSize(System.Drawing.Size)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnPaint(System.Windows.Forms.PaintEventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnChangeUICues(System.Windows.Forms.UICuesEventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.ProcessMnemonic(System.Char)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnMnemonic">
+            <summary>This method is called when the control responds to a mnemonic being pressed.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnMouseMove(System.Windows.Forms.MouseEventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnMouseLeave(System.EventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnMouseDown(System.Windows.Forms.MouseEventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnMouseUp(System.Windows.Forms.MouseEventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnGotFocus(System.EventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnLostFocus(System.EventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnKeyDown(System.Windows.Forms.KeyEventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.ProcessDialogKey(System.Windows.Forms.Keys)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnKeyUp(System.Windows.Forms.KeyEventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnParentChanged(System.EventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.OnSystemColorsChanged(System.EventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LabelEx.PerformClick">
+            <summary>Pretends as if the user pressed Enter. Has no effect if there is no link that has keyboard focus.</summary>
+        </member>
+        <member name="T:RT.Util.Controls.LinkEventArgs">
+            <summary>Provides data for the <see cref="E:RT.Util.Controls.LabelEx.LinkActivated"/> event.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.LinkEventArgs.LinkID">
+            <summary>Gets the user-specified Link ID associated with the activated link.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.LinkEventArgs.LinkLocation">
+            <summary>Gets the location of the link as a series of rectangles relative to the control’s client co-ordinates.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.LinkEventArgs.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Drawing.Rectangle})">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:RT.Util.Controls.LinkEventHandler">
+            <summary>Represents the method that will handle the <see cref="E:RT.Util.Controls.LabelEx.LinkActivated"/> event.</summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">A <see cref="T:RT.Util.Controls.LinkEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="T:RT.Util.Controls.ListBoxEx">
+            <summary>Provides a ListBox with added functionality. See remarks.</summary>
+            <remarks>
+            <para>The extra methods <see cref="M:RT.Util.Controls.ListBoxEx.RefreshItem(System.Int32)"/> and <see cref="M:RT.Util.Controls.ListBoxEx.RefreshItems"/> just call base methods which are inexplicably protected.</para>
+            <para>When setting <c>SelectionMode</c> to <c>SelectionMode.MultiExtended</c>, this listbox supports Ctrl+Arrow keys and Ctrl+Space properly, unlike the standard ListBox where these don’t work.</para>
+            </remarks>
+        </member>
+        <member name="M:RT.Util.Controls.ListBoxEx.RefreshItems">
+            <summary>Refreshes all ListBox items and retrieves new strings for them.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.ListBoxEx.RefreshItem(System.Int32)">
+            <summary>Refreshes the item contained at the specified index.</summary>
+            <param name="index">The zero-based index of the element to refresh.</param>
+        </member>
+        <member name="M:RT.Util.Controls.ListBoxEx.OnKeyDown(System.Windows.Forms.KeyEventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.ListBoxEx.OnKeyPress(System.Windows.Forms.KeyPressEventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.ListBoxEx.OutlineIndex">
+            <summary>Gets or sets the zero-based index of the list item that has the dotted outline.</summary>
+            <remarks>
+            <para>The list item may be selected or not.</para>
+            <para>Changing this property does not fire a SelectedIndexChanged event.</para>
+            </remarks>
+        </member>
+        <member name="T:RT.Util.Controls.MenuRadioGroup`1">
+            <summary>
+            Keeps track of a group of menu items (specifically, <see cref="T:RT.Util.Controls.MenuRadioItem`1"/>)
+            which are intended to act like a radio-button group, and where each menu item is associated with
+            a specific value, usually from an enum type.
+            </summary>
+            <typeparam name="T">The type of the value associated with each menu item.</typeparam>
+        </member>
+        <member name="P:RT.Util.Controls.MenuRadioGroup`1.Members">
+            <summary>Returns an array of all the menu items contained in this group.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.MenuRadioGroup`1.Value">
+            <summary>Returns the value associated with the currently-selected menu item.</summary>
+        </member>
+        <member name="E:RT.Util.Controls.MenuRadioGroup`1.ValueChanged">
+            <summary>Triggers whenever a different menu item becomes the selected one.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.MenuRadioGroup`1.SetValue(`0)">
+            <summary>Causes the menu item with the specified value to become the selected one.
+            If no menu item in the group is associated with the specified value, nothing happens.
+            If more than one menu item in the group is associated with the same value, the
+            behaviour is undefined.</summary>
+            <param name="value">The value whose associated menu item is to be selected.</param>
+        </member>
+        <member name="M:RT.Util.Controls.MenuRadioGroup`1.AddMember(RT.Util.Controls.MenuRadioItem{`0})">
+            <summary>Adds a menu item to the group.</summary>
+            <param name="member">Menu item to be added to the group.</param>
+        </member>
+        <member name="M:RT.Util.Controls.MenuRadioGroup`1.GetItemFromValue(`0)">
+            <summary>Returns the menu item associated with the specified value, or null
+            if no menu item in the group is associated with the specified value.</summary>
+            <param name="value">The value for which to find the menu item.</param>
+        </member>
+        <member name="T:RT.Util.Controls.MenuRadioItem`1">
+            <summary>
+            Encapsulates a menu item that is associated with a value from a specified type, usually an enum.
+            These menu items are intended to be grouped using a <see cref="T:RT.Util.Controls.MenuRadioGroup`1"/>.
+            </summary>
+            <typeparam name="T">The type of the value associated with this menu item.</typeparam>
+        </member>
+        <member name="P:RT.Util.Controls.MenuRadioItem`1.Value">
+            <summary>Returns the value associated with this menu item.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.MenuRadioItem`1.ParentGroup">
+            <summary>Returns the group to which this menu item belongs,
+            or moves it to a different group.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.MenuRadioItem`1.#ctor">
+            <summary>Initialises a <see cref="T:RT.Util.Controls.MenuRadioItem`1"/> instance.</summary>
+        </member>
+        <member name="T:RT.Util.Controls.NativeToolbarTheme">
+            <summary>Defines values for several standard native toolbar themes.</summary>
+        </member>
+        <member name="F:RT.Util.Controls.NativeToolbarTheme.Toolbar">
+            <summary>Standard toolbar theme - same as the native menu.</summary>
+        </member>
+        <member name="F:RT.Util.Controls.NativeToolbarTheme.MediaToolbar">
+            <summary>A fancy colored theme (black on Win7).</summary>
+        </member>
+        <member name="F:RT.Util.Controls.NativeToolbarTheme.CommunicationsToolbar">
+            <summary>A fancy colored theme (blue on Win7).</summary>
+        </member>
+        <member name="F:RT.Util.Controls.NativeToolbarTheme.BrowserTabBar">
+            <summary>A fancy colored theme.</summary>
+        </member>
+        <member name="F:RT.Util.Controls.NativeToolbarTheme.HelpBar">
+            <summary>A fancy colored theme (light on Win7).</summary>
+        </member>
+        <member name="T:RT.Util.Controls.NativeToolStripRenderer">
+            <summary>Renders a toolstrip using the UxTheme API via VisualStyleRenderer and a specific style.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.NativeToolStripRenderer.Theme">
+            <summary>Gets/sets the type of theme to use.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.GetThemeMargins(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,System.IntPtr,RT.Util.Controls.NativeToolStripRenderer.MARGINS@)">
+            <summary>It shouldn't be necessary to P/Invoke like this, however VisualStyleRenderer.GetMargins misses out a parameter in its own P/Invoke.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.Initialize(System.Windows.Forms.ToolStrip)">
+            <summary>Gives parented ToolStrips a transparent background.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.InitializePanel(System.Windows.Forms.ToolStripPanel)">
+            <summary>
+            Using just ToolStripManager.Renderer without setting the Renderer individually per ToolStrip means
+            that the ToolStrip is not passed to the Initialize method. ToolStripPanels, however, are. So we can 
+            simply initialize it here too, and this should guarantee that the ToolStrip is initialized at least 
+            once. Hopefully it isn't any more complicated than this.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.OnRenderToolStripBorder(System.Windows.Forms.ToolStripRenderEventArgs)">
+            <summary>Override - see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.OnRenderMenuItemBackground(System.Windows.Forms.ToolStripItemRenderEventArgs)">
+            <summary>Override - see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.OnRenderToolStripPanelBackground(System.Windows.Forms.ToolStripPanelRenderEventArgs)">
+            <summary>Override - see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.OnRenderToolStripBackground(System.Windows.Forms.ToolStripRenderEventArgs)">
+            <summary>Render the background of an actual menu bar, dropdown menu or toolbar.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.OnRenderSplitButtonBackground(System.Windows.Forms.ToolStripItemRenderEventArgs)">
+            <summary>
+            The only purpose of this override is to change the arrow colour.
+            It's OK to just draw over the default arrow since we also pass down arrow drawing to the system renderer.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.OnRenderItemText(System.Windows.Forms.ToolStripItemTextRenderEventArgs)">
+            <summary>Override - see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.OnRenderImageMargin(System.Windows.Forms.ToolStripRenderEventArgs)">
+            <summary>Override - see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.OnRenderSeparator(System.Windows.Forms.ToolStripSeparatorRenderEventArgs)">
+            <summary>Override - see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.OnRenderItemCheck(System.Windows.Forms.ToolStripItemImageRenderEventArgs)">
+            <summary>Override - see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.OnRenderArrow(System.Windows.Forms.ToolStripArrowRenderEventArgs)">
+            <summary>Override - see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.NativeToolStripRenderer.OnRenderOverflowButtonBackground(System.Windows.Forms.ToolStripItemRenderEventArgs)">
+            <summary>Override - see base.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.NativeToolStripRenderer.IsSupported">
+            <summary>Gets a value indicating whether a native theme can be used.</summary>
+        </member>
+        <member name="T:RT.Util.Controls.NiceClosePanel">
+            <summary>Provides a narrow panel that somewhat resembles a
+            tooltip window's title bar with a close button.</summary>
+        </member>
+        <member name="E:RT.Util.Controls.NiceClosePanel.CloseClicked">
+            <summary>Triggers when the close button is clicked.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.NiceClosePanel.#ctor">
+            <summary>Initialises a new <see cref="T:RT.Util.Controls.NiceClosePanel"/> instance.</summary>
+        </member>
+        <member name="T:RT.Util.Controls.ScrollableLabelEx">
+            <summary>Provides a <see cref="T:RT.Util.Controls.LabelEx"/> wrapped in a ScrollableControl that behaves properly.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.ScrollableLabelEx.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.ScrollableLabelEx.ScrollTo(System.Int32)">
+            <summary>Scrolls the label to the specified y co-ordinate.</summary>
+            <param name="y">Position to scroll the label to (0 for top).</param>
+        </member>
+        <member name="P:RT.Util.Controls.ScrollableLabelEx.AutoScroll">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.ScrollableLabelEx.Label">
+            <summary>Gets the inner label.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.ScrollableLabelEx.ScrollToControl(System.Windows.Forms.Control)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="T:RT.Util.Controls.Separator">
+            <summary>
+            This control is a label with a horizontal line running to the right of the label.
+            The purpose is to visually separate blocks of controls, similar to GroupBox but
+            without completely surrounding the controls in a box.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Controls.Separator.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.Separator.Text">
+            <summary>
+            Gets/sets the text displayed in the control. Set to an empty string in order
+            to get a horizontal line separator.
+            </summary>
+        </member>
+        <member name="T:RT.Util.Controls.SplitContainerEx">
+            <summary>
+            SplitContainerEx provides such "advanced" features as painting the bloody splitter.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Controls.SplitContainerEx.#ctor">
+            <summary>
+            Initialises a <see cref="T:RT.Util.Controls.SplitContainerEx"/> instance.
+            </summary>
+        </member>
+        <member name="E:RT.Util.Controls.SplitContainerEx.SplitterMoved">
+            <summary>Occurs when the splitter control is moved.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.SplitContainerEx.PaintSplitter">
+            <summary>
+            Specifies whether the splitter should be painted.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Controls.SplitContainerEx.OnPaint(System.Windows.Forms.PaintEventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="T:RT.Util.Controls.SplitContainerEx.Settings">
+            <summary>Holds the settings of the <see cref="T:RT.Util.Controls.SplitContainerEx"/>.</summary>
+        </member>
+        <member name="F:RT.Util.Controls.SplitContainerEx.Settings.PositionPercent">
+            <summary>Holds the position of the splitter, or null if not stored yet.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.SplitContainerEx.SetSettings(RT.Util.Controls.SplitContainerEx.Settings)">
+            <summary>
+            Stores a reference to the specified settings class, or null to disable the saving of settings.
+            Loads the settings from the specified instance and applies them to the control.
+            Must be called in form's Load event or later to have an effect!
+            </summary>
+        </member>
+        <member name="M:RT.Util.Controls.SplitContainerEx.OnResize(System.EventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.SplitContainerEx.OnKeyDown(System.Windows.Forms.KeyEventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="T:RT.Util.Controls.TextBoxAutoHeight">
+            <summary>
+            Encapsulates a textbox which, when in multi-line and wordwrap mode, will automatically set its height to be precisely as necessary to accommodate the contained text.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Controls.TextBoxAutoHeight.SetBoundsCore(System.Int32,System.Int32,System.Int32,System.Int32,System.Windows.Forms.BoundsSpecified)">
+            <summary>Sets the specified bounds of the System.Windows.Forms.TextBoxBase control.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.TextBoxAutoHeight.WndProc(System.Windows.Forms.Message@)">
+            <summary>Overrides the base class's WndProc message to capture mouse-wheel messages and pass them on to the GUI parent instead.</summary>
+            <param name="m">A Windows Message object.</param>
+        </member>
+        <member name="M:RT.Util.Controls.TextBoxAutoHeight.OnTextChanged(System.EventArgs)">
+            <summary></summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:RT.Util.Controls.TextBoxAutoHeight.OnSizeChanged(System.EventArgs)">
+            <summary>Raises the <see cref="E:System.Windows.Forms.Control.SizeChanged"/> event.</summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:RT.Util.Controls.TextBoxAutoHeight.Text">
+            <summary>Gets or sets the current text in the <see cref="T:RT.Util.Controls.TextBoxAutoHeight"/>.</summary>
+        </member>
+        <member name="P:RT.Util.Controls.TextBoxAutoHeight.Font">
+            <summary>Gets or sets the font of the text displayed by the control.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.TextBoxAutoHeight.OnMarginChanged(System.EventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.Controls.TextBoxAutoHeight.OnPaddingChanged(System.EventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="T:RT.Util.Controls.TextBoxEx">
+            <summary>
+                Provides a textbox with extra functionality (see remarks).</summary>
+            <remarks>
+                <para>Extra functionality currently supported:</para>
+                <list type="bullet">
+                    <item><description>Ctrl+A selects all text.</description></item>
+                </list></remarks>
+        </member>
+        <member name="M:RT.Util.Controls.TextBoxEx.OnKeyDown(System.Windows.Forms.KeyEventArgs)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="T:RT.Util.Drawing.BytesBitmap">
+            <summary>
+            Wrapper around a Bitmap that allows access to its raw byte data.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Drawing.BytesBitmap.Bits">
+            <summary>
+            Gets an array that contains the bitmap bit buffer.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Drawing.BytesBitmap.Bitmap">
+            <summary>
+            Gets the underlying Bitmap that this BytesBitmap wraps. USAGE WARNING:
+            DO NOT use this if the BytesBitmap wrapping it may have gone out of context
+            and disposed of. This will cause intermittent issues - when the BytesBitmap
+            gets GC'd. Use <see cref="M:RT.Util.Drawing.BytesBitmap.GetBitmapCopy"/> instead.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Drawing.BytesBitmap.GetBitmapCopy">
+            <summary>
+            Use this to create a new Bitmap that is a copy of the image stored in this
+            BytesBitmap. This can be passed around safely, unlike the wrapped bitmap
+            returned by <see cref="P:RT.Util.Drawing.BytesBitmap.Bitmap"/>.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Drawing.BytesBitmap.Stride">
+            <summary>
+            Gets the stride (the number of bytes to go one pixel down) of the bitmap.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Drawing.BytesBitmap.PixelFormatSize">
+            <summary>
+            Gets the number of bits needed to store a pixel.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Drawing.BytesBitmap.BitPtr">
+            <summary>
+            Gets a safe pointer to the buffer containing the bitmap bits.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Drawing.BytesBitmap.#ctor(System.Int32,System.Int32,System.Drawing.Imaging.PixelFormat)">
+            <summary>
+            Creates a new, blank BytesBitmap with the specified width, height, and pixel format.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Drawing.BytesBitmap.Disposed">
+            <summary>Specifies whether the underlying resources for this <see cref="T:RT.Util.Drawing.BytesBitmap"/> have already been disposed.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.BytesBitmap.Dispose">
+            <summary>Disposes the underlying resources.</summary>
+        </member>
+        <member name="T:RT.Util.Drawing.SharedPinnedByteArray">
+            <summary>
+            This class represents a byte array which is pinned to avoid relocation
+            by the GC and implements reference counting.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Drawing.SharedPinnedByteArray.Bytes">
+            <summary>
+            Gets the allocated byte array. This can be modified as desired.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Drawing.SharedPinnedByteArray.Address">
+            <summary>
+            Gets an unmanaged address of the first (index 0) byte of the byte array.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Drawing.SharedPinnedByteArray.AddressOf(System.Int32)">
+            <summary>
+            Returns an unmanaged address of the specified byte in the byte array.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Drawing.SharedPinnedByteArray.#ctor(System.Int32)">
+            <summary>
+            Creates a new pinned array of the specified size, that can be accessed through <see cref="P:RT.Util.Drawing.SharedPinnedByteArray.Bytes"/>.
+            One reference is automatically added; call <see cref="M:RT.Util.Drawing.SharedPinnedByteArray.ReleaseReference"/> when finished using this array.
+            </summary>
+            <param name="length">The number of bytes that the pinned array should contain</param>
+        </member>
+        <member name="M:RT.Util.Drawing.SharedPinnedByteArray.AddReference">
+            <summary>
+            Adds a reference to this array. One reference is counted when the array is created. It is deleted when
+            all references are released using <see cref="M:RT.Util.Drawing.SharedPinnedByteArray.ReleaseReference"/>.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Drawing.SharedPinnedByteArray.ReleaseReference">
+            <summary>
+            Releases a reference to this array. When there are none left, the array is unpinned and can get garbage-collected.
+            </summary>
+        </member>
+        <member name="P:RT.Util.Drawing.SharedPinnedByteArray.Length">
+            <summary>Gets the length of the byte array.</summary>
+        </member>
+        <member name="T:RT.Util.Drawing.CoordinateAxesDirection">
+            <summary>Encodes axes direction mode for <see cref="T:RT.Util.Drawing.Canvas"/>.</summary>
+        </member>
+        <member name="F:RT.Util.Drawing.CoordinateAxesDirection.RightDown">
+            <summary>X axis grows towards the right and Y axis grows downwards (normal computer screen coordinate direction)</summary>
+        </member>
+        <member name="F:RT.Util.Drawing.CoordinateAxesDirection.RightUp">
+            <summary>X axis grows towards the right and Y axis grows upwards.</summary>
+        </member>
+        <member name="T:RT.Util.Drawing.TextAnchor">
+            <summary>Specifies text alignment for <see cref="T:RT.Util.Drawing.Canvas"/>.</summary>
+        </member>
+        <member name="T:RT.Util.Drawing.Canvas">
+            <summary>
+                <para>
+                    Wraps a <see cref="T:System.Drawing.Graphics"/> to provide a hopefully more convenient interface. The major bits
+                    of functionality are:</para>
+                <list type="bullet">
+                    <item><description>
+                        all coordinates in doubles or <see cref="N:RT.Util.Geometry"/> structs;</description></item>
+                    <item><description>
+                        support for the Y axis growing upwards;</description></item>
+                    <item><description>
+                        functions targeted at drawing a 2d world onto a viewport of a specified size.</description></item></list>
+                <para>
+                    Common terms and abbreviations:</para>
+                <list type="table">
+                    <item><term>
+                        Screen</term>
+                    <description>
+                        Rectangular area that will be the final destination of the drawing.</description></item>
+                    <item><term>
+                        Viewport</term>
+                    <description>
+                        The region, defined in terms of the world coordinates, that is viewable on the screen.</description></item>
+                    <item><term>
+                        World coordinates</term>
+                    <description>
+                        Coordinates of the underlying "world" being represented.</description></item>
+                    <item><term>
+                        Screen coordinates</term>
+                    <description>
+                        Coordinates on the screen, can be used to directly draw on the underlying Graphics.</description></item>
+                    <item><term>
+                        WX, WY, WW, WH</term>
+                    <description>
+                        World X, Y, Width, Height, respectively</description></item>
+                    <item><term>
+                        SX, SY, SW, SH</term>
+                    <description>
+                        Screen X, Y, Width, Height, respectively</description></item></list></summary>
+        </member>
+        <member name="F:RT.Util.Drawing.Canvas.Graphics">
+            <summary>The underlying Graphics. All the actual drawing is done onto this instance.</summary>
+        </member>
+        <member name="F:RT.Util.Drawing.Canvas.CoordinateAxesDirection">
+            <summary>Selects a coordinate axes mode.</summary>
+        </member>
+        <member name="F:RT.Util.Drawing.Canvas.ScreenSize">
+            <summary>
+                Stores the screen size. "Screen" here refers to the final surface that this Canvas is destined for. The screen
+                size is used for "set viewport" methods which do not take a screen location: they assume the relevant screen
+                edge is meant instead.</summary>
+        </member>
+        <member name="F:RT.Util.Drawing.Canvas.DefaultFont">
+            <summary>The font to be used by text drawing functions if no font is specified.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.#ctor">
+            <summary>Creates an instance without initializing any of the required fields.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.#ctor(System.Drawing.Graphics)">
+            <summary>Creates an instance using the specified Graphics as the underlying drawing surface.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.#ctor(System.Drawing.Graphics,System.Drawing.Size)">
+            <summary>
+                Creates an instance using the specified graphics and screenSize. See <see cref="F:RT.Util.Drawing.Canvas.ScreenSize"/> for more info.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.ResetViewport">
+            <summary>
+                Resets the scaling and offset so that world coordinates correspond to screen pixels. Maintains the offsets so
+                that all visible pixels have positive coordinates and one of the corners is 0,0.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.SetViewport(System.Double,System.Double,System.Double)">
+            <summary>
+                Sets the viewport so that the specified world coordinate is in the centre of the viewable screen, using the
+                specified scaling factor.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.SetViewport(System.Double,System.Double,System.Double,System.Double,System.Boolean)">
+            <summary>
+                Sets the scaling and offset so that the world coordinate "leftWX" corresponds to the leftmost coordinate on
+                the screen, world "topWY" to the topmost screen coordinate, etc. If "maintainAspect" is "true", ensures that X
+                and Y scaling is the same, by making one of the axes show more than implied by the arguments passed in.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.MoveViewport(System.Single,System.Single,System.Double,System.Double)">
+            <summary>
+                Adjusts the offsets so that the world coordinate wx,wy is at the screen coordinate sx,sy. Does not modify the
+                scaling.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.SX(System.Double)">
+            <summary>
+                Converts world X coordinate into screen X. Screen X is zero at the leftmost pixel and Screen.Width at the
+                rightmost pixel.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.SY(System.Double)">
+            <summary>
+                Converts world Y coordinate into screen Y. Screen Y is zero at the topmost pixel and Screen.Height at the
+                bottommost pixel.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.SW(System.Double)">
+            <summary>Converts world width into screen width. Screen width is measured in pixels.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.SH(System.Double)">
+            <summary>Converts world height into screen height. Screen height is measured in pixels.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.SP(RT.Util.Geometry.PointD)">
+            <summary>Converts a world point to a screen point.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.sa(System.Double)">
+            <summary>For internal use only. Converts world angle into screen angle as understood by GDI routines.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.sTop(System.Double,System.Double)">
+            <summary>
+                For internal use only. Given two world coordinates, one known to be smaller than the other one, returns the
+                one that would be higher on the screen, converted to screen coordinates.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.WX(System.Single)">
+            <summary>
+                Converts screen X coordinate into world X. Screen X is zero at the leftmost pixel and Screen.Width at the
+                rightmost pixel.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.WY(System.Single)">
+            <summary>
+                Converts screen Y coordinate into world Y. Screen Y is zero at the topmost pixel and Screen.Height at the
+                bottommost pixel.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.WW(System.Single)">
+            <summary>Converts screen width into world width. Screen width is measured in pixels.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.WH(System.Single)">
+            <summary>Converts screen height into world height. Screen height is measured in pixels.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.WP(System.Drawing.PointF)">
+            <summary>Converts a screen point to a world point.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.Clear(System.Drawing.Color)">
+            <summary>Fills the entire "screen" with the specified color.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawLine(System.Drawing.Pen,RT.Util.Geometry.EdgeD)">
+            <summary>Draws a straight line using the specified pen.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawLine(System.Drawing.Pen,RT.Util.Geometry.PointD,RT.Util.Geometry.PointD)">
+            <summary>Draws a straight line using the specified pen.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawLine(System.Drawing.Pen,System.Double,System.Double,System.Double,System.Double)">
+            <summary>Draws a straight line using the specified pen.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawRectangle(System.Drawing.Pen,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+                Draws a rectangle using the specified pen. "xMin" and "yMin" specify the corner that has the smallest
+                coordinates, so the resulting rectangle will be on coordinates xMin, yMin, xMin+width, yMin+height.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawRectangle(System.Drawing.Pen,RT.Util.Geometry.BoundingBoxD@)">
+            <summary>Draws a rectangle using the specified pen. The bounding box defines the coordinates.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.FillRectangle(System.Drawing.Brush,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+                Fills a rectangle using the specified brush. "xMin" and "yMin" specify the corner that has the smallest
+                coordinates, so the resulting rectangle will be on coordinates xMin, yMin, xMin+width, yMin+height.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.FillRectangle(System.Drawing.Brush,RT.Util.Geometry.BoundingBoxD@)">
+            <summary>Fills a rectangle using the specified brush. The bounding box defines the coordinates.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawTriangle(System.Drawing.Pen,RT.Util.Geometry.TriangleD)">
+            <summary>Draws a triangle using the specified pen.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawTriangle(System.Drawing.Pen,RT.Util.Geometry.PointD,RT.Util.Geometry.PointD,RT.Util.Geometry.PointD)">
+            <summary>Draws a triangle using the specified pen.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.FillTriangle(System.Drawing.Brush,RT.Util.Geometry.TriangleD)">
+            <summary>Fills a triangle using the specified brush.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.FillTriangle(System.Drawing.Brush,RT.Util.Geometry.PointD,RT.Util.Geometry.PointD,RT.Util.Geometry.PointD)">
+            <summary>Fills a triangle using the specified brush.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawCircle(System.Drawing.Pen,RT.Util.Geometry.PointD,System.Double)">
+            <summary>Draws a circle using the specified pen.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawCircle(System.Drawing.Pen,System.Double,System.Double,System.Double)">
+            <summary>Draws a circle using the specified pen.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.FillCircle(System.Drawing.Brush,RT.Util.Geometry.PointD,System.Double)">
+            <summary>Fills a circle using the specified pen.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.FillCircle(System.Drawing.Brush,System.Double,System.Double,System.Double)">
+            <summary>Fills a circle using the specified pen.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawArc(System.Drawing.Pen,RT.Util.Geometry.PointD,System.Double,System.Double,System.Double)">
+            <summary>Draws an arc using the specified pen.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawPie(System.Drawing.Pen,RT.Util.Geometry.PointD,System.Double,System.Double,System.Double)">
+            <summary>
+                Draws a "pie" using the specified pen. A pie is a circular arc whose endpoints are connected to the centre
+                with straight lines.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawPie(System.Drawing.Pen,System.Double,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+                Draws a "pie" using the specified pen. A pie is a circular arc whose endpoints are connected to the centre
+                with straight lines.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawText(System.String,System.Drawing.Brush,System.Drawing.Font,System.Double,System.Double)">
+            <summary>
+                Draws text using the specified font and brush. The text's bounding box is centered on the specified point.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawText(System.String,System.Drawing.Brush,System.Drawing.Font,RT.Util.Geometry.PointD)">
+            <summary>
+                Draws text using the specified font and brush. The text's bounding box is centered on the specified point.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawText(System.String,System.Drawing.Brush,System.Double,System.Double)">
+            <summary>
+                Draws text using the default font and the specified brush. The text's bounding box is centered on the
+                specified point.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.DrawPath(System.Drawing.Pen,System.Drawing.Drawing2D.GraphicsPath)">
+            <summary>Draws a GraphicsPath using the specified pen.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.Canvas.FillPath(System.Drawing.Brush,System.Drawing.Drawing2D.GraphicsPath)">
+            <summary>Fills a GraphicsPath using the specified brush.</summary>
+        </member>
+        <member name="T:RT.Util.Drawing.GraphicsTransformer">
+            <summary>Provides a way to temporarily modify the Transform of a System.Drawing.Graphics object by enclosing the affected code in a “using” scope.</summary>
+            <example>
+            <para>The following example demonstrates how GraphicsTransformer can be used to render graphics translated.</para>
+            <code>
+                var g = Graphics.FromImage(...);
+                using (new GraphicsTransformer(g).Translate(15, 10))
+                {
+                    // As this is inside the scope of the GraphicsTransformer, the rectangle is translated 15 pixels to the right and 10 down.
+                    g.DrawRectangle(20, 20, 100, 100);
+                }
+                
+                // As this statement is outside the scope of the GraphicsTransformer, the rectangle is not translated.
+                // The net effect is that two rectangles are rendered even though both calls use the same co-ordinates.
+                g.DrawRectangle(20, 20, 100, 100);
+            </code>
+            </example>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsTransformer.#ctor(System.Drawing.Graphics)">
+            <summary>Instantiates a new <see cref="T:RT.Util.Drawing.GraphicsTransformer"/> instance. Use this in a “using” statement.</summary>
+            <param name="g">The Graphics object whose Transform to modify.</param>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsTransformer.Translate(System.Single,System.Single)">
+            <summary>Translates the graphics by the specified amount.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsTransformer.Translate(System.Double,System.Double)">
+            <summary>Translates the graphics by the specified amount.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsTransformer.Scale(System.Single,System.Single)">
+            <summary>Scales the graphics by the specified factors.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsTransformer.Scale(System.Double,System.Double)">
+            <summary>Scales the graphics by the specified factors.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsTransformer.Rotate(System.Single)">
+            <summary>Rotates the graphics by the specified angle in degrees.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsTransformer.RotateAt(System.Single,System.Drawing.PointF)">
+            <summary>Rotates the graphics clockwise by the specified angle in degrees about the specified center point.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsTransformer.RotateAt(System.Single,System.Single,System.Single)">
+            <summary>Rotates the graphics clockwise by the specified angle in degrees about the specified center point.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsTransformer.Dispose">
+            <summary>Returns the Transform of the Graphics object back to its original value.</summary>
+        </member>
+        <member name="T:RT.Util.Drawing.GraphicsUtil">
+            <summary>Contains static methods for various graphics-related operations.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsUtil.ColorBlend(System.Drawing.Color,System.Drawing.Color,System.Double)">
+            <summary>
+                Blends the specified colors together.</summary>
+            <param name="color">
+                Color to blend onto the background color.</param>
+            <param name="backColor">
+                Color to blend the other color onto.</param>
+            <param name="amount">
+                How much of <paramref name="color"/> to keep, “on top of” <paramref name="backColor"/>.</param>
+            <returns>
+                The blended colors.</returns>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsUtil.FromHsv(System.Double,System.Double,System.Double)">
+            <summary>
+                Converts hue, saturation and value into an RGB color object.</summary>
+            <param name="hue">
+                The hue (0–360).</param>
+            <param name="saturation">
+                The saturation (0–1).</param>
+            <param name="value">
+                The value/luminance/brightness (0–1).</param>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsUtil.DrawImageAlpha(System.Drawing.Graphics,System.Drawing.Image,System.Drawing.Rectangle,System.Single)">
+            <summary>
+                Draws the specified <paramref name="image"/> into the destination rectangle <paramref name="destRect"/> of the
+                <paramref name="graphics"/> object using the specified <paramref name="opacity"/>.</summary>
+            <param name="graphics">
+                Graphics object to alpha-blend the image onto.</param>
+            <param name="image">
+                Image to draw.</param>
+            <param name="destRect">
+                Destination rectangle within the target Graphics canvas.</param>
+            <param name="opacity">
+                Opacity level to use when drawing the image. 0 means nothing changes. 1 means the image is drawn normally. 0.5
+                means a 50% blend between source and destination.</param>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsUtil.DrawRoundedRectangle(System.Drawing.Graphics,System.Drawing.Pen,System.Drawing.RectangleF,System.Single,System.Boolean)">
+            <summary>
+                Draws a rounded rectangle.</summary>
+            <param name="g">
+                Graphics object to draw on.</param>
+            <param name="pen">
+                Pen to use when drawing the rounded rectangle.</param>
+            <param name="rectangle">
+                Position of the rectangle.</param>
+            <param name="radius">
+                Radius of the rounding of each corner of the rectangle.</param>
+            <param name="tolerant">
+                If true, the radius is reduced if it is too large to fit into the specified size. Otherwise, an exception is
+                thrown.</param>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsUtil.DrawRoundedRectangle(System.Drawing.Graphics,System.Drawing.Pen,System.Single,System.Single,System.Single,System.Single,System.Single,System.Boolean)">
+            <summary>
+                Draws a rounded rectangle.</summary>
+            <param name="g">
+                Graphics object to draw on.</param>
+            <param name="pen">
+                Pen to use when drawing the rounded rectangle.</param>
+            <param name="x">
+                Left edge of the rounded rectangle.</param>
+            <param name="y">
+                Top edge of the rounded rectangle.</param>
+            <param name="width">
+                Width of the rounded rectangle.</param>
+            <param name="height">
+                Height of the rounded rectangle.</param>
+            <param name="radius">
+                Radius of the rounding of each corner of the rectangle.</param>
+            <param name="tolerant">
+                If true, the radius is reduced if it is too large to fit into the specified size. Otherwise, an exception is
+                thrown.</param>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsUtil.RoundedRectangle(System.Drawing.RectangleF,System.Single,System.Boolean)">
+            <summary>
+                Returns a <see cref="T:System.Drawing.Drawing2D.GraphicsPath"/> object that represents a rounded rectangle.</summary>
+            <param name="rectangle">
+                Position of the rectangle.</param>
+            <param name="radius">
+                Radius of the rounding of each corner of the rectangle.</param>
+            <param name="tolerant">
+                If true, the radius is reduced if it is too large to fit into the specified size. Otherwise, an exception is
+                thrown.</param>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsUtil.RoundedRectangle(System.Single,System.Single,System.Single,System.Single,System.Single,System.Boolean)">
+            <summary>
+                Returns a <see cref="T:System.Drawing.Drawing2D.GraphicsPath"/> object that represents a rounded rectangle.</summary>
+            <param name="x">
+                Left edge of the rounded rectangle.</param>
+            <param name="y">
+                Top edge of the rounded rectangle.</param>
+            <param name="width">
+                Width of the rounded rectangle.</param>
+            <param name="height">
+                Height of the rounded rectangle.</param>
+            <param name="radius">
+                Radius of the rounding of each corner of the rectangle.</param>
+            <param name="tolerant">
+                If true, the radius is reduced if it is too large to fit into the specified size. Otherwise, an exception is
+                thrown.</param>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsUtil.GetMaximumFontSize(System.Drawing.Graphics,System.Drawing.SizeF,System.Drawing.FontFamily,System.String,System.Drawing.FontStyle,System.Boolean)">
+            <summary>
+                Determines the largest font size at which the specified text fits into the specified maximum size in the
+                specified font.</summary>
+            <param name="graphics">
+                Specifies the <see cref="T:System.Drawing.Graphics"/> object to use when measuring the font size.</param>
+            <param name="maximumSize">
+                Maximum size (in pixels) the text should have.</param>
+            <param name="fontFamily">
+                The font to measure.</param>
+            <param name="text">
+                The text whose size mustn't exceed <paramref name="maximumSize"/>.</param>
+            <param name="style">
+                Font style to apply.</param>
+            <param name="allowWordWrapping">
+                True if the text is allowed to word-wrap within the specified bounds.</param>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsUtil.GetMaximumFontSize(System.Drawing.Graphics,System.Drawing.FontFamily,System.String,System.Drawing.FontStyle,System.Boolean,System.Nullable{System.Single},System.Nullable{System.Single})">
+            <summary>
+                Determines the largest font size at which the specified text fits into the specified maximum size in the
+                specified font.</summary>
+            <param name="graphics">
+                Specifies the <see cref="T:System.Drawing.Graphics"/> object to use when measuring the font size.</param>
+            <param name="fontFamily">
+                The font to measure.</param>
+            <param name="text">
+                The text whose size mustn't exceed <paramref name="maxWidth"/> and <paramref name="maxHeight"/>.</param>
+            <param name="style">
+                Font style to apply.</param>
+            <param name="allowWordWrapping">
+                True if the text is allowed to word-wrap within the specified bounds.</param>
+            <param name="maxWidth">
+                Maximum width the text may have, or null if only the maximum height should apply. If <paramref
+                name="allowWordWrapping"/> is true, this cannot be null.</param>
+            <param name="maxHeight">
+                Maximum width the text may have, or null if only the maximum width should apply. If <paramref
+                name="maxWidth"/> is null, this cannot be null.</param>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsUtil.SetHighQuality(System.Drawing.Graphics)">
+            <summary>
+                Sets the interpolation mode, smoothing mode, text rendering hint and compositing quality for the specified
+                Graphics object to high quality.</summary>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsUtil.FitIntoMaintainAspectRatio(System.Drawing.Size,System.Drawing.Rectangle)">
+            <summary>
+                Returns a rectangle that has the same aspect ratio as <paramref name="fitWhat"/> but fits into <paramref
+                name="fitInto"/>.</summary>
+            <param name="fitWhat">
+                Specifies the aspect ratio of the desired rectangle.</param>
+            <param name="fitInto">
+                The rectangle into which to fit the result rectangle.</param>
+            <returns>
+                The result rectangle which fits into <paramref name="fitInto"/>.</returns>
+        </member>
+        <member name="M:RT.Util.Drawing.GraphicsUtil.DrawBitmap(System.Int32,System.Int32,System.Action{System.Drawing.Graphics},System.Boolean)">
+            <summary>
+                Creates a new bitmap by executing the specified drawing command(s) on a blank new 32-bit bitmap.</summary>
+            <param name="width">
+                Width of the bitmap.</param>
+            <param name="height">
+                Height of the bitmap.</param>
+            <param name="draw">
+                Command(s) to execute on the new bitmap.</param>
+            <param name="keepLowQuality">
+                If false (the default), <see cref="M:RT.Util.Drawing.GraphicsUtil.SetHighQuality(System.Drawing.Graphics)"/> is called on the graphics object automatically.</param>
+        </member>
+        <member name="T:RT.Util.ExtensionMethods.WindowsFormsExtensions">
+            <summary>
+            Provides extension methods for Windows Forms controls.
+            </summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.WindowsFormsExtensions.ParentTab(System.Windows.Forms.Control)">
+            <summary>
+            If this control is located within a <see cref="T:System.Windows.Forms.TabPage"/>, returns the first TabPage
+            found by iterating recursively through its parents. Otherwise returns null.
+            </summary>
+        </member>
+        <member name="T:RT.Util.ExtensionMethods.XmlLinqExtensions">
+            <summary>
+                Provides extension methods on the classes belonging to the LINQ XML API (<see cref="T:System.Xml.Linq.XElement"/>, <see
+                cref="T:System.Xml.Linq.XContainer"/>, and <see cref="T:System.Xml.Linq.XAttribute"/>).</summary>
+        </member>
+        <member name="M:RT.Util.ExtensionMethods.XmlLinqExtensions.ValueOrDefault``1(System.Xml.Linq.XElement,System.Xml.Linq.XName,``0)">
+            <summary>
+                Returns the value of this element, converted to type T. If the element does not exist returns the default
+                value. If the element's value cannot be converted, throws an exception.</summary>
+        </member>
+        <member name="T:RT.Util.Forms.DlgType">
+            <summary>
+                Selects the type of dialog for <see cref="T:RT.Util.Forms.DlgMessage"/> to show. This specifies the sound and, unless explicitly
+                overridden, the image and caption used to show the dialog.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgType.Info">
+            <summary>Displays an information dialog.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgType.Question">
+            <summary>Displays a question dialog.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgType.Warning">
+            <summary>Displays a warning dialog.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgType.Error">
+            <summary>Displays an error dialog.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgType.Custom">
+            <summary>
+                Displays a custom dialog. Custom defaults to no sound, no default image, and the caption defaults to the
+                application name (all are overridable). Doesn't fully work, bug 15.</summary>
+        </member>
+        <member name="T:RT.Util.Forms.DlgMessageFormat">
+            <summary>Specifies whether the text in a <see cref="T:RT.Util.Forms.DlgMessage"/> box should be rendered using EggsML or plain text.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessageFormat.PlainText">
+            <summary>Indicates plain text without formatting.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessageFormat.EggsML">
+            <summary>Indicates EggsML mark-up.</summary>
+        </member>
+        <member name="T:RT.Util.Forms.DlgMessageForm">
+            <summary>
+                This class is used by the <see cref="T:RT.Util.Forms.DlgMessage"/> class. This is the form used for displaying the message box.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessageForm.DefaultCaption">
+            <summary>Change this variable to i18n'ize the default captions</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessageForm.DefaultImage">
+            <summary>Change this variable to i18n'ize the default images</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessageForm.DefaultOKCaption">
+            <summary>Change this variable to i18n'ize the default OK button text</summary>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessageForm.#ctor">
+            <summary>Creates an instance of the DlgMessage form.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessageForm.DlgMessage_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+            <summary>
+                This takes care of the user closing the dialog. This is equivalent to pressing the Cancel button, whichever
+                one it happens to be.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessageForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessageForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessageForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:RT.Util.Forms.DlgMessage">
+            <summary>
+                Holds a number of settings that define a message dialog. Provides a method to show the dialog represented, as well
+                as static methods to show some common dialog kinds with most settings at their defaults.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessage.Type">
+            <summary>
+                Specifies the message type. This selects a sound, an image and a caption to be used by default, unless
+                explicitly overridden in the other fields of this class. Defaults to <see cref="F:RT.Util.Forms.DlgType.Info"/>.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessage.Buttons">
+            <summary>
+                Specifies the labels of the buttons to be displayed in the dialog. Defaults to null, in which case a single
+                "OK" button will appear. May contain at most four elements. The labels may include the ampersand to indicate a
+                shortcut key, or double-ampersand to include an ampersand.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessage.Message">
+            <summary>
+                Specifies the message to be displayed in the main message area. Defaults to null, in which case the message
+                area will be empty.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessage.Format">
+            <summary>Specifies whether the text in this message box should be rendered using EggsML or plain text.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessage.Caption">
+            <summary>
+                Specifies a caption to be displayed in the dialog's window title bar. Defaults to null, which means choose a
+                title based on the <see cref="F:RT.Util.Forms.DlgMessage.Type"/> field.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessage.Image">
+            <summary>
+                Specifies an image to be displayed in the image area of the dialog. Defaults to null, which means use an image
+                based on the <see cref="F:RT.Util.Forms.DlgMessage.Type"/> field. If the type is <see cref="F:RT.Util.Forms.DlgType.Custom"/>, and this field is null, no
+                image will be displayed.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessage.Font">
+            <summary>
+                Specifies a font to be used for the message text (but not the buttons). Defaults to null, which means the
+                default system font should be used.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessage.AcceptButton">
+            <summary>
+                Specifies the index of the accept button (the one selected if the user just presses Enter). Defaults to -1,
+                which means the button with index 0.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessage.CancelButton">
+            <summary>
+                Specifies the index of the cancel button (the one selected if the user just presses Esc or Alt+F4). Defaults
+                to -1, which means the button with the largest valid index.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.DlgMessage.ShowInTaskbar">
+            <summary>Specifies whether a taskbar icon is shown for the dialog box.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessage.Show">
+            <summary>
+                Shows a message using all the settings specified in this class instance. Anything left at defaults will be
+                modified to hold the appropriate value. Any invalid settings will be flagged with an exception.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessage.Show(System.String,RT.Util.Forms.DlgType)">
+            <summary>Shows a message of the specified message type, using an appropriate caption, sound and image.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessage.Show(System.String,System.String,RT.Util.Forms.DlgType,System.String[])">
+            <summary>Shows a message of the specified message type, using an appropriate sound and image.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessage.Show(System.String,System.String,RT.Util.Forms.DlgType,RT.Util.Forms.DlgMessageFormat,System.String[])">
+            <summary>Shows a message of the specified message type, using an appropriate sound and image.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessage.ShowInfo(System.String,System.String[])">
+            <summary>Shows an informational message using the image, caption and sound appropriate for this message type.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessage.ShowQuestion(System.String,System.String[])">
+            <summary>Shows a question message using the image, caption and sound appropriate for this message type.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessage.ShowWarning(System.String,System.String[])">
+            <summary>Shows a warning message using the image, caption and sound appropriate for this message type.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessage.ShowError(System.String,System.String[])">
+            <summary>Shows an error message using the image, caption and sound appropriate for this message type.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessage.deduceAndCheckSettings">
+            <summary>
+                Verifies that all the settings are correct, throwing an exception if not. For all settings left at defaults,
+                stores a value deemed appropriate based on the other settings.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessage.showAsIs">
+            <summary>
+                Creates a message form and fills in the controls using the current settings. Does not verify whether the
+                settings are valid, so must only be used internally and only after the settings have been verified.</summary>
+            <returns>
+                The index of the button pressed.</returns>
+        </member>
+        <member name="M:RT.Util.Forms.DlgMessage.Translate(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+                Applies a translation to certain default strings, on the assumption that all messages are to be shown with the
+                same translation.</summary>
+            <param name="ok">
+                Translation for the default "OK" button.</param>
+            <param name="captionInfo">
+                Translation for the default window caption for informational messages.</param>
+            <param name="captionQuestion">
+                Translation for the default window caption for question messages.</param>
+            <param name="captionWarning">
+                Translation for the default window caption for warning messages.</param>
+            <param name="captionError">
+                Translation for the default window caption for error messages.</param>
+        </member>
+        <member name="T:RT.Util.Forms.InputBox">
+            <summary>
+            Provides a simple dialog containing a single-line text box,
+            prompting the user to input some text.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Forms.InputBox.#ctor">
+            <summary>Initialises a new <see cref="T:RT.Util.Forms.InputBox"/> instance.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.InputBox.GetLine(System.String,System.String,System.String,System.String,System.String,System.Boolean)">
+            <summary>Prompts the user for input.</summary>
+            <param name="prompt">Message to display to prompt the user.</param>
+            <param name="default">Initial value to populate the input box with.</param>
+            <param name="caption">Caption to use in the title bar of the dialog.</param>
+            <param name="okButtonText">Caption for the OK button.</param>
+            <param name="cancelButtonText">Caption for the Cancel button.</param>
+            <param name="useMultilineBox">If true, a multi-line textbox is used, allowing the user to enter multiple lines of text.</param>
+            <returns>The text entered by the user, or null if the user selected the Cancel button.</returns>
+        </member>
+        <member name="F:RT.Util.Forms.InputBox.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Forms.InputBox.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:RT.Util.Forms.InputBox.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:RT.Util.Forms.ManagedForm">
+            <summary>
+            A form which has all the proper minimize/restore methods, and which remembers its position and size between instances of the application.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Forms.ManagedForm.#ctor(RT.Util.Forms.ManagedForm.Settings)">
+            <summary>Initialises a new managed form.</summary>
+            <param name="settings">An object of type <see cref="T:RT.Util.Forms.ManagedForm.Settings"/> from which the position and size of the form are retrieved, and in which they will be stored.</param>
+        </member>
+        <member name="M:RT.Util.Forms.ManagedForm.ResizeAndReposition(System.Boolean)">
+            <summary>
+            Override to alter the window size, maximize state and/or position on first show and screen resolution changes.
+            At the time of call, the current position/state/size are already set to the preferred ones, so it is possible to change
+            them with respect to the "saved" values. If this method does nothing then the last saved values will be in effect.
+            </summary>
+            <param name="firstShow">True if this is the first time the form is displayed; false if it's a screen resolution change.</param>
+        </member>
+        <member name="P:RT.Util.Forms.ManagedForm.Minimized">
+            <summary>Determines if the current managed form is minimised.</summary>
+        </member>
+        <member name="P:RT.Util.Forms.ManagedForm.Maximized">
+            <summary>Determines whether the current managed form is maximised, or is minimised and would be maximised if restored.</summary>
+        </member>
+        <member name="P:RT.Util.Forms.ManagedForm.NormalWidth">
+            <summary>Gets the width of the form when in normal state (i.e. not minimized or maximized).</summary>
+        </member>
+        <member name="P:RT.Util.Forms.ManagedForm.NormalHeight">
+            <summary>Gets the height of the form when in normal state (i.e. not minimized or maximized).</summary>
+        </member>
+        <member name="P:RT.Util.Forms.ManagedForm.NormalLeft">
+            <summary>Gets the X-coordinate of the form when in normal state (i.e. not minimized or maximized).</summary>
+        </member>
+        <member name="P:RT.Util.Forms.ManagedForm.NormalTop">
+            <summary>Gets the Y-coordinate of the form when in normal state (i.e. not minimized or maximized).</summary>
+        </member>
+        <member name="M:RT.Util.Forms.ManagedForm.Show">
+            <summary>
+            Shows the form properly: if it is visible but minimized it will be restored
+            and activated; otherwise the base implementation of Show will be invoked.
+            </summary>
+        </member>
+        <member name="M:RT.Util.Forms.ManagedForm.ShowDialog(System.Windows.Forms.Form,System.Boolean)">
+            <summary>Shows the form as a modal dialog box with the currently active window set as its owner.</summary>
+            <param name="centerInForm">If specified, this form will be centered relative to the specified form.</param>
+            <param name="repositionParentAfterwards">If set to true, will cause the parent to be moved after this form is closed to be centered with respect to it.</param>
+            <returns>One of the <see cref="T:System.Windows.Forms.DialogResult"/> values.</returns>
+        </member>
+        <member name="T:RT.Util.Forms.ManagedForm.Settings">
+            <summary>Holds the settings of the <see cref="T:RT.Util.Forms.ManagedForm"/>.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.ManagedForm.Settings.DimensionsByRes">
+            <summary>Holds form dimensions for each screen resolution.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.ManagedForm.Settings.Clone">
+            <summary>Returns a deep clone of this class.</summary>
+        </member>
+        <member name="T:RT.Util.Forms.ManagedForm.FormDimensions">
+            <summary>Stores the size, position and maximized state of the form.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.ManagedForm.FormDimensions.Left">
+            <summary>Stores the left (X) coordinate of the form when not maximized.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.ManagedForm.FormDimensions.Top">
+            <summary>Stores the top (Y) coordinate of the form when not maximized.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.ManagedForm.FormDimensions.Width">
+            <summary>Stores the width of the form when not maximized.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.ManagedForm.FormDimensions.Height">
+            <summary>Stores the height of the form when not maximized.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.ManagedForm.FormDimensions.Maximized">
+            <summary>Stores whether the form is maximized.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.ManagedForm.FormDimensions.Clone">
+            <summary>Returns a deep clone of this class.</summary>
+        </member>
+        <member name="T:RT.Util.Forms.ManagedWindow">
+            <summary>
+            A window which has all the proper minimize/restore methods, and which remembers its position and size between instances of the application.
+            The size/position/state values are automatically reflected in the settings object whenever the user resizes or moves the window. If XAML
+            supplies an initial size, that size will be used whenever no previous size is available (such as first run).
+            </summary>
+        </member>
+        <member name="M:RT.Util.Forms.ManagedWindow.#ctor">
+            <summary>We need a default constructor for the WPF designer to work. Don't invoke this or else the settings won't work.</summary>
+        </member>
+        <member name="M:RT.Util.Forms.ManagedWindow.#ctor(RT.Util.Forms.ManagedWindow.Settings)">
+            <summary>Initialises a new managed window.</summary>
+            <param name="settings">An object of type <see cref="T:RT.Util.Forms.ManagedWindow.Settings"/> from which the position and size of the form are retrieved, and in which they will be stored.</param>
+        </member>
+        <member name="P:RT.Util.Forms.ManagedWindow.MaximizedByDefault">
+            <summary>To make the window maximized by default (i.e. on first run, before the user has had a chance to move/resize the window),
+            override this property and return true. This property is read from the window constructor. Do not use XAML to set Maximized to true
+            because <see cref="T:RT.Util.Forms.ManagedWindow"/> will not be able to override that without flicker (and thus doesn't support that at all).</summary>
+        </member>
+        <member name="P:RT.Util.Forms.ManagedWindow.Minimized">
+            <summary>Determines if the current managed form is minimised.</summary>
+        </member>
+        <member name="P:RT.Util.Forms.ManagedWindow.Maximized">
+            <summary>Determines whether the current managed form is maximised, or is minimised and would be maximised if restored.</summary>
+        </member>
+        <member name="P:RT.Util.Forms.ManagedWindow.NormalWidth">
+            <summary>Gets the width of the form when in normal state (i.e. not minimized or maximized).</summary>
+        </member>
+        <member name="P:RT.Util.Forms.ManagedWindow.NormalHeight">
+            <summary>Gets the height of the form when in normal state (i.e. not minimized or maximized).</summary>
+        </member>
+        <member name="P:RT.Util.Forms.ManagedWindow.NormalLeft">
+            <summary>Gets the X-coordinate of the form when in normal state (i.e. not minimized or maximized).</summary>
+        </member>
+        <member name="P:RT.Util.Forms.ManagedWindow.NormalTop">
+            <summary>Gets the Y-coordinate of the form when in normal state (i.e. not minimized or maximized).</summary>
+        </member>
+        <member name="M:RT.Util.Forms.ManagedWindow.Show">
+            <summary>
+            Shows the form properly: if it is visible but minimized it will be restored
+            and activated; otherwise the base implementation of Show will be invoked.
+            </summary>
+        </member>
+        <member name="T:RT.Util.Forms.ManagedWindow.Settings">
+            <summary>Holds the settings of the <see cref="T:RT.Util.Forms.ManagedWindow"/>.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.ManagedWindow.Settings.DimensionsByRes">
+            <summary>Holds form dimensions for each screen resolution.</summary>
+        </member>
+        <member name="T:RT.Util.Forms.ManagedWindow.WindowDimensions">
+            <summary>Stores the size, position and maximized state of the form.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.ManagedWindow.WindowDimensions.Left">
+            <summary>Stores the left (X) coordinate of the form when not maximized.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.ManagedWindow.WindowDimensions.Top">
+            <summary>Stores the top (Y) coordinate of the form when not maximized.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.ManagedWindow.WindowDimensions.Width">
+            <summary>Stores the width of the form when not maximized.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.ManagedWindow.WindowDimensions.Height">
+            <summary>Stores the height of the form when not maximized.</summary>
+        </member>
+        <member name="F:RT.Util.Forms.ManagedWindow.WindowDimensions.Maximized">
+            <summary>Stores whether the form is maximized.</summary>
+        </member>
+        <member name="T:RT.Util.GlobalKeyboardListener">
+            <summary>Manages a global low-level keyboard hook.</summary>
+        </member>
+        <member name="P:RT.Util.GlobalKeyboardListener.HookedKeys">
+            <summary>The collections of keys to watch for. This is ignored if <see cref="P:RT.Util.GlobalKeyboardListener.HookAllKeys" /> is set to true.</summary>
+        </member>
+        <member name="P:RT.Util.GlobalKeyboardListener.HookAllKeys">
+            <summary>
+                Gets or sets a value indicating whether all keys are listened for. If this is set to true, <see
+                cref="P:RT.Util.GlobalKeyboardListener.HookedKeys" /> is ignored.</summary>
+        </member>
+        <member name="F:RT.Util.GlobalKeyboardListener._hHook">
+            <summary>Handle to the hook, need this to unhook and call the next hook</summary>
+        </member>
+        <member name="F:RT.Util.GlobalKeyboardListener._ctrl">
+            <summary>Current state of each modifier key.</summary>
+        </member>
+        <member name="F:RT.Util.GlobalKeyboardListener._alt">
+            <summary>Current state of each modifier key.</summary>
+        </member>
+        <member name="F:RT.Util.GlobalKeyboardListener._shift">
+            <summary>Current state of each modifier key.</summary>
+        </member>
+        <member name="F:RT.Util.GlobalKeyboardListener._win">
+            <summary>Current state of each modifier key.</summary>
+        </member>
+        <member name="E:RT.Util.GlobalKeyboardListener.KeyDown">
+            <summary>Occurs when one of the hooked keys is pressed.</summary>
+        </member>
+        <member name="E:RT.Util.GlobalKeyboardListener.KeyUp">
+            <summary>Occurs when one of the hooked keys is released.</summary>
+        </member>
+        <member name="F:RT.Util.GlobalKeyboardListener._hook">
+            <summary>Keeps the managed delegate referenced so that the garbage collector doesn’t collect it.</summary>
+        </member>
+        <member name="M:RT.Util.GlobalKeyboardListener.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:RT.Util.GlobalKeyboardListener" /> class and installs the keyboard hook.</summary>
+        </member>
+        <member name="M:RT.Util.GlobalKeyboardListener.Finalize">
+            <summary>
+                Releases unmanaged resources and performs other cleanup operations before the <see
+                cref="T:RT.Util.GlobalKeyboardListener" /> is reclaimed by garbage collection and uninstalls the keyboard hook.</summary>
+        </member>
+        <member name="M:RT.Util.GlobalKeyboardListener.Dispose">
+            <summary>Unregisters the hook and disposes the object.</summary>
+        </member>
+        <member name="M:RT.Util.GlobalKeyboardListener.hookProc(System.Int32,System.Int32,RT.Util.WinAPI.KeyboardHookStruct@)">
+            <summary>
+                The callback for the keyboard hook.</summary>
+            <param name="code">
+                The hook code. If this is &lt; 0, the callback shouldn’t do anyting.</param>
+            <param name="wParam">
+                The event type. Only <c>WM_(SYS)?KEY(DOWN|UP)</c> events are handled.</param>
+            <param name="lParam">
+                Information about the key pressed/released.</param>
+        </member>
+        <member name="T:RT.Util.ModifierKeysState">
+            <summary>Encapsulates the current state of modifier keys.</summary>
+        </member>
+        <member name="M:RT.Util.ModifierKeysState.#ctor(System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="P:RT.Util.ModifierKeysState.Ctrl">
+            <summary>Gets the state of the Control key (true if left OR right is down).</summary>
+        </member>
+        <member name="P:RT.Util.ModifierKeysState.Alt">
+            <summary>Gets the state of the Alt key (true if left OR right is down).</summary>
+        </member>
+        <member name="P:RT.Util.ModifierKeysState.Shift">
+            <summary>Gets the state of the Shift key (true if left OR right is down).</summary>
+        </member>
+        <member name="P:RT.Util.ModifierKeysState.Win">
+            <summary>Gets the state of the Windows key (true if left OR right is down).</summary>
+        </member>
+        <member name="M:RT.Util.ModifierKeysState.op_Equality(RT.Util.ModifierKeysState,RT.Util.ModifierKeysState)">
+            <summary>Compares the modifiers and returns true iff the two are equal.</summary>
+        </member>
+        <member name="M:RT.Util.ModifierKeysState.op_Inequality(RT.Util.ModifierKeysState,RT.Util.ModifierKeysState)">
+            <summary>Compares the modifiers and returns true iff the two are not equal.</summary>
+        </member>
+        <member name="M:RT.Util.ModifierKeysState.Equals(System.Object)">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="M:RT.Util.ModifierKeysState.GetHashCode">
+            <summary>Override; see base.</summary>
+        </member>
+        <member name="T:RT.Util.GlobalKeyEventArgs">
+            <summary>Contains arguments for the KeyUp/KeyDown event in a <see cref="T:RT.Util.GlobalKeyboardListener" />.</summary>
+        </member>
+        <member name="P:RT.Util.GlobalKeyEventArgs.VirtualKeyCode">
+            <summary>The virtual-key code of the key being pressed or released.</summary>
+        </member>
+        <member name="P:RT.Util.GlobalKeyEventArgs.ScanCode">
+            <summary>The scancode of the key being pressed or released.</summary>
+        </member>
+        <member name="P:RT.Util.GlobalKeyEventArgs.ModifierKeys">
+            <summary>Current state of the modifier keys</summary>
+        </member>
+        <member name="P:RT.Util.GlobalKeyEventArgs.Handled">
+            <summary>Set this to ‘true’ to prevent further processing of the keystroke (i.e. to ‘swallow’ it).</summary>
+        </member>
+        <member name="M:RT.Util.GlobalKeyEventArgs.#ctor(System.Windows.Forms.Keys,System.Int32,RT.Util.ModifierKeysState)">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:RT.Util.GlobalKeyEventHandler">
+            <summary>Used to trigger the KeyUp/KeyDown events in <see cref="T:RT.Util.GlobalKeyboardListener" />.</summary>
+        </member>
+        <member name="T:RT.Util.HClient">
+            <summary>Provides very simple and easy-to-use methods to run an HTTP request and receive the response.</summary>
+        </member>
+        <member name="F:RT.Util.HClient.DefaultRootUrl">
+            <summary>Specifies the default root URL. See <see cref="F:RT.Util.HClient.RootUrl"/> for more information.</summary>
+        </member>
+        <member name="F:RT.Util.HClient.DefaultLog">
+            <summary>Specifies the default logger. See <see cref="F:RT.Util.HClient.Log"/> for more information.</summary>
+        </member>
+        <member name="F:RT.Util.HClient.Cookies">
+            <summary>Contains the cookies to be sent to the server and received from the server.</summary>
+        </member>
+        <member name="F:RT.Util.HClient.Log">
+            <summary>Specifies a logger that logs all outgoing requests and responses.</summary>
+        </member>
+        <member name="P:RT.Util.HClient.ReqHeaders">
+            <summary>
+                Exposes a collection of request headers. See Remarks.</summary>
+            <remarks>
+                HttpWebRequest labels certain headers "restricted" and requires them to be modified by modifying request
+                properties, rather than setting values via the Headers collection. This class unrestricts some of those
+                headers, specifically: Accept, Host, Referer, TransferEncoding, UserAgent. Some of the restricted headers are
+                only supported partially, indirectly or via properties, specifically: Connection, ContentType, ContentLength,
+                Expect. The remaining restricted headers cannot currently be modified at all, specifically: Date,
+                IfModifiedSince, ProxyConnection, Range</remarks>
+        </member>
+        <member name="P:RT.Util.HClient.ReqAccept">
+            <summary>
+                A shorthand for getting and setting ReqHeaders[HttpRequestHeader.Accept]. Defaults to what a recent version of
+                US Firefox might send.</summary>
+        </member>
+        <member name="P:RT.Util.HClient.ReqAcceptLanguage">
+            <summary>
+                A shorthand for getting and setting ReqHeaders[HttpRequestHeader.AcceptLanguage]. Defaults to what a recent
+                version of US Firefox might send.</summary>
+        </member>
+        <member name="P:RT.Util.HClient.ReqUserAgent">
+            <summary>
+                A shorthand for getting and setting ReqHeaders[HttpRequestHeader.UserAgent] Defaults to what a recent version
+                of US Firefox might send..</summary>
+        </member>
+        <member name="P:RT.Util.HClient.ReqReferer">
+            <summary>A shorthand for getting and setting ReqHeaders[HttpRequestHeader.Referer]. Defaults to null</summary>
+        </member>
+        <member name="P:RT.Util.HClient.Timeout">
+            <summary>
+                Specifies how long to wait for the server to respond to the request before throwing an exception. Defaults to
+                10 seconds.</summary>
+        </member>
+        <member name="P:RT.Util.HClient.AllowAutoRedirect">
+            <summary>
+                Specifies whether the receipt of a redirect should automatically generate a new request for the new URL.
+                Defaults to false.</summary>
+        </member>
+        <member name="P:RT.Util.HClient.AutomaticDecompression">
+            <summary>
+                Specifies which compression methods are supported. This affects the Accept-Encoding header and automatically
+                decompresses the response if necessary. Defaults to gzip+deflate, as used by modern browsers.</summary>
+        </member>
+        <member name="P:RT.Util.HClient.KeepAlive">
+            <summary>Specifies whether to use keep-alive for follow-up requests. Defaults to true.</summary>
+        </member>
+        <member name="P:RT.Util.HClient.Expect100Continue">
+            <summary>
+                Specifies whether to use Expect: 100 (continue) for post requests, thus querying the server for whether it
+                wants to accept the post request, before sending the request body. Defaults to false. If true, the entire
+                interaction is handled transparently.</summary>
+        </member>
+        <member name="F:RT.Util.HClient.RootUrl">
+            <summary>
+                Specifies the root URL. If the request URL begins with <c>http://</c> or <c>https://</c>, this is ignored.
+                Otherwise the URL is prepended with this value.</summary>
+        </member>
+        <member name="M:RT.Util.HClient.#ctor">
+            <summary>Constructor. Initializes the request to look like it came from a recent version of Firefox.</summary>
+        </member>
+        <member name="M:RT.Util.HClient.Get(System.String,RT.Util.HArg[])">
+            <summary>
+                Performs a GET request to the specified URL and with the specified query parameters.</summary>
+            <param name="url">
+                The URL of the request. If the URL does not begin with <c>http://</c> or <c>https://</c>, it is automatically
+                prepended with <see cref="F:RT.Util.HClient.RootUrl"/>.</param>
+            <param name="args">
+                Query parameters to add to the end of the URL in the usual <c>?k1=v1&amp;k2=v2&amp;...</c> format. Null values
+                are allowed and ignored.</param>
+            <returns>
+                The response received from the server.</returns>
+        </member>
+        <member name="M:RT.Util.HClient.Post(System.String,System.Byte[],System.String)">
+            <summary>
+                Performs a POST request with the body of the request specified as raw data.</summary>
+            <param name="url">
+                The URL of the request. If the URL does not begin with <c>http://</c> or <c>https://</c>, it is automatically
+                prepended with <see cref="F:RT.Util.HClient.RootUrl"/>.</param>
+            <param name="bytes">
+                The body of the request, as raw data.</param>
+            <param name="contentType">
+                The value of the <c>Content-Type</c> header.</param>
+            <returns>
+                The response received from the server.</returns>
+        </member>
+        <member name="M:RT.Util.HClient.Post(System.String,RT.Util.HArg[])">
+            <summary>
+                Performs a POST request with the body consisting of a series of key-value arguments.</summary>
+            <param name="url">
+                The URL of the request. If the URL does not begin with <c>http://</c> or <c>https://</c>, it is automatically
+                prepended with <see cref="F:RT.Util.HClient.RootUrl"/>.</param>
+            <param name="args">
+                The arguments to pass with the POST request. Null values are allowed and ignored.</param>
+            <returns>
+                The response received from the server.</returns>
+            <remarks>
+                This method automatically calls either <see cref="M:RT.Util.HClient.PostFormdata(System.String,RT.Util.HArg[])"/> or <see cref="M:RT.Util.HClient.PostUrlencoded(System.String,RT.Util.HArg[])"/> depending on
+                whether the provided arguments contain any file uploads or not.</remarks>
+        </member>
+        <member name="M:RT.Util.HClient.PostUrlencoded(System.String,RT.Util.HArg[])">
+            <summary>
+                Performs a POST request with the body consisting of a series of key-value arguments, encoded in the
+                <c>application/x-www-form-urlencoded</c> format.</summary>
+            <param name="url">
+                The URL of the request. If the URL does not begin with <c>http://</c> or <c>https://</c>, it is automatically
+                prepended with <see cref="F:RT.Util.HClient.RootUrl"/>.</param>
+            <param name="args">
+                The arguments to pass with the POST request. Null values are allowed and ignored.</param>
+            <returns>
+                The response received from the server.</returns>
+            <remarks>
+                Choose this format for requests that need to be small and do not contain any file uploads.</remarks>
+            <seealso cref="M:RT.Util.HClient.Post(System.String,RT.Util.HArg[])"/>
+        </member>
+        <member name="M:RT.Util.HClient.PostFormdata(System.String,RT.Util.HArg[])">
+            <summary>
+                Performs a POST request with the body consisting of a series of key-value arguments, encoded in the
+                <c>multipart/form-data</c> format.</summary>
+            <param name="url">
+                The URL of the request. If the URL does not begin with <c>http://</c> or <c>https://</c>, it is automatically
+                prepended with <see cref="F:RT.Util.HClient.RootUrl"/>.</param>
+            <param name="args">
+                The arguments to pass with the POST request. Null values are allowed and ignored.</param>
+            <returns>
+                The response received from the server.</returns>
+            <remarks>
+                Choose this format for requests that need to contain file uploads.</remarks>
+            <seealso cref="M:RT.Util.HClient.Post(System.String,RT.Util.HArg[])"/>
+        </member>
+        <member name="T:RT.Util.HArg">
+            <summary>Encapsulates an argument passed into an HTTP request sent by <see cref="T:RT.Util.HClient"/>.</summary>
+        </member>
+        <member name="P:RT.Util.HArg.Name">
+            <summary>The name of the argument.</summary>
+        </member>
+        <member name="P:RT.Util.HArg.Value">
+            <summary>
+                The value of the argument, or <c>null</c> if this is a file upload.</summary>
+            <remarks>
+                If this is non-<c>null</c>, all of <see cref="P:RT.Util.HArg.FileName"/>, <see cref="P:RT.Util.HArg.FileContentType"/> and <see
+                cref="P:RT.Util.HArg.FileContent"/> must be <c>null</c>.</remarks>
+        </member>
+        <member name="P:RT.Util.HArg.FileName">
+            <summary>
+                The name of the file to upload.</summary>
+            <remarks>
+                If this is non-<c>null</c>, <see cref="P:RT.Util.HArg.FileContentType"/> and <see cref="P:RT.Util.HArg.FileContent"/> must be
+                non-<c>null</c> too, and <see cref="P:RT.Util.HArg.Value"/> must be <c>null</c>.</remarks>
+        </member>
+        <member name="P:RT.Util.HArg.FileContentType">
+            <summary>
+                The name of the file to upload.</summary>
+            <remarks>
+                If this is non-<c>null</c>, <see cref="P:RT.Util.HArg.FileName"/> and <see cref="P:RT.Util.HArg.FileContent"/> must be non-<c>null</c> too,
+                and <see cref="P:RT.Util.HArg.Value"/> must be <c>null</c>.</remarks>
+        </member>
+        <member name="P:RT.Util.HArg.FileContent">
+            <summary>
+                The name of the file to upload.</summary>
+            <remarks>
+                If this is non-<c>null</c>, <see cref="P:RT.Util.HArg.FileName"/> and <see cref="P:RT.Util.HArg.FileContentType"/> must be non-<c>null</c>
+                too, and <see cref="P:RT.Util.HArg.Value"/> must be <c>null</c>.</remarks>
+        </member>
+        <member name="M:RT.Util.HArg.#ctor(System.String,System.String)">
+            <summary>
+                Constructor for a key-value argument (not a file upload).</summary>
+            <param name="name">
+                Name of the argument.</param>
+            <param name="value">
+                Value of the argument.</param>
+            <seealso cref="M:RT.Util.HArg.#ctor(System.String,RT.Json.JsonValue)"/>
+            <seealso cref="M:RT.Util.HArg.#ctor(System.String,System.String,System.String,System.Byte[])"/>
+        </member>
+        <member name="M:RT.Util.HArg.#ctor(System.String,RT.Json.JsonValue)">
+            <summary>
+                Constructor for a key-value argument (not a file upload).</summary>
+            <param name="name">
+                Name of the argument.</param>
+            <param name="value">
+                Value of the argument. This value is encoded as JSON syntax.</param>
+            <seealso cref="M:RT.Util.HArg.#ctor(System.String,System.String)"/>
+            <seealso cref="M:RT.Util.HArg.#ctor(System.String,System.String,System.String,System.Byte[])"/>
+        </member>
+        <member name="M:RT.Util.HArg.#ctor(System.String,System.String,System.String,System.Byte[])">
+            <summary>
+                Constructor for a file upload.</summary>
+            <param name="name">
+                Name of the argument.</param>
+            <param name="fileName">
+                Name of the file to upload.</param>
+            <param name="fileContentType">
+                MIME content-type of the file to upload.</param>
+            <param name="fileContent">
+                Raw file content.</param>
+            <seealso cref="M:RT.Util.HArg.#ctor(System.String,System.String)"/>
+            <seealso cref="M:RT.Util.HArg.#ctor(System.String,RT.Json.JsonValue)"/>
+        </member>
+        <member name="P:RT.Util.HArg.ValidForUrlEncoded">
+            <summary>Determines whether this argument can be used in a call to <see cref="M:RT.Util.HClient.PostUrlencoded(System.String,RT.Util.HArg[])"/>.</summary>
+        </member>
+        <member name="P:RT.Util.HArg.Valid">
+            <summary>
+                Determines whether this argument is valid.</summary>
+            <remarks>
+                <para>
+                    To be valid, this argument must satisfy the following conditions:</para>
+                <list type="bullet">
+                    <item><description>
+                        <see cref="P:RT.Util.HArg.Name"/> cannot be <c>null</c>;</description></item>
+                    <item><description>
+                        <para>
+                            either:</para>
+                        <list type="bullet">
+                            <item><description>
+                                <see cref="P:RT.Util.HArg.Value"/> is non-<c>null</c>, while <see cref="P:RT.Util.HArg.FileName"/>, <see
+                                cref="P:RT.Util.HArg.FileContentType"/> and <see cref="P:RT.Util.HArg.FileContent"/> are <c>null</c>, or</description></item>
+                            <item><description>
+                                <see cref="P:RT.Util.HArg.Value"/> is <c>null</c>, while <see cref="P:RT.Util.HArg.FileName"/>, <see
+                                cref="P:RT.Util.HArg.FileContentType"/> and <see cref="P:RT.Util.HArg.FileContent"/> are non-<c>null</c>.</description></item></list></description></item></list></remarks>
+        </member>
+        <member name="T:RT.Util.HResponse">
+            <summary>
+                Encapsulates the response received by an HTTP server after a call to <see cref="M:RT.Util.HClient.Get(System.String,RT.Util.HArg[])"/>, <see
+                cref="M:RT.Util.HClient.Post(System.String,RT.Util.HArg[])"/> or related methods.</summary>
+        </member>
+        <member name="M:RT.Util.HResponse.#ctor(System.Net.HttpWebResponse)">
+            <summary>
+                Constructs a new instance of <see cref="T:RT.Util.HResponse"/> by reading all data from the response stream of the
+                specified <see cref="T:System.Net.HttpWebResponse"/> object and closing it.</summary>
+            <param name="response">
+                Object to copy data from.</param>
+        </member>
+        <member name="P:RT.Util.HResponse.Data">
+            <summary>The raw content of the response.</summary>
+        </member>
+        <member name="P:RT.Util.HResponse.DataString">
+            <summary>The content of the response, converted to a <c>string</c> from UTF-8.</summary>
+        </member>
+        <member name="P:RT.Util.HResponse.DataJson">
+            <summary>The content of the response, parsed as JSON.</summary>
+        </member>
+        <member name="P:RT.Util.HResponse.StatusCode">
+            <summary>The status code of the response.</summary>
+        </member>
+        <member name="P:RT.Util.HResponse.Location">
+            <summary>Specifies the location this response is redirecting to or was redirected to.</summary>
+        </member>
+        <member name="P:RT.Util.HResponse.Headers">
+            <summary>Gets a collection containing response headers.</summary>
+        </member>
+        <member name="M:RT.Util.HResponse.Expect(System.Net.HttpStatusCode)">
+            <summary>
+                Throws an exception if the status code of the response is not the specified expected status code.</summary>
+            <param name="status">
+                The status code that is expected.</param>
+            <returns>
+                Itself.</returns>
+        </member>
+        <member name="T:RT.Util.RTSmtpException">
+            <summary>Encapsulates an error condition that occurred during an SMTP exchange.</summary>
+        </member>
+        <member name="P:RT.Util.RTSmtpException.Conversation">
+            <summary>Contains the SMTP conversation (protocol text sent back and forth) up to the point of the error.</summary>
+        </member>
+        <member name="M:RT.Util.RTSmtpException.#ctor(System.String,System.Collections.Generic.List{System.String},System.Exception)">
+            <summary>
+                Constructor.</summary>
+            <param name="message">
+                Error message.</param>
+            <param name="conversation">
+                Contains the SMTP conversation (protocol text sent back and forth) up to the point of the error.</param>
+            <param name="inner">
+                Inner exception.</param>
+        </member>
+        <member name="T:RT.Util.SmtpEncryption">
+            <summary>Represents an SMTP encryption mode.</summary>
+        </member>
+        <member name="F:RT.Util.SmtpEncryption.None">
+            <summary>No encryption</summary>
+        </member>
+        <member name="F:RT.Util.SmtpEncryption.Ssl">
+            <summary>SSL/TLS encryption</summary>
+        </member>
+        <member name="F:RT.Util.SmtpEncryption.SslIgnoreCert">
+            <summary>SSL/TLS encryption; any certificate validation errors are ignored.</summary>
+        </member>
+        <member name="T:RT.Util.RTSmtpSettings">
+            <summary>Holds all settings required to connect to an SMTP server.</summary>
+        </member>
+        <member name="F:RT.Util.RTSmtpSettings.Host">
+            <summary>Server host name or IP address.</summary>
+        </member>
+        <member name="F:RT.Util.RTSmtpSettings.Port">
+            <summary>Server port. Standard ports: 25 for no encryption, 465 for SSL.</summary>
+        </member>
+        <member name="F:RT.Util.RTSmtpSettings.Encryption">
+            <summary>Encryption to use.</summary>
+        </member>
+        <member name="F:RT.Util.RTSmtpSettings.Username">
+            <summary>
+                SMTP username for login - for "me@example.com" this is typically "me" or "me@example.com", but can be
+                anything.</summary>
+        </member>
+        <member name="F:RT.Util.RTSmtpSettings.Password">
+            <summary>
+                Unencrypted password to be automatically encrypted by Classify whenever the settings are loaded or saved.</summary>
+        </member>
+        <member name="F:RT.Util.RTSmtpSettings.PasswordEncrypted">
+            <summary>The encrypted password.</summary>
+        </member>
+        <member name="P:RT.Util.RTSmtpSettings.PasswordDecrypted">
+            <summary>The decrypted password.</summary>
+        </member>
+        <member name="M:RT.Util.RTSmtpSettings.DecryptPassword(System.String)">
+            <summary>When implemented in a derived class, decrypts the specified encrypted password.</summary>
+        </member>
+        <member name="M:RT.Util.RTSmtpSettings.EncryptPassword(System.String)">
+            <summary>When implemented in a derived class, encrypts the specified clear-text password.</summary>
+        </member>
+        <member name="T:RT.Util.RTSmtpClient">
+            <summary>Provides methods to send e-mails via an SMTP server.</summary>
+        </member>
+        <member name="M:RT.Util.RTSmtpClient.#ctor(System.String,System.Int32,System.String,System.String,RT.Util.SmtpEncryption,RT.Util.LoggerBase,System.Int32)">
+            <summary>
+                Creates a connection to the SMTP server and authenticates the specified user.</summary>
+            <param name="host">
+                SMTP host name.</param>
+            <param name="port">
+                SMTP host port.</param>
+            <param name="username">
+                SMTP username.</param>
+            <param name="password">
+                SMTP password.</param>
+            <param name="encryption">
+                Encryption mode.</param>
+            <param name="log">
+                The SMTP client logs various messages to this log at various verbosity levels.</param>
+            <param name="timeout">
+                Network stream read/write timeout, in milliseconds.</param>
+            <exception cref="T:RT.Util.RTSmtpException">
+                SMTP protocol error, or authentication failed.</exception>
+            <exception cref="T:System.IO.IOException">
+                Network error or timeout.</exception>
+        </member>
+        <member name="M:RT.Util.RTSmtpClient.#ctor(RT.Util.RTSmtpSettings,RT.Util.LoggerBase)">
+            <summary>
+                Creates a connection to the SMTP server and authenticates the specified user.</summary>
+            <param name="settings">
+                An object containing the relevant SMTP settings.</param>
+            <param name="log">
+                The SMTP client logs various messages to this log at various verbosity levels.</param>
+            <exception cref="T:RT.Util.RTSmtpException">
+                SMTP protocol error, or authentication failed.</exception>
+        </member>
+        <member name="M:RT.Util.RTSmtpClient.SendEmail(System.Net.Mail.MailAddress,System.Collections.Generic.IEnumerable{System.Net.Mail.MailAddress},System.String,System.String,System.String)">
+            <summary>
+                Sends an e-mail.</summary>
+            <param name="from">
+                From address.</param>
+            <param name="to">
+                Recipient address(es).</param>
+            <param name="subject">
+                Subject line.</param>
+            <param name="bodyPlain">
+                Plain-text version of the e-mail.</param>
+            <param name="bodyHtml">
+                HTML version of the e-mail.</param>
+        </member>
+        <member name="M:RT.Util.RTSmtpClient.SendEmail(System.Net.Mail.MailAddress,System.Collections.Generic.IEnumerable{System.Net.Mail.MailAddress},System.Collections.Generic.IEnumerable{System.String},System.String,System.String)">
+            <summary>
+                Sends an email with fully custom headers.</summary>
+            <param name="from">
+                The "envelope From" address presented to the MTA.</param>
+            <param name="to">
+                The "envelope To" address presented to the MTA.</param>
+            <param name="headers">
+                Zero or more headers. Headers must be in the correct format, including escaping, and excluding the linebreak
+                that separates headers (but including any line breaks required within the header). This method does not
+                validate the headers in any way, and does not include From, To, Date or any other headers unless explicitly
+                passed in through this argument.</param>
+            <param name="bodyPlain">
+                Plain-text version of the e-mail.</param>
+            <param name="bodyHtml">
+                HTML version of the e-mail.</param>
+        </member>
+        <member name="M:RT.Util.RTSmtpClient.EncodeHeader(System.String,System.String)">
+            <summary>
+                Encodes an email header for use with <see cref="M:RT.Util.RTSmtpClient.SendEmail(System.Net.Mail.MailAddress,System.Collections.Generic.IEnumerable{System.Net.Mail.MailAddress},System.Collections.Generic.IEnumerable{System.String},System.String,System.String)"/>, escaping, quoting and line-wrapping as required by the relevant
+                RFCs.</summary>
+        </member>
+        <member name="M:RT.Util.RTSmtpClient.EncodeHeader(System.String,System.Net.Mail.MailAddress[])">
+            <summary>
+                Encodes an email header for use with <see cref="M:RT.Util.RTSmtpClient.SendEmail(System.Net.Mail.MailAddress,System.Collections.Generic.IEnumerable{System.Net.Mail.MailAddress},System.Collections.Generic.IEnumerable{System.String},System.String,System.String)"/>, escaping, quoting and line-wrapping as required by the relevant
+                RFCs.</summary>
+        </member>
+        <member name="M:RT.Util.RTSmtpClient.Dispose">
+            <summary>Closes the SMTP connection and frees all associated resources.</summary>
+        </member>
+        <member name="T:RT.Util.Emailer">
+            <summary>
+                Implements a simple interface for sending an email that shares a global repository of SMTP settings. This
+                repository is stored using <see cref="T:RT.Util.SettingsUtil"/> using the name "RT.Emailer". The repository contains a list
+                of SMTP accounts with a unique name. One of the accounts may be designated as the default one if the application
+                doesn't specify any. The "From" address is fixed per account, but the name may be overridden by the application.</summary>
+        </member>
+        <member name="F:RT.Util.Emailer.Log">
+            <summary>If set, the SMTP client will log various messages to this log at various verbosity levels.</summary>
+        </member>
+        <member name="M:RT.Util.Emailer.SendEmail(System.Collections.Generic.IEnumerable{System.Net.Mail.MailAddress},System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+                Sends an email using one of the pre-configured RT.Emailer SMTP accounts. If none are configured on this
+                computer, an exception will be thrown, describing what the user needs to do - though this requires a pretty
+                technical user.</summary>
+            <param name="to">
+                The recipients of the email.</param>
+            <param name="subject">
+                Subject line.</param>
+            <param name="bodyPlain">
+                Body of the message in plaintext format, or null to omit this MIME type.</param>
+            <param name="bodyHtml">
+                Body of the message in HTML format, or null to omit this MIME type.</param>
+            <param name="account">
+                The name of one of the RT.Emailer accounts to use (case-sensitive). If null or not defined, will fall back to
+                exe name, then the Default Account setting, and then any defined account, in this order.</param>
+            <param name="fromName">
+                The text to use as the "from" name. If null, will use the executable name. This setting has no effect if the
+                specified RT.Emailer account specifies a FromName of its own.</param>
+        </member>
+        <member name="T:RT.Util.SettingsUtil">
+            <summary>Provides convenience methods for loading and saving application settings.</summary>
+        </member>
+        <member name="M:RT.Util.SettingsUtil.GetAttribute(System.Type)">
+            <summary>
+                Retrieves the mandatory <see cref="T:RT.Util.SettingsAttribute"/> for the specified settings class type. Throws if the
+                type doesn't have it specified.</summary>
+            <param name="settingsType">
+                Type of the settings class whose attribute is to be retrieved</param>
+        </member>
+        <member name="M:RT.Util.SettingsUtil.GetAttribute``1">
+            <summary>
+                Retrieves the mandatory <see cref="T:RT.Util.SettingsAttribute"/> for the type <typeparamref name="TSettings"/>. Throws
+                if the type doesn't have it specified.</summary>
+            <typeparam name="TSettings">
+                Type of the settings class whose attribute is to be retrieved</typeparam>
+        </member>
+        <member name="M:RT.Util.SettingsUtil.PostBuildStep``1(RT.PostBuild.IPostBuildReporter)">
+            <summary>
+                Performs safety checks to ensure that a settings object conforms to various requirements imposed by
+                SettingsUtil methods. Run this method as a post-build step to ensure reliability of execution. For an example
+                of use, see <see cref="M:RT.PostBuild.PostBuildChecker.RunPostBuildChecks(System.String,System.Reflection.Assembly[])"/>. This method is available only in DEBUG mode.</summary>
+            <typeparam name="TSettings">
+                The type of the settings object, derived from <see cref="T:RT.Util.SettingsBase"/>, which would be passed to
+                SettingsUtil methods at normal run-time.</typeparam>
+            <param name="rep">
+                Object to report post-build errors to.</param>
+        </member>
+        <member name="M:RT.Util.SettingsUtil.LoadSettings``1(``0@,System.String,System.Nullable{RT.Util.SettingsSerializer})">
+            <summary>
+                Loads settings into the specified class, or, if not available, creates a new instance of the class. See
+                Remarks.</summary>
+            <remarks>
+                If the settings file exists but can't be loaded, this function will automatically create a backup of the
+                settings file. If the file is opened exclusively by other code, will retry reading from it for up to 1.5
+                seconds.</remarks>
+            <param name="settings">
+                Destination - the settings class will be placed here</param>
+            <param name="filename">
+                If specified, overrides the filename that is normally derived from the values specified in the <see
+                cref="T:RT.Util.SettingsAttribute"/> on the settings class.</param>
+            <param name="serializer">
+                If specified, overrides the serializer specified in the <see cref="T:RT.Util.SettingsAttribute"/> on the settings class.</param>
+            <returns>
+                true if loaded an existing file, false if created a new one.</returns>
+        </member>
+        <member name="M:RT.Util.SettingsUtil.EncryptPassword(System.String,System.Byte[])">
+            <summary>
+                Encrypts a password using AES. The result is encoded into base 64 for easy storage.</summary>
+            <param name="plain">
+                Plaintext password to encrypt.</param>
+            <param name="key">
+                The key to use for encryption. Must be exactly 32 bytes long.</param>
+            <returns>
+                The encrypted password as a base64-encoded string.</returns>
+        </member>
+        <member name="M:RT.Util.SettingsUtil.DecryptPassword(System.String,System.Byte[])">
+            <summary>
+                Decrypts a password encrypted with <see cref="M:RT.Util.SettingsUtil.EncryptPassword(System.String,System.Byte[])"/>.</summary>
+            <param name="cipher">
+                The output of <see cref="M:RT.Util.SettingsUtil.EncryptPassword(System.String,System.Byte[])"/>.</param>
+            <param name="key">
+                The key used to encrypt the password.</param>
+            <returns>
+                The decrypted password.</returns>
+        </member>
+        <member name="T:RT.Util.SettingsBase">
+            <summary>
+                Provides a base class for settings classes, implementing certain common usage patterns. See remarks for detailed
+                usage instructions.</summary>
+            <remarks>
+                <para>
+                    Derive a class from this one and add the fields you wish to persist. Mark those you don't want stored with the
+                    <see cref="T:RT.Serialization.ClassifyIgnoreAttribute"/>. You must mark the derived class with <see cref="T:RT.Util.SettingsAttribute"/>.</para>
+                <para>
+                    Once the above is done, the settings can be saved by calling <see cref="M:RT.Util.SettingsBase.Save(System.String,System.Nullable{RT.Util.SettingsSerializer},RT.Util.SettingsOnFailure)"/>/<see cref="M:RT.Util.SettingsBase.SaveQuiet(System.String,System.Nullable{RT.Util.SettingsSerializer})"/>,
+                    depending on intent. To load, call <see cref="M:RT.Util.SettingsUtil.LoadSettings``1(``0@,System.String,System.Nullable{RT.Util.SettingsSerializer})"/>, making sure that the
+                    generic type is the type of your descendant class. For example:</para>
+                <code>
+                    static class Program
+                    {
+                        public static MySettings Settings;
+                    
+                        static void Main(string[] args)
+                        {
+                            SettingsUtil.LoadSettings(out Settings);
+                            DoWork();
+                            Settings.Save();
+                        }
+                    }
+                    
+                    [Settings("MyApplicationName", SettingsKind.UserSpecific)]
+                    class MySettings : SettingsBase
+                    {
+                        public string SomeSetting = "initial/default value";
+                    }</code>
+                <para>
+                    <see cref="T:RT.Util.SettingsThreadedBase"/> implements an extra method to enable settings to be queued for a save on a
+                    separate thread, to reduce the performance impact of less important saves.</para></remarks>
+        </member>
+        <member name="F:RT.Util.SettingsBase._lock">
+            <summary>Lock object used to protect concurrent access.</summary>
+        </member>
+        <member name="F:RT.Util.SettingsBase._saveThread">
+            <summary>The thread on which the background saving is performed.</summary>
+        </member>
+        <member name="M:RT.Util.SettingsBase.BeforeSave">
+            <summary>
+                This method is called just before the settings class is written out to disk, allowing any required changes to
+                be made to the fields. The base implementation does nothing. Note that this may be called on a different
+                thread than the one invoking a Save* operation (but the same as the thread performing the save immediately
+                after this method returns).</summary>
+        </member>
+        <member name="M:RT.Util.SettingsBase.AfterLoad">
+            <summary>
+                This method is called just before the settings class is restored from disk, allowing any required changes to
+                be made to the fields. The base implementation does nothing.</summary>
+        </member>
+        <member name="M:RT.Util.SettingsBase.Save(System.String,System.Nullable{RT.Util.SettingsSerializer},RT.Util.SettingsOnFailure)">
+            <summary>
+                <para>
+                    Saves the settings.</para>
+                <para>
+                    This method is fully compatible with <see cref="M:RT.Util.SettingsThreadedBase.SaveThreaded(System.String,System.Nullable{RT.Util.SettingsSerializer})"/>, and will cancel any
+                    pending earlier (older) saves.</para></summary>
+        </member>
+        <member name="M:RT.Util.SettingsBase.SaveLoud(System.String,System.Nullable{RT.Util.SettingsSerializer})">
+            <summary>
+                <para>
+                    Saves the settings. Intended to be used whenever the settings are important enough to bug the user if this
+                    fails.</para>
+                <para>
+                    This method is fully compatible with <see cref="M:RT.Util.SettingsThreadedBase.SaveThreaded(System.String,System.Nullable{RT.Util.SettingsSerializer})"/>, and will cancel any
+                    pending earlier (older) saves.</para></summary>
+        </member>
+        <member name="M:RT.Util.SettingsBase.SaveQuiet(System.String,System.Nullable{RT.Util.SettingsSerializer})">
+            <summary>
+                <para>
+                    Saves the settings. Intended to be used whenever the settings are not important enough to bug the user if
+                    this fails.</para>
+                <para>
+                    This method is fully compatible with <see cref="M:RT.Util.SettingsThreadedBase.SaveThreaded(System.String,System.Nullable{RT.Util.SettingsSerializer})"/>, and will cancel any
+                    pending earlier (older) saves.</para></summary>
+        </member>
+        <member name="M:RT.Util.SettingsBase.Delete(System.String,RT.Util.SettingsOnFailure)">
+            <summary>Deletes the settings file.</summary>
+        </member>
+        <member name="P:RT.Util.SettingsBase.Attribute">
+            <summary>
+                Gets the <see cref="T:RT.Util.SettingsAttribute"/> instance specified on this settings class, or null if none are
+                specified.</summary>
+        </member>
+        <member name="T:RT.Util.SettingsThreadedBase">
+            <summary>Like <see cref="T:RT.Util.SettingsBase"/>, but implements an additional save method.</summary>
+        </member>
+        <member name="M:RT.Util.SettingsThreadedBase.CloneForSaveThreaded">
+            <summary>
+                Must return a deep clone of this class. This will be used to create a snapshot of the settings at the time
+                when <see cref="M:RT.Util.SettingsThreadedBase.SaveThreaded(System.String,System.Nullable{RT.Util.SettingsSerializer})"/> is called.</summary>
+        </member>
+        <member name="M:RT.Util.SettingsThreadedBase.SaveThreaded(System.String,System.Nullable{RT.Util.SettingsSerializer})">
+            <summary>
+                <para>
+                    Saves the settings. Intended for frequent use at any point where it would make sense to commit settings,
+                    but would not make sense to bug the user about any failures. This method is like <see
+                    cref="M:RT.Util.SettingsBase.SaveQuiet(System.String,System.Nullable{RT.Util.SettingsSerializer})"/>, except that the actual save occurs slightly later on a separate thread.
+                    The method returns as soon as <see cref="M:RT.Util.SettingsThreadedBase.CloneForSaveThreaded"/> returns.</para>
+                <para>
+                    Note that this method is NOT guaranteed to save settings, but it usually will. Make sure you call <see
+                    cref="M:RT.Util.SettingsBase.Save(System.String,System.Nullable{RT.Util.SettingsSerializer},RT.Util.SettingsOnFailure)"/> when you want to guarantee a save, especially just before the program
+                    terminates.</para></summary>
+        </member>
+        <member name="T:RT.Util.SettingsKind">
+            <summary>Determines what the settings in the settings file are logically "attached" to.</summary>
+        </member>
+        <member name="F:RT.Util.SettingsKind.MachineSpecific">
+            <summary>
+                These settings are specific to a particular computer. In normal mode: shared among all user accounts, and do
+                not roam. In portable mode: separate settings stored for every machine name; user account doesn't matter.</summary>
+        </member>
+        <member name="F:RT.Util.SettingsKind.UserSpecific">
+            <summary>
+                These settings are specific to a particular user. In normal mode: separate settings for each user account;
+                will roam to other machines if roaming is configured. In portable mode: always shared; user account and
+                machine name do not matter.</summary>
+        </member>
+        <member name="F:RT.Util.SettingsKind.UserAndMachineSpecific">
+            <summary>
+                These settings are specific to a particular combination of user and machine. In normal mode: separate settings
+                for each user account on each machine; will not roam. In portable mode: separate settings stored for every
+                machine name; user account doesn't matter.</summary>
+        </member>
+        <member name="F:RT.Util.SettingsKind.Global">
+            <summary>
+                These settings are intended to be global, with constraints imposed by reality. In normal mode: shared among
+                all user accounts, and do not roam. In portable mode: always shared; user account and machine name do not
+                matter.</summary>
+        </member>
+        <member name="T:RT.Util.SettingsOnFailure">
+            <summary>Specifies what to do in case of operation failing.</summary>
+        </member>
+        <member name="F:RT.Util.SettingsOnFailure.DoNothing">
+            <summary>Just ignore the failure: no exceptions thrown, no dialogs shown</summary>
+        </member>
+        <member name="F:RT.Util.SettingsOnFailure.Throw">
+            <summary>Throw an exception in case of failure</summary>
+        </member>
+        <member name="F:RT.Util.SettingsOnFailure.ShowRetryOnly">
+            <summary>Ask the user to retry or to skip operation. No exceptions thrown.</summary>
+        </member>
+        <member name="F:RT.Util.SettingsOnFailure.ShowRetryWithCancel">
+            <summary>Ask the user to retry, skip operation or cancel. <see cref="T:RT.Util.SettingsCancelException"/> thrown on cancel.</summary>
+        </member>
+        <member name="T:RT.Util.SettingsSerializer">
+            <summary>Determines which serializer the settings are read/written by.</summary>
+        </member>
+        <member name="F:RT.Util.SettingsSerializer.ClassifyXml">
+            <summary>Use the Classify serializer with the XML format.</summary>
+        </member>
+        <member name="F:RT.Util.SettingsSerializer.ClassifyBinary">
+            <summary>Use the Classify serializer with the binary format.</summary>
+        </member>
+        <member name="F:RT.Util.SettingsSerializer.ClassifyJson">
+            <summary>Use the Classify serializer with the JSON format.</summary>
+        </member>
+        <member name="F:RT.Util.SettingsSerializer.DotNetBinary">
+            <summary>Use the .NET binary serializer.</summary>
+        </member>
+        <member name="T:RT.Util.SettingsCancelException">
+            <summary>Indicates that the user chose to cancel the current operation.</summary>
+        </member>
+        <member name="M:RT.Util.SettingsCancelException.#ctor">
+            <summary>Creates an exception instance with the specified message.</summary>
+        </member>
+        <member name="T:RT.Util.SettingsAttribute">
+            <summary>Describes the intended usage of a "settings" class to <see cref="T:RT.Util.SettingsUtil"/> methods.</summary>
+        </member>
+        <member name="M:RT.Util.SettingsAttribute.#ctor(System.String,RT.Util.SettingsKind,RT.Util.SettingsSerializer)">
+            <summary>
+                Creates an instance of this attribute.</summary>
+            <param name="appName">
+                The name of the settings file is formed from this <paramref name="appName"/> according to certain rules. This
+                should be a string equal to the name of the application. Paths and extensions should be omitted. It is
+                important to specify the same name for settings of different <paramref name="kind"/>, because this allows
+                their portability to be controlled with the same {name}.IsPortable.txt file.</param>
+            <param name="kind">
+                Specifies what the settings in this settings class are logically "attached" to.</param>
+            <param name="serializer">
+                Specifies which serializer to use.</param>
+        </member>
+        <member name="P:RT.Util.SettingsAttribute.AppName">
+            <summary>
+                The name of the settings file is formed from this <see cref="P:RT.Util.SettingsAttribute.AppName"/> according to certain rules. This
+                should normally be a string equal to the name of the application. Paths and extensions should be omitted.</summary>
+        </member>
+        <member name="P:RT.Util.SettingsAttribute.Kind">
+            <summary>Specifies what the settings in this settings class are logically "attached" to.</summary>
+        </member>
+        <member name="P:RT.Util.SettingsAttribute.Serializer">
+            <summary>Specifies which serializer is used to read/write the settings file.</summary>
+        </member>
+        <member name="M:RT.Util.SettingsAttribute.GetFileName">
+            <summary>
+                Returns the full path and file name that should be used to store the settings class marked with this
+                attribute. Note that the return value may change depending on external factors (see remarks). The recommended
+                approach is to load settings once, and then save them whenever necessary to whichever path is returned by this
+                function.</summary>
+            <remarks>
+                This method checks if a file by the name <c>(AppName).IsPortable.txt</c> exists in the application path (see
+                <see cref="P:RT.Util.PathUtil.AppPath"/>). If that file exists, the settings are always stored in that application path.
+                This check is skipped if there is no entry assembly (<see cref="M:System.Reflection.Assembly.GetEntryAssembly"/> is null).</remarks>
+        </member>
+        <member name="T:RT.Util.UtWin">
+            <summary>Offers some Windows-specific static functions which are hard to categorize under any more specific classes.</summary>
+        </member>
+        <member name="M:RT.Util.UtWin.SendKeystrokes(System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+                Sends the specified sequence of key strokes to the active application. See remarks for details.</summary>
+            <param name="keys">
+                A collection of objects of type <see cref="T:System.Windows.Forms.Keys"/>, <see cref="T:System.Char"/>, or <c>System.Tuple&lt;Keys,
+                bool&gt;</c>.</param>
+            <exception cref="T:System.ArgumentNullException">
+                <paramref name="keys"/> was null.</exception>
+            <exception cref="T:System.ArgumentException">
+                <paramref name="keys"/> contains an object which is of an unexpected type. Only <see cref="T:System.Windows.Forms.Keys"/>, <see
+                cref="T:System.Char"/> and <c>System.Tuple&lt;System.Windows.Forms.Keys, bool&gt;</c> are accepted.</exception>
+            <remarks>
+                <list type="bullet">
+                    <item><description>
+                        For objects of type <see cref="T:System.Windows.Forms.Keys"/>, the relevant key is pressed and released.</description></item>
+                    <item><description>
+                        For objects of type <see cref="T:System.Char"/>, the specified Unicode character is simulated as a keypress and
+                        release.</description></item>
+                    <item><description>
+                        For objects of type <c>Tuple&lt;Keys, bool&gt;</c> or <c>ValueType&lt;Keys, bool&gt;</c>, the bool
+                        specifies whether to simulate only a key-down (false) or only a key-up (true).</description></item></list></remarks>
+            <example>
+                <para>
+                    The following example demonstrates how to use this method to send the key combination Win+R:</para>
+                <code>
+                    Ut.SendKeystrokes(Ut.NewArray&lt;object&gt;(
+                        (Keys.LWin, false),
+                        Keys.R,
+                        (Keys.LWin, true)
+                    ));</code></example>
+        </member>
+        <member name="M:RT.Util.UtWin.SendKeystrokes(System.Windows.Forms.Keys,System.Int32)">
+            <summary>
+                Sends the specified key the specified number of times.</summary>
+            <param name="key">
+                Key stroke to send.</param>
+            <param name="times">
+                Number of times to send the <paramref name="key"/>.</param>
+        </member>
+        <member name="M:RT.Util.UtWin.SendKeystrokesForText(System.String)">
+            <summary>Sends key strokes equivalent to typing the specified text.</summary>
+        </member>
+        <member name="P:RT.Util.UtWin.Ctrl">
+            <summary>Determines whether the Ctrl key is pressed.</summary>
+        </member>
+        <member name="P:RT.Util.UtWin.Alt">
+            <summary>Determines whether the Alt key is pressed.</summary>
+        </member>
+        <member name="P:RT.Util.UtWin.Shift">
+            <summary>Determines whether the Shift key is pressed.</summary>
+        </member>
+        <member name="T:RT.KitchenSink.Fonts.FontUtil">
+            <summary>Provides some assorted functionality relating to fonts.</summary>
+        </member>
+        <member name="M:RT.KitchenSink.Fonts.FontUtil.GetMonospaceFonts">
+            <summary>Returns a list of all monospace fonts installed in the system.</summary>
+        </member>
+        <member name="M:RT.KitchenSink.Fonts.FontUtil.GetFontFamiliesContaining(System.Int32[])">
+            <summary>Returns a list of all installed font families that contain a glyph for all of the specified Unicode characters.</summary>
+        </member>
+        <member name="M:RT.KitchenSink.Fonts.FontUtil.GetSupportedCharacters(System.String,System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>Returns a list of Unicode codepoints for which the specified font family has a glyph.</summary>
+            <param name="fontFamily">The font family to check.</param>
+            <param name="characters">A list of Unicode codepoints of the characters to check, or null to check all characters.</param>
+        </member>
+    </members>
+</doc>

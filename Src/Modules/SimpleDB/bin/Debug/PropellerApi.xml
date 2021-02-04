@@ -1,0 +1,258 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PropellerApi</name>
+    </assembly>
+    <members>
+        <member name="T:RT.PropellerApi.IPropellerModule">
+            <summary>Implement this interface to create a module for Propeller, the flexible HTTP webserver.</summary>
+        </member>
+        <member name="P:RT.PropellerApi.IPropellerModule.Name">
+            <summary>When implemented in a class, gets a human-readable name of the module.</summary>
+        </member>
+        <member name="M:RT.PropellerApi.IPropellerModule.Init(RT.Util.LoggerBase,RT.Json.JsonValue,RT.PropellerApi.ISettingsSaver)">
+            <summary>
+                When implemented in a class, initializes the module.</summary>
+            <remarks>
+                <para>
+                    Every time the Propeller server initializes this module, it creates a new instance of the class and then
+                    calls this method before invoking anything else on this interface.</para>
+                <para>
+                    If this method throws an exception, Propeller cancels reinitialization and does not invoke any other
+                    methods or properties on this interface.</para></remarks>
+            <param name="log">
+                Reference to a <see cref="T:RT.Util.LoggerBase"/> that should be used to log messages.</param>
+            <param name="settings">
+                The module’s settings as stored within the Propeller settings file.</param>
+            <param name="saver">
+                An object that can be used to save the module’s settings.</param>
+        </member>
+        <member name="P:RT.PropellerApi.IPropellerModule.FileFiltersToBeMonitoredForChanges">
+            <summary>
+                When implemented in a class, returns a list of file filters (e.g. <c>C:\path\*.*</c>) which Propeller will
+                monitor for changes. Every time a change to any matching file is detected, Propeller reinitializes this
+                module.</summary>
+            <remarks>
+                <para>
+                    Propeller invokes this property only once, after calling <see cref="M:RT.PropellerApi.IPropellerModule.Init(RT.Util.LoggerBase,RT.Json.JsonValue,RT.PropellerApi.ISettingsSaver)"/>.</para>
+                <para>
+                    It is acceptable to return <c>null</c> in place of an empty collection.</para></remarks>
+        </member>
+        <member name="M:RT.PropellerApi.IPropellerModule.Handle(RT.Servers.HttpRequest)">
+            <summary>
+                When implemented in a class, handles an HTTP request.</summary>
+            <param name="req">
+                HTTP request to handle.</param>
+            <returns>
+                HTTP response to return to the client.</returns>
+            <remarks>
+                Propeller does not invoke this method before calling <see cref="M:RT.PropellerApi.IPropellerModule.Init(RT.Util.LoggerBase,RT.Json.JsonValue,RT.PropellerApi.ISettingsSaver)"/>.</remarks>
+        </member>
+        <member name="P:RT.PropellerApi.IPropellerModule.MustReinitialize">
+            <summary>
+                When implemented in a class, determines whether the module requires reinitialization.</summary>
+            <remarks>
+                <para>
+                    The Propeller engine periodically calls this method on all active modules.</para>
+                <para>
+                    Propeller does not invoke this property before calling <see cref="M:RT.PropellerApi.IPropellerModule.Init(RT.Util.LoggerBase,RT.Json.JsonValue,RT.PropellerApi.ISettingsSaver)"/>.</para></remarks>
+        </member>
+        <member name="M:RT.PropellerApi.IPropellerModule.Shutdown">
+            <summary>
+                When implemented in a class, shuts down the module.</summary>
+            <remarks>
+                <para>
+                    The Propeller engine calls this method on a module when it is reinitialized. The instance is discarded
+                    after the call; all future calls go to the newly-initialized instance.</para>
+                <para>
+                    This method might not be called if the Propeller engine is interrupted via a service stop or a Ctrl-C on
+                    the console.</para>
+                <para>
+                    Propeller does not invoke this method before calling <see cref="M:RT.PropellerApi.IPropellerModule.Init(RT.Util.LoggerBase,RT.Json.JsonValue,RT.PropellerApi.ISettingsSaver)"/>.</para></remarks>
+        </member>
+        <member name="T:RT.PropellerApi.ISettingsSaver">
+            <summary>Provides an interface for Propeller modules to save their settings.</summary>
+        </member>
+        <member name="M:RT.PropellerApi.ISettingsSaver.SaveSettings(RT.Json.JsonValue)">
+            <summary>
+                Saves the specified settings.</summary>
+            <param name="settings">
+                Settings to save.</param>
+        </member>
+        <member name="T:RT.PropellerApi.PropellerModuleBase`1">
+            <summary>
+                Provides a default base implementation for Propeller modules.</summary>
+            <typeparam name="TSettings">
+                The type the module uses to represent its settings.</typeparam>
+        </member>
+        <member name="P:RT.PropellerApi.PropellerModuleBase`1.Name">
+            <summary>When overridden in a derived class, returns the human-readable name of the module.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerModuleBase`1.Log">
+            <summary>Contains the logger provided by Propeller.</summary>
+        </member>
+        <member name="M:RT.PropellerApi.PropellerModuleBase`1.SaveSettings">
+            <summary>Saves the settings stored in <see cref="P:RT.PropellerApi.PropellerModuleBase`1.Settings"/>.</summary>
+        </member>
+        <member name="P:RT.PropellerApi.PropellerModuleBase`1.Settings">
+            <summary>
+                Gets or sets the module’s current settings.</summary>
+            <remarks>
+                This property is automatically populated before <see cref="M:RT.PropellerApi.PropellerModuleBase`1.Init"/> is called.</remarks>
+        </member>
+        <member name="M:RT.PropellerApi.PropellerModuleBase`1.Init">
+            <summary>When overridden in a derived class, initializes the module. The default implementation does nothing.</summary>
+        </member>
+        <member name="P:RT.PropellerApi.PropellerModuleBase`1.FileFiltersToBeMonitoredForChanges">
+            <summary>
+                When overridden in a derived class, implements <see
+                cref="P:RT.PropellerApi.IPropellerModule.FileFiltersToBeMonitoredForChanges"/>. The default implementation returns <c>null</c>.</summary>
+        </member>
+        <member name="M:RT.PropellerApi.PropellerModuleBase`1.Handle(RT.Servers.HttpRequest)">
+            <summary>
+                When overridden in a derived class, handles an HTTP request.</summary>
+            <param name="req">
+                HTTP request to handle.</param>
+            <returns>
+                HTTP response.</returns>
+        </member>
+        <member name="P:RT.PropellerApi.PropellerModuleBase`1.MustReinitialize">
+            <summary>
+                When overridden in a derived class, implements <see cref="P:RT.PropellerApi.IPropellerModule.MustReinitialize"/>. The default
+                implementation returns <c>false</c>.</summary>
+        </member>
+        <member name="M:RT.PropellerApi.PropellerModuleBase`1.Shutdown">
+            <summary>
+                When overridden in a derived class, implements <see cref="M:RT.PropellerApi.IPropellerModule.Shutdown"/>. The default
+                implementation does nothing.</summary>
+        </member>
+        <member name="T:RT.PropellerApi.PropellerSettings">
+            <summary>Contains settings which are related to the Propeller engine, and not to any individual module.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerSettings.ServerOptions">
+            <summary>HttpServer configuration.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerSettings.Modules">
+            <summary>Contains the configuration of all the Propeller modules.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerSettings.HttpAccessLogFile">
+            <summary>If not <c>null</c>, every HTTP request is logged to this file.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerSettings.HttpAccessLogToConsole">
+            <summary>If <c>true</c>, all HTTP requests are logged to the console.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerSettings.HttpAccessLogVerbosity">
+            <summary>
+                Specifies log verbosity for the HTTP access log. For usage, see <see cref="M:RT.Util.LoggerBase.ConfigureVerbosity(System.String)"/>.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerSettings.LogFile">
+            <summary>Specifies the path and filename for the Propeller log, or <c>null</c> to keep no log.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerSettings.LogVerbosity">
+            <summary>
+                Specifies log verbosity for the Propeller log. For usage, see <see cref="M:RT.Util.LoggerBase.ConfigureVerbosity(System.String)"/>.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerSettings.TempFolder">
+            <summary>
+                The folder into which Propeller can place a copy of the module DLLs. Propeller will actually create (and later
+                clean up) numbered subfolders in this folder.</summary>
+            <remarks>
+                If omitted, <c>Path.GetTempPath()</c> is used.</remarks>
+        </member>
+        <member name="T:RT.PropellerApi.PropellerModuleSettings">
+            <summary>Encapsulates the settings pertaining to a module running within Propeller, including its name and URL hooks.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerModuleSettings.ModuleName">
+            <summary>
+                Provides a name for this instance of this module. You can use this to give different names to different
+                instances of the same module.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerModuleSettings.ModuleDll">
+            <summary>The path and filename of the DLL file containing the Propeller module.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerModuleSettings.MonitorFilters">
+            <summary>
+                Specifies a set of file filters (e.g. “C:\Folder\*.xml”) Propeller should monitor for file changes. If any
+                matching file is added, deleted or modified, the module is reinitialized. The folder that contains <see
+                cref="F:RT.PropellerApi.PropellerModuleSettings.ModuleDll"/> is already automatically monitored and does not need to be listed here.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerModuleSettings.ModuleType">
+            <summary>
+                The CLR type name of the Propeller module. This may be <c>null</c> if the DLL file contains only a single type
+                that implements <see cref="T:RT.PropellerApi.IPropellerModule"/>.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerModuleSettings.Hooks">
+            <summary>The URL hooks to hook this module to.</summary>
+        </member>
+        <member name="F:RT.PropellerApi.PropellerModuleSettings.Settings">
+            <summary>Settings for this module. (Stored as JSON and passed to the module to be deserialized there.)</summary>
+        </member>
+        <member name="M:RT.PropellerApi.PropellerModuleSettings.ToString">
+            <summary>Overrides <c>object.Tostring()</c>.</summary>
+        </member>
+        <member name="T:RT.PropellerApi.PropellerUtil">
+            <summary>Contains helper methods relating to Propeller.</summary>
+        </member>
+        <member name="M:RT.PropellerApi.PropellerUtil.RunStandalone(System.String,RT.PropellerApi.IPropellerModule,System.Boolean)">
+            <summary>
+                Executes a Propeller module in standalone mode (as opposed to being hosted by the Propeller engine).</summary>
+            <param name="module">
+                An instance of the module to be executed.</param>
+            <param name="settingsPath">
+                Path and filename of the Propeller settings file. This file must contain a Propeller configuration containing
+                exactly one module configuration.</param>
+            <param name="propagateExceptions">
+                Specifies whether exceptions get propagated to the debugger. Setting this to <c>true</c> will cause exceptions
+                to bring down the server, so only do this when debugging.</param>
+        </member>
+        <member name="M:RT.PropellerApi.PropellerUtil.LoadSettings(System.String,RT.Util.LoggerBase,System.Boolean)">
+            <summary>
+                Loads Propeller settings from the appropriate location. Using this method ensures that settings are loaded in
+                exactly the same way and from the same place as the Propeller engine would load them.</summary>
+            <param name="settingsPath">
+                Path and filename of the settings to load.</param>
+            <param name="log">
+                Information about how the settings were loaded is logged here. Must not be <c>null</c>.</param>
+            <param name="firstRunEver">
+                Adjusts the log messages for improved human readability.</param>
+        </member>
+        <member name="M:RT.PropellerApi.PropellerUtil.GetLogger(System.Boolean,System.String,System.String)">
+            <summary>
+                Returns a logger in accordance with the specified settings.</summary>
+            <param name="console">
+                If <c>true</c>, the resulting logger will log to the console.</param>
+            <param name="file">
+                If non-<c>null</c>, the resulting logger will log to the specified file.</param>
+            <param name="logVerbosity">
+                Configures the verbosity of the resulting logger.</param>
+            <remarks>
+                <para>
+                    Uses <see cref="T:RT.Util.ConsoleLogger"/> amd <see cref="T:RT.Util.FileAppendLogger"/> as appropriate.</para>
+                <para>
+                    If both logging mechanisms are specified, uses a <see cref="T:RT.Util.MulticastLogger"/> to combine the two.</para></remarks>
+        </member>
+        <member name="M:RT.PropellerApi.PropellerUtil.LogException(RT.Util.LoggerBase,System.Exception)">
+            <summary>
+                Logs an exception.</summary>
+            <param name="log">
+                Logger to log the exception to.</param>
+            <param name="e">
+                The exception to log.</param>
+        </member>
+        <member name="T:RT.PropellerApi.SettingsSaver">
+            <summary>Provides a simple implementation for the <see cref="T:RT.PropellerApi.ISettingsSaver"/> interface.</summary>
+        </member>
+        <member name="M:RT.PropellerApi.SettingsSaver.#ctor(System.Action{RT.Json.JsonValue})">
+            <summary>
+                Constructor.</summary>
+            <param name="saver">
+                Delegate that saves the settings.</param>
+        </member>
+        <member name="M:RT.PropellerApi.SettingsSaver.SaveSettings(RT.Json.JsonValue)">
+            <summary>
+                Saves the settings. (Implements <see cref="M:RT.PropellerApi.ISettingsSaver.SaveSettings(RT.Json.JsonValue)"/>.)</summary>
+            <param name="settings">
+                Settings to save.</param>
+        </member>
+    </members>
+</doc>

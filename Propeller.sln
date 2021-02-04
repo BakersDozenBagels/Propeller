@@ -4,11 +4,13 @@ VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Propeller", "Src\Propeller.csproj", "{3B02D01E-2CB9-49F3-86B9-97BF8CD161FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropellerApi", "API\PropellerApi.csproj", "{5770EE79-8340-41FB-9B8E-EB4A3C487FF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PropellerApi", "API\PropellerApi.csproj", "{5770EE79-8340-41FB-9B8E-EB4A3C487FF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileServer", "Src\Modules\FileServer\FileServer.csproj", "{9BE86A9C-7A29-495A-977B-E8DD881A34B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redirector", "Src\Modules\Redirector\Redirector.csproj", "{19010B43-7871-4BFA-83F5-AB4504D164D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDB", "Src\Modules\SimpleDB\SimpleDB.csproj", "{48F717F6-AB9F-4DFF-9796-218CCE1311B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{19010B43-7871-4BFA-83F5-AB4504D164D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19010B43-7871-4BFA-83F5-AB4504D164D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19010B43-7871-4BFA-83F5-AB4504D164D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48F717F6-AB9F-4DFF-9796-218CCE1311B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48F717F6-AB9F-4DFF-9796-218CCE1311B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48F717F6-AB9F-4DFF-9796-218CCE1311B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48F717F6-AB9F-4DFF-9796-218CCE1311B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

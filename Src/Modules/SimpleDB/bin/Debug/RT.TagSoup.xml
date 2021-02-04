@@ -1,0 +1,696 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RT.TagSoup</name>
+    </assembly>
+    <members>
+        <member name="T:RT.TagSoup.HtmlTag">
+            <summary>
+                Abstract base class for HTML tags.</summary>
+            <remarks>
+                Useful reference: http://simon.html5.org/html-elements</remarks>
+        </member>
+        <member name="M:RT.TagSoup.HtmlTag.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.HtmlTag.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="M:RT.TagSoup.HtmlTag.#ctor(System.Object[])">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="T:RT.TagSoup.STYLELiteral">
+            <summary>Represents an HTML <c>&lt;style&gt;</c> tag whose contents are provided literally (not via an <c>href</c>).</summary>
+        </member>
+        <member name="M:RT.TagSoup.STYLELiteral.#ctor(System.String)">
+            <summary>
+                Creates an HTML <c>&lt;style&gt;</c> tag.</summary>
+            <param name="literal">
+                Specifies the literal contents of the tag.</param>
+        </member>
+        <member name="P:RT.TagSoup.STYLELiteral.TagName">
+            <summary>Returns <c>"style"</c>.</summary>
+        </member>
+        <member name="F:RT.TagSoup.STYLELiteral.Literal">
+            <summary>Specifies the literal tag contents.</summary>
+        </member>
+        <member name="M:RT.TagSoup.STYLELiteral.ToEnumerable(System.Boolean)">
+            <summary>
+                Outputs this tag and all its contents.</summary>
+            <param name="allTags">
+                The HTML specification allows certain start and end tags to be omitted. Specify <c>true</c> to emit such tags
+                regardless, for compatibility reasons.</param>
+            <returns>
+                A collection of strings which, when concatenated, represent this tag and all its contents.</returns>
+        </member>
+        <member name="M:RT.TagSoup.STYLELiteral.enumerateAttributes">
+            <summary>Throws NotImplementedException.</summary>
+        </member>
+        <member name="T:RT.TagSoup.SCRIPTLiteral">
+            <summary>Represents an HTML <c>&lt;script&gt;</c> tag whose contents are provided literally (not via an <c>href</c>).</summary>
+        </member>
+        <member name="M:RT.TagSoup.SCRIPTLiteral.#ctor(System.String)">
+            <summary>
+                Creates an HTML <c>&lt;style&gt;</c> tag.</summary>
+            <param name="literal">
+                Specifies the literal contents of the tag.</param>
+        </member>
+        <member name="P:RT.TagSoup.SCRIPTLiteral.TagName">
+            <summary>Returns <c>"script"</c>.</summary>
+        </member>
+        <member name="F:RT.TagSoup.SCRIPTLiteral.Literal">
+            <summary>Specifies the literal tag contents.</summary>
+        </member>
+        <member name="M:RT.TagSoup.SCRIPTLiteral.ToEnumerable(System.Boolean)">
+            <summary>
+                Outputs this tag and all its contents.</summary>
+            <param name="allTags">
+                The HTML specification allows certain start and end tags to be omitted. Specify <c>true</c> to emit such tags
+                regardless, for compatibility reasons.</param>
+            <returns>
+                A collection of strings which, when concatenated, represent this tag and all its contents.</returns>
+        </member>
+        <member name="M:RT.TagSoup.SCRIPTLiteral.enumerateAttributes">
+            <summary>Throws NotImplementedException.</summary>
+        </member>
+        <member name="M:RT.TagSoup.A.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.ABBR.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.ADDRESS.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.AREA.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.ARTICLE.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.ASIDE.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.AUDIO.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.B.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.BASE.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.BDI.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.BDO.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.BLOCKQUOTE.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.BODY.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.BR.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.BUTTON.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.CANVAS.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.CAPTION.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.CITE.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.CODE.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.COL.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.COLGROUP.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.COMMAND.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.DATALIST.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.DD.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.DEL.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.DETAILS.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.DFN.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.DIV.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.DL.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.DT.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.EM.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.EMBED.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.FIELDSET.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.FIGCAPTION.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.FIGURE.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.FOOTER.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.FORM.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.H1.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.H2.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.H3.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.H4.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.H5.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.H6.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.HEAD.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.HEADER.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.HGROUP.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.HR.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.HTML.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.I.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.IFRAME.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.IMG.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.INPUT.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.INS.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.KBD.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.KEYGEN.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.LABEL.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.LEGEND.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.LI.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.LINK.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.MAP.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.MARK.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.MENU.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.META.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.METER.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.NAV.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.NOSCRIPT.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.OBJECT.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.OL.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.OPTGROUP.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.OPTION.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.OUTPUT.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.P.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.PARAM.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.PRE.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.PROGRESS.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.Q.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.RP.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.RT.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.RUBY.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.S.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.SAMP.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.SCRIPT.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.SECTION.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.SELECT.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.SMALL.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.SOURCE.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.SPAN.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.STRONG.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.STYLE.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.SUB.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.SUMMARY.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.SUP.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.TABLE.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.TBODY.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.TD.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.TEXTAREA.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.TFOOT.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.TH.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.THEAD.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.TIME.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.TITLE.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.TR.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.TRACK.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.U.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.UL.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.VAR.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.VIDEO.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.WBR.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="T:RT.TagSoup.Tag">
+            <summary>
+                Abstract base class for an HTML tag.</summary>
+            <remarks>
+                <para>
+                    The following types are supported in tag contents:</para>
+                <list type="bullet">
+                    <item><term>
+                        <c>string</c></term>
+                    <description>
+                        outputs that string (HTML-escaped, of course)</description></item>
+                    <item><term>
+                        <c>Tag</c></term>
+                    <description>
+                        outputs that tag and its contents</description></item>
+                    <item><term>
+                        <c>IEnumerable&lt;T&gt;</c></term>
+                    <description>
+                        enumerates all contained objects and recursively processes them individually</description></item>
+                    <item><term>
+                        <c>Func&lt;T&gt;</c> (or any other delegate with no parameters)</term>
+                    <description>
+                        calls the delegate and recursively processes the return value</description></item></list>
+                <para>
+                    Using lazy-evaluated IEnumerable&lt;T&gt;s and/or delegates is a convenient way to defer execution to ensure
+                    maximally responsive output.</para></remarks>
+        </member>
+        <member name="F:RT.TagSoup.Tag._tagContents">
+            <summary>Remembers the contents of this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.Tag.#ctor">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="M:RT.TagSoup.Tag.#ctor(System.Object[])">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="M:RT.TagSoup.Tag.#ctor(System.Collections.IEnumerable)">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="P:RT.TagSoup.Tag.TagName">
+            <summary>Name of the tag.</summary>
+        </member>
+        <member name="P:RT.TagSoup.Tag.StartTag">
+            <summary>Whether the start tag should be printed. If the tag has attributes, it will be printed regardless.</summary>
+        </member>
+        <member name="P:RT.TagSoup.Tag.EndTag">
+            <summary>Whether the end tag should be printed.</summary>
+        </member>
+        <member name="M:RT.TagSoup.Tag.HtmlDocument(System.Object,System.Object[])">
+            <summary>
+                Creates a simple HTML document from the specified elements.</summary>
+            <param name="title">
+                Title to use in the &lt;TITLE&gt; tag in the head.</param>
+            <param name="bodyContent">
+                Contents of the &lt;BODY&gt; tag.</param>
+            <returns>
+                An <see cref="T:RT.TagSoup.HtmlTag"/> representing the entire HTML document.</returns>
+        </member>
+        <member name="M:RT.TagSoup.Tag.HtmlTable(System.String,System.Object[][])">
+            <summary>
+                Special method to help construct an HTML <c>&lt;TABLE&gt;</c> element without needing to manually instantiate
+                all intermediate row and cell tags.</summary>
+            <param name="classOnAllTags">
+                If set to a value other than null, causes all rows and cells within the generated table to have the specified
+                CSS class.</param>
+            <param name="rows">
+                Rows (arrays of cell contents).</param>
+        </member>
+        <member name="M:RT.TagSoup.Tag._(System.Object[])">
+            <summary>
+                Sets the contents of the tag. Any objects are allowed.</summary>
+            <param name="contents">
+                Contents to set to.</param>
+            <returns>
+                The same tag.</returns>
+        </member>
+        <member name="M:RT.TagSoup.Tag._(System.Func{System.Object}[])">
+            <summary>
+                Sets the contents of the tag using lazy evaluation.</summary>
+            <param name="contents">
+                Contents to set to.</param>
+            <returns>
+                The same tag.</returns>
+        </member>
+        <member name="M:RT.TagSoup.Tag._(System.Collections.IEnumerable)">
+            <summary>
+                Sets the contents of the tag. Any objects are allowed.</summary>
+            <param name="contents">
+                Contents to set to.</param>
+            <returns>
+                The same tag.</returns>
+        </member>
+        <member name="M:RT.TagSoup.Tag.Data(System.String,System.Object)">
+            <summary>
+                Specifies a <c>data</c> attribute for this tag.</summary>
+            <param name="key">
+                The key. For example, if you pass in <c>name</c> here, the attribute will be <c>data-name="..."</c>.</param>
+            <param name="value">
+                The value for the data attribute.</param>
+            <returns>
+                The same tag.</returns>
+        </member>
+        <member name="M:RT.TagSoup.Tag.Add(System.Object)">
+            <summary>
+                Adds stuff at the end of the contents of this tag (a string, a tag, a collection of strings or of tags).</summary>
+            <param name="content">
+                The stuff to add.</param>
+        </member>
+        <member name="M:RT.TagSoup.Tag.ToEnumerable(System.Boolean)">
+            <summary>
+                Outputs this tag and all its contents.</summary>
+            <param name="allTags">
+                The HTML specification allows certain start and end tags to be omitted. Specify <c>true</c> to emit such tags
+                regardless, for compatibility reasons.</param>
+            <returns>
+                A collection of strings which, when concatenated, represent this tag and all its contents.</returns>
+        </member>
+        <member name="M:RT.TagSoup.Tag.enumerateAttributes">
+            <summary>Stringifies the attributes on this tag.</summary>
+        </member>
+        <member name="M:RT.TagSoup.Tag.attributeValue(System.String)">
+            <summary>
+                Helper method to safely stringify an attribute value.</summary>
+            <param name="attrVal">
+                Attribute value to stringify.</param>
+        </member>
+        <member name="M:RT.TagSoup.Tag.ToString">
+            <summary>
+                Converts the entire tag tree into a single string.</summary>
+            <returns>
+                The entire tag tree as a single string.</returns>
+        </member>
+        <member name="M:RT.TagSoup.Tag.ToString(System.Boolean)">
+            <summary>
+                Converts the entire tag tree into a single string.</summary>
+            <param name="allTags">
+                The HTML specification allows certain start and end tags to be omitted. Specify <c>true</c> to emit such tags
+                regardless, for compatibility reasons.</param>
+            <returns>
+                The entire tag tree as a single string.</returns>
+        </member>
+        <member name="M:RT.TagSoup.Tag.ToString(System.Object,System.Boolean)">
+            <summary>
+                Converts a tag tree into a single string.</summary>
+            <param name="tagTree">
+                The tag tree to convert.</param>
+            <param name="allTags">
+                The HTML specification allows certain start and end tags to be omitted. Specify <c>true</c> to emit such tags
+                regardless, for compatibility reasons.</param>
+            <returns>
+                The entire tag tree as a single string.</returns>
+        </member>
+        <member name="M:RT.TagSoup.Tag.ToRaw(System.Object)">
+            <summary>Converts a tag tree into a raw tag which would render exactly the same as the tag tree.</summary>
+        </member>
+        <member name="M:RT.TagSoup.Tag.ToRaw(System.Object[])">
+            <summary>Converts a tag tree into a raw tag which would render exactly the same as the tag tree.</summary>
+        </member>
+        <member name="M:RT.TagSoup.Tag.ToEnumerable(System.Object,System.Boolean)">
+            <summary>
+                Converts a tag tree into a string that is generated bit by bit.</summary>
+            <param name="tagTree">
+                The tag tree to convert.</param>
+            <param name="allTags">
+                The HTML specification allows certain start and end tags to be omitted. Specify <c>true</c> to emit such tags
+                regardless, for compatibility reasons.</param>
+            <returns>
+                A collection that generates the entire tag tree as a string.</returns>
+        </member>
+        <member name="M:RT.TagSoup.Tag.WriteToFile(System.String,System.Boolean)">
+            <summary>
+                Creates a new file and outputs this tag and all its contents to it.</summary>
+            <param name="filename">
+                The path and filename of the file to create. If the file already exists, it will be overwritten.</param>
+            <param name="allTags">
+                The HTML specification allows certain start and end tags to be omitted. Specify <c>true</c> to emit such tags
+                regardless, for compatibility reasons.</param>
+        </member>
+        <member name="T:RT.TagSoup.RawTag">
+            <summary>
+                Outputs whatever content is passed to it without any escaping. Do not use unless there's absolutely no other way
+                of doing something.</summary>
+        </member>
+        <member name="M:RT.TagSoup.RawTag.#ctor(System.String)">
+            <summary>Constructor.</summary>
+        </member>
+        <member name="P:RT.TagSoup.RawTag.TagName">
+            <summary>Throws NotImplementedException.</summary>
+        </member>
+        <member name="M:RT.TagSoup.RawTag.ToEnumerable(System.Boolean)">
+            <summary>
+                Enumerates the content.</summary>
+            <param name="allTags">
+                The HTML specification allows certain start and end tags to be omitted. Specify <c>true</c> to emit such tags
+                regardless, for compatibility reasons.</param>
+        </member>
+        <member name="M:RT.TagSoup.RawTag.ToString">
+            <summary>Returns the content.</summary>
+        </member>
+        <member name="M:RT.TagSoup.RawTag.enumerateAttributes">
+            <summary>Throws NotImplementedException.</summary>
+        </member>
+        <member name="M:RT.TagSoup.GenerateCode.Indent(System.String,System.Int32,System.Boolean)">
+            <summary>
+                Inserts spaces at the beginning of every line contained within the specified string.</summary>
+            <param name="str">
+                String to add indentation to.</param>
+            <param name="by">
+                Number of spaces to add.</param>
+            <param name="indentFirstLine">
+                If true (default), all lines are indented; otherwise, all lines except the first.</param>
+            <returns>
+                The indented string.</returns>
+        </member>
+        <member name="M:RT.TagSoup.GenerateCode.Unindent(System.String)">
+            <summary>
+                Removes the overall indentation of the specified string while maintaining the relative indentation of each
+                line.</summary>
+            <param name="str">
+                String to remove indentation from.</param>
+            <returns>
+                A string in which every line that isn’t all whitespace has had spaces removed from the beginning equal to the
+                least amount of spaces at the beginning of any line.</returns>
+        </member>
+        <member name="M:RT.TagSoup.GenerateCode.fixFieldName(System.String)">
+            <summary>
+                Converts a C#-compatible field name into an HTML/XHTML-compatible one.</summary>
+            <example>
+                <list type="bullet">
+                    <item><c>class_</c> is converted to <c>"class"</c></item>
+                    <item><c>acceptCharset</c> is converted to <c>"accept-charset"</c></item>
+                    <item><c>text_plain</c> is converted to <c>"text/plain"</c></item>
+                    <item><c>_</c> would be converted to the empty string, but <see cref="M:RT.TagSoup.Tag.ToEnumerable(System.Boolean)"/> already skips
+                    those.</item></list></example>
+            <param name="fieldName">
+                Field name to convert.</param>
+            <returns>
+                Converted field name.</returns>
+        </member>
+        <member name="M:RT.TagSoup.GenerateCode.JoinString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String,System.String,System.String)">
+            <summary>
+                Turns all elements in the enumerable to strings and joins them using the specified <paramref
+                name="separator"/> and the specified <paramref name="prefix"/> and <paramref name="suffix"/> for each string.</summary>
+            <param name="values">
+                The sequence of elements to join into a string.</param>
+            <param name="separator">
+                Optionally, a separator to insert between each element and the next.</param>
+            <param name="prefix">
+                Optionally, a string to insert in front of each element.</param>
+            <param name="suffix">
+                Optionally, a string to insert after each element.</param>
+            <param name="lastSeparator">
+                Optionally, a separator to use between the second-to-last and the last element.</param>
+            <example>
+                <code>
+                    // Returns "[Paris], [London], [Tokyo]"
+                    (new[] { "Paris", "London", "Tokyo" }).JoinString(", ", "[", "]")
+                    
+                    // Returns "[Paris], [London] and [Tokyo]"
+                    (new[] { "Paris", "London", "Tokyo" }).JoinString(", ", "[", "]", " and ");</code></example>
+        </member>
+        <member name="T:RT.TagSoup.Util">
+            <summary>Contains extension methods for code using RT.TagSoup.</summary>
+        </member>
+        <member name="M:RT.TagSoup.Util.Accel(System.String,System.Char)">
+            <summary>
+                Adds a <c>KBD</c> tag to a single character to indicate a keyboard shortcut in a UI.</summary>
+            <param name="str">
+                The string or label to add the shortcut indicator to.</param>
+            <param name="accel">
+                The shortcut key (<c>accesskey</c> attribute).</param>
+        </member>
+        <member name="M:RT.TagSoup.InternalUtil.HtmlEscape(System.String,System.Boolean,System.Boolean)">
+            <summary>
+                Escapes all necessary characters in the specified string so as to make it usable safely in an HTML or XML
+                context.</summary>
+            <param name="input">
+                The string to apply HTML or XML escaping to.</param>
+            <param name="leaveSingleQuotesAlone">
+                If <c>true</c>, does not escape single quotes (<c>'</c>, U+0027).</param>
+            <param name="leaveDoubleQuotesAlone">
+                If <c>true</c>, does not escape single quotes (<c>"</c>, U+0022).</param>
+            <returns>
+                The specified string with the necessary HTML or XML escaping applied.</returns>
+        </member>
+        <member name="M:RT.TagSoup.InternalUtil.IsDefined``1(System.Reflection.MemberInfo,System.Boolean)">
+            <summary>
+                Indicates whether one or more instance of the specified attribute type is applied to this member.</summary>
+            <typeparam name="T">
+                The type of attribute to search for.</typeparam>
+            <param name="member">
+                Member whose custom attributes to search.</param>
+            <param name="inherit">
+                Specifies whether to search this member's inheritance chain to find the attributes.</param>
+        </member>
+    </members>
+</doc>
